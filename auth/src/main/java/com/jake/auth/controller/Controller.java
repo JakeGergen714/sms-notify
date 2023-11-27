@@ -1,153 +1,116 @@
 package com.jake.auth.controller;
 
-import com.jake.auth.domain.AuthSession;
-import com.jake.auth.domain.Business;
-import com.jake.auth.domain.Credential;
-import com.jake.auth.domain.SmsTemplate;
-import com.jake.auth.service.BusinessService;
-import com.jake.auth.service.BusinessUserService;
-import com.jake.auth.service.CredentialService;
-import java.util.Optional;
-
-import com.jake.auth.service.SmsTemplateService;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
+import com.jake.auth.dto.AuthTokenDTO;
+import com.jake.auth.dto.UserCredentialDTO;
+import com.jake.auth.service.AuthService;
+import jakarta.servlet.http.Cookie;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-@Log4j2
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Optional;
+
+@RequiredArgsConstructor
 @RestController
+@Log4j2
 public class Controller {
-  @Autowired private CredentialService credService;
+    private final AuthService authService;
 
-  @Autowired private BusinessService businessService;
-  @Autowired private BusinessUserService businessUserService;
-  @Autowired private SmsTemplateService smsTemplateService;
+    @PostMapping(value = "/signin")
+    public ResponseEntity<AuthTokenDTO> signIn(@RequestBody UserCredentialDTO userCredentialDTO) throws UnsupportedEncodingException {
+        log.info("SignIn <{}>", userCredentialDTO);
 
-  @Value("${twilio.authToken}")
-  private String authToken;
+        Optional<AuthTokenDTO> authTokenDTO = authService.signIn(userCredentialDTO);
 
-  @Value("${twilio.sid}")
-  private String sid;
-
-  @PostMapping(path = "/signup")
-  public ResponseEntity<HttpStatus> signup(Credential cred) {
-    log.info("/signup");
-    if (credService.signup(cred)) {
-      return ResponseEntity.ok().build();
-    } else {
-      return ResponseEntity.badRequest().build();
-    }
-  }
-
-  @GetMapping(path = "/authenticate")
-  public ResponseEntity<AuthSession> authenticate(Credential cred) {
-    Optional<AuthSession> o = credService.authenticate(cred);
-    if (o.isPresent()) {
-      return ResponseEntity.of(Optional.of(o.get()));
-    } else {
-      return ResponseEntity.of(Optional.empty());
-    }
-  }
-
-  @PostMapping(path = "/validate")
-  public boolean validate(AuthSession authSession) {
-    log.info("Auth Session <{}>", authSession);
-    return credService.validate(authSession);
-  }
-
-  @PostMapping(path = "/signout")
-  public ResponseEntity<String> signout(AuthSession authSession) {
-    log.info("/signout");
-    if (authSession.getToken() == null || authSession.getUsername() == null) {
-      log.info("Signout failed. Missing username or auth token.");
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-          .body("Signout failed. Missing username or auth token");
-    }
-    if (credService.signout(authSession)) {
-      return ResponseEntity.status(HttpStatus.OK).body("Signed out.");
-    }
-
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Signout failed.");
-  }
-
-  @PostMapping(path = "/addBusiness")
-  public ResponseEntity<String> addBuisness(AuthSession authSession, Business business) {
-    log.info("/addBusiness");
-    if (credService.validate(authSession)) {
-      log.info("Validated.");
-
-      log.info("Adding business.");
-      Optional<Business> addedBusiness = businessService.signup(business);
-      if (addedBusiness.isPresent()) {
-        log.info("Added business.");
-        log.info("Adding authenticated user to business");
-
-        if (businessUserService.addSelfToBusiness(authSession, addedBusiness.get())) {
-          log.info("Added self to business");
-          return ResponseEntity.ok("Business added.");
+        if (authTokenDTO.isPresent()) {
+            log.info("Signed In.");
+            Cookie accessTokenCookie = new Cookie("accessToken", authTokenDTO.get().getAccessToken());
+            accessTokenCookie.setHttpOnly(true);
+            //httpResponse.addCookie(accessTokenCookie);
+            Cookie refreshTokenCookie = new Cookie("refreshToken", authTokenDTO.get().getRefreshToken());
+            refreshTokenCookie.setHttpOnly(true);
+            //httpResponse.addCookie(refreshTokenCookie);
+            return ResponseEntity.ok().body(authTokenDTO.get());
+        } else {
+            // Return 403 Forbidden when authentication fails
+            log.info("Unauthorized.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        log.info("Failed to add self to business");
-        return ResponseEntity.badRequest().build();
-      } else {
-        log.info("Failed to add business.");
-        return ResponseEntity.badRequest().build();
-      }
-    }
-    log.info("Validation failed.");
-    return ResponseEntity.badRequest().build();
-  }
-
-  @PostMapping(path = "/addUserToBusiness")
-  public ResponseEntity<String> addUserToBusiness(
-      AuthSession authSession, String userToAdd, boolean isAdmin) {
-    log.info("/addUserToBusiness");
-    if (!credService.validate(authSession)) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-      if (businessUserService.addUserToBusiness(authSession, userToAdd, isAdmin)) {
-      log.info("Added user to business.");
-      return ResponseEntity.ok("Added user to business");
-    }
-    log.info("Failed to add user to business");
-    return ResponseEntity.badRequest().body("Failed to add user to business");
-  }
-
-  @PostMapping(path = "/addTemplate")
-  public ResponseEntity<String> addTemplate(AuthSession authSession, SmsTemplate smsTemplate) {
-    if(!credService.validate(authSession)) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    if(smsTemplateService.addSmsTemplate(authSession, smsTemplate))  {
-      return ResponseEntity.ok("Added Sms Template.");
+    @PostMapping(value ="/signup")
+    public ResponseEntity<AuthTokenDTO> signUp(@RequestBody UserCredentialDTO userCredentialDTO) throws UnsupportedEncodingException {
+        log.info("/signup <{}>", userCredentialDTO);
+        Optional<AuthTokenDTO> optionalAuthTokenDTO = authService.signUp(userCredentialDTO);
+        if(optionalAuthTokenDTO.isEmpty()) {
+            log.info("Signup failed");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok().body(optionalAuthTokenDTO.get());
     }
-    return ResponseEntity.badRequest().body("Failed to add sms template");
-  }
 
-  @PostMapping(path = "/sendSms")
-  public ResponseEntity<String> sendSms(AuthSession authSession, SmsTemplate smsTemplate, String phoneNumber) {
-    if(!validate(authSession)) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    @PostMapping(value = "/validate")
+    public ResponseEntity<HttpStatus> validate(@RequestHeader String accessToken) {
+        log.info("/validate <{}>", accessToken);
+        //Optional<Cookie> optionalCookie = getAccessTokenCookie(httpRequest.getCookies());
+       /* if(optionalCookie.isEmpty()) {
+            log.info("No Access token found");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized access");
+        }*/
+        boolean isValidated = authService.validateJwt(accessToken);
+        log.info("isValidated <{}>", isValidated);
+        if(!isValidated) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok().build();
     }
 
-    Optional<SmsTemplate> optionalSmsTemplate = smsTemplateService.getSmsTemplate(authSession, smsTemplate);
-    if(optionalSmsTemplate.isEmpty()) {
-      return ResponseEntity.badRequest().body("Failed to find sms template");
+    @PostMapping(value = "/refresh")
+    public ResponseEntity<AuthTokenDTO>  refresh(@RequestHeader String refreshToken) {
+        log.info("/refresh <{}>", refreshToken);
+       /* Optional<Cookie> optionalCookie = getRefreshTokenCookie(httpRequest.getCookies());
+        if(optionalCookie.isEmpty()) {
+            log.info("No refresh token found");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized access");
+        }
+        String refreshToken = optionalCookie.get().getValue();*/
+
+        Optional<AuthTokenDTO> authTokenDTO = authService.refresh(refreshToken);
+        if (authTokenDTO.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        /*Cookie accessTokenCookie = new Cookie("accessToken", authTokenDTO.get().getAccessToken());
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setSecure(true);
+        httpResponse.addCookie(accessTokenCookie);
+        Cookie refreshTokenCookie = new Cookie("refreshToken", authTokenDTO.get().getRefreshToken());
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
+        httpResponse.addCookie(refreshTokenCookie);*/
+
+        return ResponseEntity.ok(authTokenDTO.get());
     }
-    smsTemplate = optionalSmsTemplate.get();
 
-    Twilio.init(sid, authToken);
-    Message.creator(new PhoneNumber(phoneNumber), new PhoneNumber("(865) 500-4355"), smsTemplate.getTemplate()).create();
+    private Optional<Cookie> getAccessTokenCookie(Cookie[] cookies) {
+        if(cookies==null) {
+            return Optional.empty();
+        }
+        Arrays.stream(cookies).forEach(cookie->log.info(cookie.getName()));
+        return Arrays.stream(cookies).filter(cookie->cookie.getName().equalsIgnoreCase("accessToken")).findFirst();
+    }
 
-    return ResponseEntity.ok().body("Sent sms");
-  }
+    private Optional<Cookie> getRefreshTokenCookie(Cookie[] cookies) {
+        if(cookies==null) {
+            return Optional.empty();
+        }
+        return Arrays.stream(cookies).filter(cookie->cookie.getName().equalsIgnoreCase("refreshToken")).findFirst();
+    }
 }
