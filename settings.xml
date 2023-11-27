@@ -1,0 +1,12 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>github</id> <!-- This ID should match with the id in distributionManagement section of your pom.xml -->
+            <username>YOUR_GITHUB_USERNAME</username> <!-- Replace with your GitHub username -->
+            <password>${env.GITHUB_TOKEN}</password> <!-- This will use the GITHUB_TOKEN from the GitHub Actions environment -->
+        </server>
+    </servers>
+</settings>
