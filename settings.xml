@@ -6,7 +6,7 @@
         <server>
             <id>github</id> <!-- This ID should match with the id in distributionManagement section of your pom.xml -->
             <username>JakeGergen714</username> <!-- Replace with your GitHub username -->
-            <password>${env.GITHUB_TOKEN}</password> <!-- This will use the GITHUB_TOKEN from the GitHub Actions environment -->
+            <password>${env.TOKEN}</password> <!-- This will use the GITHUB_TOKEN from the GitHub Actions environment -->
         </server>
     </servers>
 </settings>
