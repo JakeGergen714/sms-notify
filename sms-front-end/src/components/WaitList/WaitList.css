@@ -1,0 +1,62 @@
+/** @format */
+
+#WaitListContainer {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   background-color: #1a1a1a;
+   width: 100%;
+   height: 100%; /* This will make it take the full height of its parent */
+   border-left: none;
+   margin-left: 0;
+   background-color: var(--dark-bg);
+}
+.waitlist-tbody {
+   display: block;
+   height: 80vh; /* Adjust the height as per your need */
+   overflow-y: auto;
+}
+
+.table thead,
+.table tbody tr {
+   display: table;
+   width: 100%;
+   table-layout: fixed;
+   text-align: center;
+}
+
+.waitlist-index {
+   text-align: left;
+   width: 1%;
+   font-weight: 100;
+}
+
+.waitlist-small-col {
+   width: 200px;
+}
+
+.waitlist-extra-small-col {
+   width: 150px;
+   text-align: left;
+}
+
+.center {
+   text-align: center;
+}
+
+.td-party-size {
+   font-weight: bolder;
+   font-size: 20px;
+}
+
+.btn {
+   margin-left: 0.5rem;
+}
+
+.sms-icon {
+   font-size: 30px;
+}
+
+.waitlist-tbody .sms-icon:hover {
+   color: var(--accent);
+}

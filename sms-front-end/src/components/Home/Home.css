@@ -1,0 +1,22 @@
+/** @format */
+
+.home {
+   display: flex;
+   position: relative;
+   height: 100vh;
+   overflow: hidden;
+   justify-content: flex-start;
+   align-items: stretch; /* This makes sure the sidebar and main content stretch to full height */
+}
+.main-content {
+   flex: 1;
+   background-color: var(--dark-bg);
+}
+
+.button,
+.link,
+.active-item {
+   color: var(--accent);
+}
+
+

@@ -24,6 +24,7 @@ public class SmsTemplateService {
       log.error(
           "Failed to add Sms Template for user <{}>. User does not belong to a business",
           authSession.getUsername());
+      return false;
     }
     BusinessUser businessUser = businessUserOptional.get();
 
@@ -33,7 +34,10 @@ public class SmsTemplateService {
     templateToAdd.setTemplateDescription(smsTemplate.getTemplateDescription());
     templateToAdd.setTemplate(smsTemplate.getTemplate());
 
-    if(smsTemplateRepo.findByTemplateNameAndBusinessId(smsTemplate.getTemplateName(), businessUser.getBusinessId()).isPresent()) {
+    if (smsTemplateRepo
+        .findByTemplateNameAndBusinessId(
+            smsTemplate.getTemplateName(), businessUser.getBusinessId())
+        .isPresent()) {
       log.error("This business already has a template with this name.");
       return false;
     }
@@ -45,5 +49,37 @@ public class SmsTemplateService {
       return false;
     }
     return true;
+  }
+
+  public Optional<SmsTemplate> getSmsTemplate(AuthSession authSession, SmsTemplate smsTemplate) {
+    Optional<BusinessUser> businessUserOptional = businessUserService.getBusinessUser(authSession);
+
+    if (businessUserOptional.isEmpty()) {
+      log.error(
+          "Failed to get Sms Template for user <{}>. User does not belong to a business",
+          authSession.getUsername());
+      return Optional.empty();
+    }
+    BusinessUser businessUser = businessUserOptional.get();
+
+    Optional<SmsTemplate> smsTemplateOptional =
+        smsTemplateRepo.findByTemplateNameAndBusinessId(
+            smsTemplate.getTemplateName(), businessUser.getBusinessId());
+
+    if (smsTemplateOptional.isEmpty()) {
+      log.error(
+          "Failed to get Sms Template for user <{}>. Could not find Sms template with name <{}>",
+          authSession.getUsername(),
+          smsTemplate.getTemplateName());
+      return Optional.empty();
+    }
+
+    SmsTemplate dbSmsTemplate = smsTemplateOptional.get();
+
+    SmsTemplate templateToReturn = new SmsTemplate();
+    templateToReturn.setTemplate(dbSmsTemplate.getTemplate());
+    templateToReturn.setTemplateName(dbSmsTemplate.getTemplateName());
+    templateToReturn.setTemplateDescription(smsTemplate.getTemplateDescription());
+    return Optional.of(templateToReturn);
   }
 }

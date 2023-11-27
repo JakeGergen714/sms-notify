@@ -1,0 +1,123 @@
+/** @format */
+
+.add-button {
+   font-size: 50px;
+   color: var(--accent);
+   top: 3%;
+   position: fixed;
+   right: 5%;
+   z-index: 0;
+   transition: all 0.2s ease-in-out;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.add-button::after {
+   content: "";
+   position: absolute;
+   top: 0;
+   left: -15px; /* Move the circle 5px to the left */
+   top: -13px;
+   width: 80px; /* Set the width */
+   height: 80px; /* Set the height */
+   border-radius: 50%;
+   background-color: var(--dark-sidebar);
+   z-index: -1; /* Ensure the circle is behind the icon */
+}
+
+.add-button:hover {
+   transform: translateY(5px) scale(1.1);
+}
+
+.Modal {
+   position: absolute;
+   top: 20%;
+   left: 40%;
+   right: 40%;
+   bottom: 30%;
+   background-color: var(--dark-sidebar);
+   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* This line adds the shadow */
+   z-index: 0;
+   color: var(--light-text);
+}
+
+.customOverlay {
+   background-color: rgba(0, 0, 0, 0.65); /* semi-transparent black */
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   z-index: 1000;
+}
+
+.custom-bg-color {
+   background-color: var(--input-color) !important;
+   color: white !important;
+}
+
+.custom-bg-color:focus {
+   outline: none; /* To remove any border or outline that appears on focus */
+   background-color: var(--border-color); /* To ensure background stays the same */
+   color: white;
+}
+
+.phone-name {
+   padding: 1rem;
+}
+
+.btn.btn-secondary.active {
+   background-color: #007bff;
+   color: #ffffff;
+}
+/* New styles */
+.btn-deactivated {
+   pointer-events: none;
+   opacity: 0.6;
+}
+
+.btn-clear {
+   background-color: transparent !important;
+}
+
+.extra-input-active {
+   background-color: #007bff;
+   margin-top: 1rem;
+}
+
+.btn-group .btn:not(:last-child) {
+   margin-right: 5px;
+}
+.notes-btn-group .btn {
+   border-radius: 0.25rem !important;
+   margin-bottom: 5px; /* Margin for vertical spacing when stacked */
+   width: 100px; /* Adjust to the width you desire */
+   justify-content: center; /* Center the flex items horizontally */
+}
+
+.notes-btn-group {
+   display: flex;
+   justify-content: center;
+   flex-wrap: wrap;
+   width: fit-content;
+}
+
+.waitlist-add-form {
+   display: flex;
+   flex-direction: column;
+   height: 90%; /* This assumes that the form takes up the full height of its parent. Adjust as necessary. */
+}
+
+form {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+}
+
+.mt-3.text-center {
+   margin-top: auto !important; /* Pushes the button to the bottom */
+}

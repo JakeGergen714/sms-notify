@@ -1,0 +1,21 @@
+/** @format */
+#reservations-container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   background-color: #1a1a1a;
+   width: 100%;
+   height: 100%; /* This will make it take the full height of its parent */
+   border-left: none;
+   margin-left: 0;
+   background-color: var(--dark-bg);
+}
+
+.waitListItem {
+   width: 100%;
+}
+.date-header {
+   font-size: 30px;
+   background-color: var(--dark-sidebar);
+   color: white;
+}

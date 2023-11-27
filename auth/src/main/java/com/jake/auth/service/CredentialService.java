@@ -50,9 +50,7 @@ public class CredentialService {
         if (o.get().getPassword().equals(credential.getPassword())) {
           log.info("Authenticated <{}>", credential.getUsername());
           String token = createJwt(credential);
-          AuthSession authSession = new AuthSession();
-          authSession.setUsername(credential.getUsername());
-          authSession.setToken(token);
+          AuthSession authSession = new AuthSession(credential.getUsername(), token);
 
           try {
             log.info("Creating auth session for <{}>", credential.getUsername());

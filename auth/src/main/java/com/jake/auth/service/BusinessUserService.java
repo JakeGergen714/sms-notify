@@ -32,7 +32,7 @@ public class BusinessUserService {
   }
 
   public boolean addUserToBusiness(
-      AuthSession authSession, Business business, String usernameToAdd, boolean makeNewUserAdmin) {
+      AuthSession authSession, String usernameToAdd, boolean makeNewUserAdmin) {
     log.info("addUserToBusiness");
 
     Optional<BusinessUser> o = businessUserRepository.findById(authSession.getUsername());
@@ -57,7 +57,13 @@ public class BusinessUserService {
       return false;
     }
     log.info("User exists");
-    log.info("Adding user <{}> to business <{}>}", usernameToAdd, business.getName());
+    log.info("Checking if user to add already belongs to a business");
+    if(businessUserRepository.findById(usernameToAdd).isPresent()) {
+      log.error("Username <{}> already belongs to a business");
+      return false;
+    }
+
+    log.info("Adding user <{}> to business }", usernameToAdd);
 
     BusinessUser newUser = new BusinessUser();
     newUser.setBusinessId(signedInBusinessUser.getBusinessId());

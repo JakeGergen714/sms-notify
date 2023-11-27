@@ -10,12 +10,17 @@ import com.jake.auth.service.CredentialService;
 import java.util.Optional;
 
 import com.jake.auth.service.SmsTemplateService;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Log4j2
@@ -26,6 +31,12 @@ public class Controller {
   @Autowired private BusinessService businessService;
   @Autowired private BusinessUserService businessUserService;
   @Autowired private SmsTemplateService smsTemplateService;
+
+  @Value("${twilio.authToken}")
+  private String authToken;
+
+  @Value("${twilio.sid}")
+  private String sid;
 
   @PostMapping(path = "/signup")
   public ResponseEntity<HttpStatus> signup(Credential cred) {
@@ -47,8 +58,9 @@ public class Controller {
     }
   }
 
-  @GetMapping(path = "/validate")
+  @PostMapping(path = "/validate")
   public boolean validate(AuthSession authSession) {
+    log.info("Auth Session <{}>", authSession);
     return credService.validate(authSession);
   }
 
@@ -96,12 +108,12 @@ public class Controller {
 
   @PostMapping(path = "/addUserToBusiness")
   public ResponseEntity<String> addUserToBusiness(
-      AuthSession authSession, Business business, String userToAdd, boolean isAdmin) {
+      AuthSession authSession, String userToAdd, boolean isAdmin) {
     log.info("/addUserToBusiness");
     if (!credService.validate(authSession)) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-      if (businessUserService.addUserToBusiness(authSession, business, userToAdd, isAdmin)) {
+      if (businessUserService.addUserToBusiness(authSession, userToAdd, isAdmin)) {
       log.info("Added user to business.");
       return ResponseEntity.ok("Added user to business");
     }
@@ -119,5 +131,23 @@ public class Controller {
       return ResponseEntity.ok("Added Sms Template.");
     }
     return ResponseEntity.badRequest().body("Failed to add sms template");
+  }
+
+  @PostMapping(path = "/sendSms")
+  public ResponseEntity<String> sendSms(AuthSession authSession, SmsTemplate smsTemplate, String phoneNumber) {
+    if(!validate(authSession)) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    Optional<SmsTemplate> optionalSmsTemplate = smsTemplateService.getSmsTemplate(authSession, smsTemplate);
+    if(optionalSmsTemplate.isEmpty()) {
+      return ResponseEntity.badRequest().body("Failed to find sms template");
+    }
+    smsTemplate = optionalSmsTemplate.get();
+
+    Twilio.init(sid, authToken);
+    Message.creator(new PhoneNumber(phoneNumber), new PhoneNumber("(865) 500-4355"), smsTemplate.getTemplate()).create();
+
+    return ResponseEntity.ok().body("Sent sms");
   }
 }

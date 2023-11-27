@@ -1,0 +1,48 @@
+/** @format */
+
+.sidebar {
+   width: 93px;
+   height: 100%;
+   background-color: var(--dark-sidebar);
+   border-right: 2px solid var(--border-color);
+}
+
+.sidebar-icon {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 15px; /* Increased padding for better spacing */
+   color: var(--icon); /* Using the accent color we defined earlier for the icons */
+   font-size: 25px; /* Increase size for the icons */
+   transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover effect */
+   cursor: pointer; /* Indicates interactivity */
+   flex-direction: column;
+   font-weight: 500; /* Makes the text bold */
+}
+
+.sidebar-item {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 15px; /* Increased padding for better spacing */
+   color: var(--accent); /* Using the accent color we defined earlier for the icons */
+   font-size: 30px; /* Increase size for the icons */
+   transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover effect */
+   cursor: pointer; /* Indicates interactivity */
+   flex-direction: column;
+   font-weight: 500; /* Makes the text bold */
+}
+
+.sidebar-item.active {
+   border-left: 4px solid var(--accent); /* This adds the blue line to the left */
+}
+
+.icon-label {
+   margin-top: 5px; /* Add some space between the icon and text */
+   font-size: 14px; /* Adjust font size as needed */
+   color: var(--light-text); /* Use the light text color */
+}
+
+.sidebar-item:hover {
+   background-color: var(--border-color); /* A subtle hover effect with a slightly lighter background */
+}
