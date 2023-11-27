@@ -27,12 +27,13 @@ jobs:
 
     - name: Build with Maven
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.TOKEN }}
       working-directory: ./auth/
       run: mvn -B package --file pom.xml
 
     - name: Publish to GitHub Packages Apache Maven
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
       working-directory: ./auth/
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+      
