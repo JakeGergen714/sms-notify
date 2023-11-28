@@ -1,3 +1,6 @@
+ENV DATASOURCE_URL=jdbc:postgresql://172.17.0.3/:5432/postgres
+
+
 # Use the official Maven image as a parent image
 FROM maven:3.8.4-openjdk-17-slim as build
 
@@ -23,7 +26,7 @@ COPY --from=build /app/target/*.jar /usr/app/app.jar
 WORKDIR /usr/app
 
 # Make port 8080 available to the world outside this container
-EXPOSE 8080
+EXPOSE 8081
 
 # Run the jar file 
 ENTRYPOINT ["java", "-jar", "app.jar"]
