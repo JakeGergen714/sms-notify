@@ -59,7 +59,17 @@ jobs:
               username: ${{ github.actor }}
               password: ${{ secrets.ACCESS_TOKEN }}
 
-         - name: Build and push Docker image
+         - name: Build and push Auth Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/my-app:0a997b8af1bc87d1656b352051dfe100a9dbae0f ./auth
-              docker push ghcr.io/jakegergen714/my-app:0a997b8af1bc87d1656b352051dfe100a9dbae0f
+              docker build -t ghcr.io/jakegergen714/auth:0a997b8af1bc87d1656b352051dfe100a9dbae0f ./auth
+              docker push ghcr.io/jakegergen714/auth:0a997b8af1bc87d1656b352051dfe100a9dbae0f
+
+         - name: Build and push Waitlist Docker image
+           run: |
+              docker build -t ghcr.io/jakegergen714/waitlist:0a997b8af1bc87d1656b352051dfe100a9dbae0f ./waitlist-service
+              docker push ghcr.io/jakegergen714/waitlist:0a997b8af1bc87d1656b352051dfe100a9dbae0f
+
+         - name: Build and push FrontEnd API Docker image
+           run: |
+              docker build -t ghcr.io/jakegergen714/frontend-api:0a997b8af1bc87d1656b352051dfe100a9dbae0f ./frontend-api
+              docker push ghcr.io/jakegergen714/frontend-api:0a997b8af1bc87d1656b352051dfe100a9dbae0f
