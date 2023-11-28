@@ -39,18 +39,18 @@ jobs:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
            working-directory: ./auth/
            run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-          
-        - name: Publish Waitlist Service
-          env:
-            GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
-          working-directory: ./waitlist-service/
-          run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
-        
-        - name: Publish Frontend API
-          env:
-            GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
-          working-directory: ./frontend-api/
-          run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+
+         - name: Publish Waitlist Service
+           env:
+              GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
+           working-directory: ./waitlist-service/
+           run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+
+         - name: Publish Frontend API
+           env:
+              GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
+           working-directory: ./frontend-api/
+           run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
 
          - name: Log in to GitHub Container Registry
            uses: docker/login-action@v1
