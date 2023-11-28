@@ -25,7 +25,7 @@ WORKDIR /usr/app
 # Make port 8080 available to the world outside this container
 EXPOSE 8081
 
-ENV DATASOURCE_URL=jdbc:postgresql://172.17.0.3:5432/postgres
+ENV DATASOURCE_URL=jdbc:postgresql://172.17.0.2:5432/postgres
 
 # Run the jar file 
 ENTRYPOINT ["java", "-jar", "app.jar"]
