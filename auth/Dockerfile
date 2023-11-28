@@ -5,10 +5,10 @@ FROM maven:3.8.4-openjdk-17-slim as build
 WORKDIR /app
 
 # Copy the pom.xml file into the container at /app
-COPY ./auth/pom.xml /app/pom.xml
+COPY ./pom.xml /app/pom.xml
 
 # Copy the source code into the container at /app
-COPY ./auth/src /app/src
+COPY ./src /app/src
 
 # Package the application
 RUN mvn -f /app/pom.xml clean package
