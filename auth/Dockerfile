@@ -1,4 +1,4 @@
-ENV DATASOURCE_URL=jdbc:postgresql://172.17.0.3/:5432/postgres
+ENV DATASOURCE_URL=jdbc:postgresql://172.17.0.3:5432/postgres
 
 
 # Use the official Maven image as a parent image
