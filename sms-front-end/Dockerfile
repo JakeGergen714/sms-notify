@@ -1,8 +1,9 @@
 # Stage 1: Build
 FROM node:alpine as build
 WORKDIR /app
-COPY ./sms-front-end/package.json ./sms-front-end/package-lock.json ./
+COPY ./package.json ./package-lock.json ./
 RUN npm install
+COPY ./sms-front-end/ ./
 RUN npm run build
 
 # Stage 2: Serve
