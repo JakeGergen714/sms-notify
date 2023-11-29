@@ -1,6 +1,6 @@
 # @format
 
-name: Maven Package and Docker Build Auth
+name: Maven Package and Docker Build Front End
 
 on:
    push:
