@@ -1,0 +1,33 @@
+# @format
+
+name: Maven Package and Docker Build Auth
+
+on:
+   push:
+      paths:
+         - "sms-front-end/**"
+   pull_request:
+      paths:
+         - "sms-front-end/**"
+
+jobs:
+   build-and-deploy:
+      runs-on: ubuntu-latest
+      permissions:
+         contents: read
+         packages: write
+
+      steps:
+         - uses: actions/checkout@v3
+
+         - name: Log in to GitHub Container Registry
+           uses: docker/login-action@v1
+           with:
+              registry: ghcr.io
+              username: ${{ github.actor }}
+              password: ${{ secrets.ACCESS_TOKEN }}
+
+         - name: Build and push Front Docker image
+           run: |
+              docker build -t ghcr.io/jakegergen714/frontend:0a997b8af1bc87d1656b352051dfe100a9dbae0f ./sms-front-end
+              docker push ghcr.io/jakegergen714/frontend:0a997b8af1bc87d1656b352051dfe100a9dbae0f

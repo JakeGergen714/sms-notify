@@ -5,10 +5,10 @@ name: Maven Package and Docker Build Auth
 on:
    push:
       paths:
-         - "auth/**"
+         - "frontend-api/**"
    pull_request:
       paths:
-         - "auth/**"
+         - "frontend-api/**"
 
 jobs:
    build-and-deploy:
@@ -28,14 +28,14 @@ jobs:
               server-id: github
               settings-path: ${{ github.workspace }}
 
-         - name: Build with Auth
-           working-directory: ./auth/
+         - name: Build with Front End API
+           working-directory: ./frontend-api/
            run: mvn -B package --file pom.xml
 
-         - name: Publish Auth
+         - name: Publish Frontend API
            env:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
-           working-directory: ./auth/
+           working-directory: ./frontend-api/
            run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
 
          - name: Log in to GitHub Container Registry
@@ -45,7 +45,7 @@ jobs:
               username: ${{ github.actor }}
               password: ${{ secrets.ACCESS_TOKEN }}
 
-         - name: Build and push Auth Docker image
+         - name: Build and push Waitlist Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/auth:0a997b8af1bc87d1656b352051dfe100a9dbae0f ./auth
-              docker push ghcr.io/jakegergen714/auth:0a997b8af1bc87d1656b352051dfe100a9dbae0f
+              docker build -t ghcr.io/jakegergen714/waitlist:0a997b8af1bc87d1656b352051dfe100a9dbae0f ./waitlist-service
+              docker push ghcr.io/jakegergen714/waitlist:0a997b8af1bc87d1656b352051dfe100a9dbae0f
