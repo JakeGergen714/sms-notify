@@ -34,10 +34,6 @@ jobs:
            working-directory: ./frontend-api/
            run: mvn -B package --file pom.xml
 
-         - name: Build with Front End
-           working-directory: ./sms-front-end/
-           run: npm run build
-
          - name: Publish Auth
            env:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
