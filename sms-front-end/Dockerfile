@@ -3,7 +3,6 @@ FROM node:alpine as build
 WORKDIR /app
 COPY ./package.json ./package-lock.json ./
 RUN npm install
-COPY ./sms-front-end/ ./
 RUN npm run build
 
 # Stage 2: Serve
