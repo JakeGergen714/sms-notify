@@ -6,6 +6,7 @@ on:
    push:
       paths:
          - "frontend-api/**"
+         - ".github/**"
    pull_request:
       paths:
          - "frontend-api/**"

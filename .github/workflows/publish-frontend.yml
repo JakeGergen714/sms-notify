@@ -6,6 +6,7 @@ on:
    push:
       paths:
          - "sms-front-end/**"
+         - ".github/**"
    pull_request:
       paths:
          - "sms-front-end/**"
