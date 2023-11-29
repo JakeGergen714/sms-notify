@@ -1,0 +1,60 @@
+version: '2'
+
+services:
+  auth:
+    image: 'ghcr.io/jakegergen714/auth:0a997b8af1bc87d1656b352051dfe100a9dbae0f'
+    build:
+      context: .
+    container_name: auth
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+    - "8081:8081"
+  
+  waitlist:
+    image: 'ghcr.io/jakegergen714/waitlist:0a997b8af1bc87d1656b352051dfe100a9dbae0f'
+    build:
+      context: .
+    container_name: waitlist
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+    - "8080:8080"
+  
+  frontend-api:
+    image: 'ghcr.io/jakegergen714/frontend-api:0a997b8af1bc87d1656b352051dfe100a9dbae0f'
+    build:
+      context: .
+    container_name: frontend-api
+    ports:
+    - "8082:8082"
+
+  frontend:
+    image: 'ghcr.io/jakegergen714/frontend:0a997b8af1bc87d1656b352051dfe100a9dbae0f'
+    build:
+      context: .
+    container_name: frontend
+    depends_on:
+      - db
+    ports:
+    - "3000:3000"
+
+          
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+    ports:
+    - "5432:5432"
