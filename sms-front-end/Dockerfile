@@ -7,7 +7,9 @@ COPY . ./
 RUN npm run build
 
 # Stage 2: Serve
-FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
+FROM node:alpine
+WORKDIR /app
+COPY --from=build /app/build .
+RUN npm install -g serve
+CMD ["serve", "-s", "."]
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
