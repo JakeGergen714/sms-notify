@@ -48,5 +48,5 @@ jobs:
 
          - name: Build and push Auth Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/auth:0a997b8af1bc87d1656b352051dfe100a9dbae0f ./auth
-              docker push ghcr.io/jakegergen714/auth:0a997b8af1bc87d1656b352051dfe100a9dbae0f
+              docker build -t ghcr.io/jakegergen714/auth:${{github.run_id}} ./auth
+              docker push ghcr.io/jakegergen714/auth:${{github.run_id}}

@@ -38,12 +38,17 @@ services:
     container_name: frontend-api
     ports:
     - "8082:8082"
+    environment:
+      - URL_AUTH_SERVICE=http://auth:8081
+      - URL_WAITLIST_SERVICE=http://waitlist:8080
 
   frontend:
     image: 'ghcr.io/jakegergen714/frontend:0a997b8af1bc87d1656b352051dfe100a9dbae0f'
     build:
       context: .
     container_name: frontend
+    environment:
+      - API_URL=http://frontend-api:8082
     ports:
     - "3000:3000"
 

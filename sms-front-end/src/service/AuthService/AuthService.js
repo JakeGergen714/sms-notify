@@ -2,14 +2,13 @@
 
 import Cookies from "js-cookie";
 import axios from "axios";
-import { AuthTokenDTO } from "../../dto/AuthTokenDTO";
 import { UserCredentialDTO } from "../../dto/UserCredentialDTO";
 
 axios.defaults.withCredentials = true;
 
 const validateAuthToken = async () => {
    try {
-      const response = await axios.post("http://localhost:8082/validate");
+      const response = await axios.post(process.env.API_URL + "/validate");
       console.log("validate response ", response);
       return true;
    } catch (err) {
@@ -20,7 +19,7 @@ const validateAuthToken = async () => {
 
 const refreshAuthToken = async (authTokenDTO) => {
    try {
-      const response = await axios.post("http://localhost:8082/refresh");
+      const response = await axios.post(process.env.API_URL + "/refresh");
       return true;
    } catch (err) {
       console.log("failed to validate", err);
@@ -50,7 +49,7 @@ export async function login(username, password) {
    let userCredentialDTO = new UserCredentialDTO(username, password);
    try {
       console.log("signing in");
-      const response = await axios.post("http://localhost:8082/signin", userCredentialDTO);
+      const response = await axios.post(process.env.API_URL + "/signin", userCredentialDTO);
       console.log("Logged in");
    } catch (err) {
       console.log(err);
@@ -60,7 +59,7 @@ export async function login(username, password) {
 export function signUp(username, password) {
    let userCredentialDTO = new UserCredentialDTO(username, password);
    axios
-      .post("http://localhost:8082/signup", userCredentialDTO)
+      .post(process.env.API_URL + "/signup", userCredentialDTO)
       .then((response) => {
          Cookies.set("accessToken", response.data.accessToken);
          Cookies.set("refreshToken", response.data.refreshToken);
