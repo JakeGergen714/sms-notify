@@ -16,7 +16,6 @@
 .signin-card {
    background-color: var(--dark-sidebar);
    border-radius: 8px;
-   /* Adjust the box-shadow to match Facebook's design */
    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2), 0 1px 10px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
    width: 400px;
    padding: 20px;
@@ -24,7 +23,7 @@
 }
 
 #login-title {
-   color: rgb(8, 102, 255);
+   color: var(--accent);
    font-weight: 600;
    margin-bottom: 10px;
 }
