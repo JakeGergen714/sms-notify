@@ -38,6 +38,7 @@ public class AuthService {
     }
 
     public Optional<AuthTokenDTO> signUp(UserCredentialDTO userCredentialDTO) {
+        log.info("Sending request entity to <{}>", authBaseUrl + "/signup");
         RequestEntity<UserCredentialDTO> requestEntity = RequestEntity.post(authBaseUrl + "/signup").body(userCredentialDTO);
         ResponseEntity<AuthTokenDTO> response = restTemplate.exchange(requestEntity, AuthTokenDTO.class);
         if(response.getStatusCode().isSameCodeAs(HttpStatus.OK)) {

@@ -7,22 +7,25 @@ import { UserCredentialDTO } from "../../dto/UserCredentialDTO";
 axios.defaults.withCredentials = true;
 
 const validateAuthToken = async () => {
+   console.log("Validating authtoken");
    try {
       const response = await axios.post(process.env.REACT_APP_API_URL + "/validate");
-      console.log("validate response ", response);
+      console.log("Auth token validated!");
       return true;
    } catch (err) {
-      console.log("failed to validate", err);
+      console.log("Failed to validate authtoken", err);
       return false;
    }
 };
 
 const refreshAuthToken = async (authTokenDTO) => {
+   console.log("Refreshing authtoken");
    try {
       const response = await axios.post(process.env.REACT_APP_API_URL + "/refresh");
+      console.log("Refreshed token validated!");
       return true;
    } catch (err) {
-      console.log("failed to refresh", err);
+      console.log("Failed to refresh auth token.", err);
       return false;
    }
 };

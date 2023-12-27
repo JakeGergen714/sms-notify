@@ -51,7 +51,7 @@ public class Controller {
         Optional<AuthTokenDTO> optionalAuthTokenDTO = authService.signUp(userCredentialDTO);
         if(optionalAuthTokenDTO.isEmpty()) {
             log.info("Signup failed");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(optionalAuthTokenDTO.get());
         }
         return ResponseEntity.ok().body(optionalAuthTokenDTO.get());
     }
@@ -67,7 +67,7 @@ public class Controller {
         boolean isValidated = authService.validateJwt(accessToken);
         log.info("isValidated <{}>", isValidated);
         if(!isValidated) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.ok().build();
     }
