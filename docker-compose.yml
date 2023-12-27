@@ -41,6 +41,10 @@ services:
     environment:
       - URL_AUTH_SERVICE=http://auth:8081
       - URL_WAITLIST_SERVICE=http://waitlist:8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
   frontend:
     image: 'ghcr.io/jakegergen714/sms-front-end:latest'
