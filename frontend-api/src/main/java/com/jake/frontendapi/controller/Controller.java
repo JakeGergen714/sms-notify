@@ -108,11 +108,9 @@ public class Controller {
 
         Cookie accessTokenCookie = new Cookie("accessToken", authTokenDTO.get().getAccessToken());
         accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setSecure(true);
         httpResponse.addCookie(accessTokenCookie);
         Cookie refreshTokenCookie = new Cookie("refreshToken", authTokenDTO.get().getRefreshToken());
         refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(true);
         httpResponse.addCookie(refreshTokenCookie);
 
         return ResponseEntity.ok().build();
@@ -157,6 +155,7 @@ public class Controller {
 
     private Optional<Cookie> getAccessTokenCookie(Cookie[] cookies) {
         if(cookies==null) {
+            log.info("No access token cookie. Cookies is null.");
             return Optional.empty();
         }
         Arrays.stream(cookies).forEach(cookie->log.info(cookie.getName()));
@@ -165,6 +164,7 @@ public class Controller {
 
     private Optional<Cookie> getRefreshTokenCookie(Cookie[] cookies) {
         if(cookies==null) {
+            log.info("No refresh cookie. Cookies is null.");
             return Optional.empty();
         }
         return Arrays.stream(cookies).filter(cookie->cookie.getName().equalsIgnoreCase("refreshToken")).findFirst();
