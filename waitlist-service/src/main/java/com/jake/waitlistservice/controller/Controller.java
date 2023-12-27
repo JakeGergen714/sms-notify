@@ -32,16 +32,6 @@ public class Controller {
     public ResponseEntity<List<WaitListItem>> getAllWaitListItems(@RequestHeader String accessToken) {
         log.info("getAllWaitListItems <{}>", accessToken);
 
-        /*Optional<Cookie> accessTokenCookie = getAccessTokenCookie(httpRequest.getCookies());
-        if(accessTokenCookie.isEmpty()) {
-            log.info("get /waitlist no access token found");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized access");
-        }
-        String jwt = accessTokenCookie.get().getValue();
-        if(!authService.validateJwt(jwt)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized access");
-        }*/
-
         if(!authService.validateJwt(accessToken)) {
             log.info("Validation Failed");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
