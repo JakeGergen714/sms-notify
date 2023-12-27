@@ -27,7 +27,7 @@ const SignIn = () => {
    return (
       <div className='signin-background d-flex align-items-center justify-content-center'>
          <div className='signin-card p-3'>
-            <h2 className='text-center mb-4'>Log In to The Waitlist</h2>
+            <h2 className='text-center mb-4'>The Waitlist</h2>
             <form onSubmit={handleLogin}>
                <div className='mb-3'>
                   <input
