@@ -2,95 +2,79 @@
 
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { login, signUp } from "../../service/AuthService/AuthService";
+import { AuthContext } from "../../AuthContext";
 import "./SignIn.css";
-import { login, signUp, isAuthenticated } from "../../service/AuthService/AuthService";
-import { AuthContext } from "../../AuthContext"; // Update the path as necessary
 
 const SignIn = () => {
-   const [formData, setFormData] = useState({
-      email: "",
-      password: "",
-   });
-
+   const [formData, setFormData] = useState({ email: "", password: "" });
    const { recheckAuthentication } = useContext(AuthContext);
    const navigate = useNavigate();
 
-   async function handleLogin() {
-      await login(formData.email, formData.password);
+   const handleLogin = async (event) => {
+      event.preventDefault();
+      const loggedIn = await login(formData.email, formData.password);
+      if (loggedIn) {
+         recheckAuthentication().then((isAuthed) => {
+            if (isAuthed) navigate("/home");
+         });
+      } else {
+         console.log("Login failed");
+      }
+   };
 
-      recheckAuthentication().then((isAuthed) => {
-         if (isAuthed) {
-            navigate("/home");
-         } else {
-            console.log("not logged in");
-         }
-      });
-   }
-
-   function handleSignUp() {
-      console.log("Signing up");
-      signUp(formData.email, formData.password);
-      console.log("Signing done");
-   }
-
-   function handleInputChange(event) {
+   const handleInputChange = (event) => {
       const { name, value } = event.target;
-      setFormData({
-         ...formData,
-         [name]: value,
-      });
-   }
+      setFormData({ ...formData, [name]: value });
+   };
 
    return (
-      <div className='container'>
-         <div className='row justify-content-center'>
-            <div className='col-12 text-center'>
-               <img className='logo img-fluid' src='/notifyd_logo.png' alt='Logo' />
-            </div>
-         </div>
-         <div className='row justify-content-center'>
-            <div className='col'>
-               <div className='form'>
-                  <div className='form-group'>
-                     <input
-                        type='text'
-                        name='email'
-                        className='form-control'
-                        placeholder='Email Address'
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                     />
-                  </div>
-                  <div className='form-group'>
-                     <input
-                        type='password'
-                        name='password'
-                        className='form-control'
-                        placeholder='Password'
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        required
-                     />
-                  </div>
-                  <div className='form-group' id='Forgot-Pass'>
-                     <a className='forgot-password' href='#'>
-                        Forgot Password?
-                     </a>
-                  </div>
-                  <div className='d-grid' id='Sign-In'>
-                     <button type='button' onClick={handleLogin} className='btn btn-primary btn-block'>
-                        Sign In
-                     </button>
-                  </div>
-                  <div className='d-grid'>
-                     <button type='button' onClick={handleSignUp} className='btn btn-primary btn-block'>
-                        Create Account
-                     </button>
-                  </div>
+      <div className='signin-background d-flex align-items-center justify-content-center'>
+         <div className='signin-card p-3'>
+            <h2 className='text-center mb-4'>Log In to The Waitlist</h2>
+            <form onSubmit={handleLogin}>
+               <div className='mb-3'>
+                  <input
+                     type='email'
+                     className='form-control'
+                     name='email'
+                     placeholder='Email address or phone number'
+                     value={formData.email}
+                     onChange={handleInputChange}
+                     required
+                  />
                </div>
-            </div>
+               <div className='mb-3'>
+                  <input
+                     type='password'
+                     className='form-control'
+                     name='password'
+                     placeholder='Password'
+                     value={formData.password}
+                     onChange={handleInputChange}
+                     required
+                  />
+               </div>
+               <div className='d-grid mb-2'>
+                  <button type='submit' className='btn btn-primary btn-lg'>
+                     Log In
+                  </button>
+               </div>
+               <div className='text-center mb-4'>
+                  <a href='#!' className='forgot-password'>
+                     Forgot account?
+                  </a>
+               </div>
+               <hr />
+               <div className='d-grid'>
+                  <button
+                     type='button'
+                     className='btn btn-success btn-lg'
+                     onClick={() => signUp(formData.email, formData.password)}>
+                     Create New Account
+                  </button>
+               </div>
+            </form>
          </div>
       </div>
    );
