@@ -37,7 +37,8 @@ h2 {
    padding: 14px 16px;
    border-radius: 6px;
    border: 1px solid #dddfe2;
-   background-color: #f5f6f7; /* Matching Facebook's input background color */
+   --input-color
+   background-color: var(--input-color);
 }
 
 .btn-primary {
