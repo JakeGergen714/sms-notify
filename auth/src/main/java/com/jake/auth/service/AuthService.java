@@ -165,11 +165,11 @@ public class AuthService {
 
 
     private String generateRefreshToken(String username) throws UnsupportedEncodingException {
-        return JWT.create().withExpiresAt(Date.from(Instant.now().plusSeconds(20))).withSubject(username).withClaim(REFRESH_TOKEN_CLAIM, true).sign(Algorithm.HMAC256(authSecret));
+        return JWT.create().withExpiresAt(Date.from(Instant.now().plusSeconds(1000))).withSubject(username).withClaim(REFRESH_TOKEN_CLAIM, true).sign(Algorithm.HMAC256(authSecret));
     }
 
     private String generateAccessToken(String username) throws UnsupportedEncodingException {
-        return JWT.create().withExpiresAt(Date.from(Instant.now().plusSeconds(10))).withSubject(username).sign(Algorithm.HMAC256(authSecret));
+        return JWT.create().withExpiresAt(Date.from(Instant.now().plusSeconds(500))).withSubject(username).sign(Algorithm.HMAC256(authSecret));
     }
 
 }
