@@ -28,7 +28,7 @@ const SignIn = () => {
       <div className='signin-background d-flex align-items-center justify-content-center'>
          <div className='signin-card p-3'>
             <h1 id='login-title' className='text-center mb-4'>
-               EasySeat
+               NextInLine
             </h1>
             <form onSubmit={handleLogin}>
                <div className='mb-3'>
