@@ -28,31 +28,24 @@ const refreshAuthToken = async (authTokenDTO) => {
 };
 
 export async function isAuthenticated() {
-   if (!(await validateAuthToken())) {
-      console.log("Not authed. Attempting to refresh");
-      await refreshAuthToken();
-      console.log("refresh finished");
+   if (validateAuthToken()) {
+      return true;
+   }
+   await refreshAuthToken();
 
-      if (!(await validateAuthToken())) {
-         console.log("refresh failed");
-         return false;
-      } else {
-         console.log("Refresh successful");
-      }
+   if (validateAuthToken()) {
+      return true;
    }
 
-   console.log("Is authed");
-   return true;
+   return false;
 }
 
 export async function login(username, password) {
    let userCredentialDTO = new UserCredentialDTO(username, password);
    try {
-      console.log("logging in");
       const response = await axios.post(process.env.API_URL + "/signin", userCredentialDTO);
-      console.log("Logged in");
    } catch (err) {
-      console.log(err);
+      console.log("Login failed.", err);
    }
 }
 
@@ -63,11 +56,8 @@ export function signUp(username, password) {
       .then((response) => {
          Cookies.set("accessToken", response.data.accessToken);
          Cookies.set("refreshToken", response.data.refreshToken);
-         console.log("signup respnse");
-         console.log(response);
       })
       .catch((err) => {
-         console.log("sign up failed");
-         console.log(err);
+         console.log("Sign up failed.", err);
       });
 }
