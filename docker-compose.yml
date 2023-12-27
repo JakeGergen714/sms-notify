@@ -33,6 +33,8 @@ services:
   
   frontend-api:
     image: 'ghcr.io/jakegergen714/frontend-api:latest'
+    depends_on:
+      - db
     build:
       context: .
     container_name: frontend-api

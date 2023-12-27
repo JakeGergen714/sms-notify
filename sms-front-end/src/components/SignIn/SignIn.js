@@ -13,14 +13,10 @@ const SignIn = () => {
 
    const handleLogin = async (event) => {
       event.preventDefault();
-      const loggedIn = await login(formData.email, formData.password);
-      if (loggedIn) {
-         recheckAuthentication().then((isAuthed) => {
-            if (isAuthed) navigate("/home");
-         });
-      } else {
-         console.log("Login failed");
-      }
+      await login(formData.email, formData.password);
+      recheckAuthentication().then((isAuthed) => {
+         if (isAuthed) navigate("/home");
+      });
    };
 
    const handleInputChange = (event) => {
