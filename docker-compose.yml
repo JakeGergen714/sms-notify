@@ -2,7 +2,7 @@ version: '2'
 
 services:
   auth:
-    image: 'ghcr.io/jakegergen714/auth:0a997b8af1bc87d1656b352051dfe100a9dbae0f'
+    image: 'ghcr.io/jakegergen714/auth'
     build:
       context: .
     container_name: auth
@@ -17,7 +17,7 @@ services:
     - "8081:8081"
   
   waitlist:
-    image: 'ghcr.io/jakegergen714/waitlist:0a997b8af1bc87d1656b352051dfe100a9dbae0f'
+    image: 'ghcr.io/jakegergen714/waitlist'
     build:
       context: .
     container_name: waitlist
@@ -32,7 +32,7 @@ services:
     - "8080:8080"
   
   frontend-api:
-    image: 'ghcr.io/jakegergen714/frontend-api:0a997b8af1bc87d1656b352051dfe100a9dbae0f'
+    image: 'ghcr.io/jakegergen714/frontend-api'
     build:
       context: .
     container_name: frontend-api
@@ -43,7 +43,7 @@ services:
       - URL_WAITLIST_SERVICE=http://waitlist:8080
 
   frontend:
-    image: 'ghcr.io/jakegergen714/frontend:0a997b8af1bc87d1656b352051dfe100a9dbae0f'
+    image: 'ghcr.io/jakegergen714/frontend'
     build:
       context: .
     container_name: frontend
