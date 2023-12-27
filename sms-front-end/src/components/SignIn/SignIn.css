@@ -23,7 +23,7 @@
    margin: auto;
 }
 
-h2 {
+#login-title {
    color: rgb(8, 102, 255);
    font-weight: 600;
    margin-bottom: 10px;
