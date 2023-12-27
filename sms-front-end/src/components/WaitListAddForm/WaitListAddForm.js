@@ -40,11 +40,13 @@ const WaitListAddForm = () => {
       setModalOpen(false);
       try {
          const response = await axios.post(process.env.REACT_APP_API_URL + "/waitList", formData);
-         console.log(response.data);
+         console.log("Submit response", response.data);
          window.location.reload();
       } catch (error) {
          console.error("Error:", error.response.data);
       }
+
+      console.log("Submit complete.");
    };
 
    const notesList = ["inside", "outside", "bar", "first available"];

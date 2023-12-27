@@ -31,12 +31,14 @@ export async function isAuthenticated() {
    if (validateAuthToken()) {
       return true;
    }
+   console.log("Refreshing token");
    await refreshAuthToken();
 
    if (validateAuthToken()) {
       return true;
    }
 
+   console.log("Not Authenticated.");
    return false;
 }
 
