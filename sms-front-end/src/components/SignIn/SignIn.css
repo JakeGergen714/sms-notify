@@ -37,7 +37,6 @@ h2 {
    padding: 14px 16px;
    border-radius: 6px;
    border: 1px solid #dddfe2;
-   --input-color
    background-color: var(--input-color);
 }
 
