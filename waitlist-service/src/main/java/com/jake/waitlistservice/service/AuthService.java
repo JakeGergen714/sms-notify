@@ -25,7 +25,7 @@ public class AuthService {
                 return false;
             }
         } catch (Exception e) {
-            log.error("Failed to validate jwt", e);
+            log.error("Failed to validate jwt.", e);
             return false;
         }
         return true;
