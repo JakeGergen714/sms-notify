@@ -22,7 +22,7 @@ const refreshAuthToken = async (authTokenDTO) => {
       const response = await axios.post(process.env.REACT_APP_API_URL + "/refresh");
       return true;
    } catch (err) {
-      console.log("failed to validate", err);
+      console.log("failed to refresh", err);
       return false;
    }
 };
