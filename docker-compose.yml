@@ -14,8 +14,11 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
-    - "8081:8081"
-  
+      - "8081:8081"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.2  # Assign a static IP address
+
   waitlist:
     image: 'ghcr.io/jakegergen714/waitlist:latest'
     build:
@@ -29,8 +32,11 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
-    - "8080:8080"
-  
+      - "8080:8080"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.3  # Assign a static IP address
+
   frontend-api:
     image: 'ghcr.io/jakegergen714/frontend-api:latest'
     depends_on:
@@ -39,7 +45,7 @@ services:
       context: .
     container_name: frontend-api
     ports:
-    - "8082:8082"
+      - "8082:8082"
     environment:
       - URL_AUTH_SERVICE=http://auth:8081
       - URL_WAITLIST_SERVICE=http://waitlist:8080
@@ -47,6 +53,9 @@ services:
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.4  # Assign a static IP address
 
   frontend:
     image: 'ghcr.io/jakegergen714/sms-front-end:latest'
@@ -56,9 +65,11 @@ services:
     environment:
       - REACT_APP_API_URL=http://frontend-api:8082
     ports:
-    - "3000:3000"
+      - "3000:3000"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5  # Assign a static IP address
 
-          
   db:
     image: 'postgres:13.1-alpine'
     container_name: db
@@ -66,4 +77,15 @@ services:
       - POSTGRES_USER=compose-postgres
       - POSTGRES_PASSWORD=compose-postgres
     ports:
-    - "5432:5432"
+      - "5432:5432"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6  # Assign a static IP address
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
