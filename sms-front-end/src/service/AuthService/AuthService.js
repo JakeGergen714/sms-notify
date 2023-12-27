@@ -28,14 +28,14 @@ const refreshAuthToken = async (authTokenDTO) => {
 };
 
 export async function isAuthenticated() {
-   if (validateAuthToken()) {
+   if (await validateAuthToken()) {
       console.log("isAuthenticated validated auth token");
       return true;
    }
    console.log("Refreshing token");
    await refreshAuthToken();
 
-   if (validateAuthToken()) {
+   if (await validateAuthToken()) {
       return true;
    }
 
