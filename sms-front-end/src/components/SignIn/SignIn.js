@@ -66,7 +66,10 @@ const SignIn = () => {
                   <button
                      type='button'
                      className='btn btn-success btn-lg'
-                     onClick={() => signUp(formData.email, formData.password)}>
+                     onClick={() => {
+                        signUp(formData.email, formData.password);
+                        handleLogin();
+                     }}>
                      Create New Account
                   </button>
                </div>

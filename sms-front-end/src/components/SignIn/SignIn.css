@@ -6,6 +6,7 @@
 
 .signin-background {
    background-color: #f0f2f5;
+   background-color: var(--dark-bg);
    min-height: 100vh;
    display: flex;
    align-items: center;
@@ -13,7 +14,7 @@
 }
 
 .signin-card {
-   background: #fff;
+   background-color: var(--dark-sidebar);
    border-radius: 8px;
    /* Adjust the box-shadow to match Facebook's design */
    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2), 0 1px 10px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
