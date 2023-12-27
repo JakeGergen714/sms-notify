@@ -10,7 +10,7 @@ axios.defaults.withCredentials = true;
 
 const fetchData = () => {
    return axios
-      .get(process.env.API_URL + "/waitList")
+      .get(process.env.REACT_APP_API_URL + "/waitList")
       .then((res) => {
          console.log(res.data);
          return res.data;

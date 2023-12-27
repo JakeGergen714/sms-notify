@@ -8,7 +8,7 @@ axios.defaults.withCredentials = true;
 
 const validateAuthToken = async () => {
    try {
-      const response = await axios.post(process.env.API_URL + "/validate");
+      const response = await axios.post(process.env.REACT_APP_API_URL + "/validate");
       console.log("validate response ", response);
       return true;
    } catch (err) {
@@ -19,7 +19,7 @@ const validateAuthToken = async () => {
 
 const refreshAuthToken = async (authTokenDTO) => {
    try {
-      const response = await axios.post(process.env.API_URL + "/refresh");
+      const response = await axios.post(process.env.REACT_APP_API_URL + "/refresh");
       return true;
    } catch (err) {
       console.log("failed to validate", err);
@@ -43,8 +43,8 @@ export async function isAuthenticated() {
 export async function login(username, password) {
    let userCredentialDTO = new UserCredentialDTO(username, password);
    try {
-      console.log(process.env.API_URL + "/signin");
-      await axios.post(process.env.API_URL + "/signin", userCredentialDTO);
+      console.log(process.env.REACT_APP_API_URL + "/signin");
+      await axios.post(process.env.REACT_APP_API_URL + "/signin", userCredentialDTO);
    } catch (err) {
       console.log("Login failed.", err);
    }
@@ -53,7 +53,7 @@ export async function login(username, password) {
 export function signUp(username, password) {
    let userCredentialDTO = new UserCredentialDTO(username, password);
    axios
-      .post(process.env.API_URL + "/signup", userCredentialDTO)
+      .post(process.env.REACT_APP_API_URL + "/signup", userCredentialDTO)
       .then((response) => {
          Cookies.set("accessToken", response.data.accessToken);
          Cookies.set("refreshToken", response.data.refreshToken);

@@ -39,7 +39,7 @@ const WaitListAddForm = () => {
       console.log(formData);
       setModalOpen(false);
       try {
-         const response = await axios.post(process.env.API_URL + "/waitList", formData);
+         const response = await axios.post(process.env.REACT_APP_API_URL + "/waitList", formData);
          console.log(response.data);
          window.location.reload();
       } catch (error) {

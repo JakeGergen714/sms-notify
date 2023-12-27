@@ -54,7 +54,7 @@ services:
       context: .
     container_name: frontend
     environment:
-      - API_URL=http://frontend-api:8082
+      - REACT_APP_API_URL=http://frontend-api:8082
     ports:
     - "3000:3000"
 
