@@ -6,7 +6,7 @@ on:
    push:
       paths:
          - "frontend-api/**"
-         - ".github/**"
+         - ".github/publish-front-end-api.yml"
    pull_request:
       paths:
          - "frontend-api/**"
