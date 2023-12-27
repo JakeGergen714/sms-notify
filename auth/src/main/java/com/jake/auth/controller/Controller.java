@@ -51,7 +51,7 @@ public class Controller {
         Optional<AuthTokenDTO> optionalAuthTokenDTO = authService.signUp(userCredentialDTO);
         if(optionalAuthTokenDTO.isEmpty()) {
             log.info("Signup failed");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(optionalAuthTokenDTO.get());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AuthTokenDTO(null, null));
         }
         return ResponseEntity.ok().body(optionalAuthTokenDTO.get());
     }
