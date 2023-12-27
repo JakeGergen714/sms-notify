@@ -24,14 +24,9 @@
 }
 
 h2 {
-   font-size: 28px; /* Slightly reduced to fit better on smaller screens */
-   color: var(--accent);
-   font-weight: 600; /* Facebook uses a bolder font for the title */
+   color: rgb(8, 102, 255);
+   font-weight: 600;
    margin-bottom: 10px;
-}
-
-input {
-   background-color: var(--input-color);
 }
 
 .form-control {
