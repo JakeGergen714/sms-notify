@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
 
    const recheckAuthentication = async () => {
       const authStatus = await isAuthenticated();
+      console.log("Auth Context new auth status. ", authStatus);
       setIsAuthed(authStatus);
       return authStatus;
    };

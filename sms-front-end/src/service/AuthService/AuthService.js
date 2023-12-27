@@ -29,6 +29,7 @@ const refreshAuthToken = async (authTokenDTO) => {
 
 export async function isAuthenticated() {
    if (validateAuthToken()) {
+      console.log("isAuthenticated validated auth token");
       return true;
    }
    console.log("Refreshing token");
