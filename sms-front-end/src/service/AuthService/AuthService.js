@@ -43,7 +43,8 @@ export async function isAuthenticated() {
 export async function login(username, password) {
    let userCredentialDTO = new UserCredentialDTO(username, password);
    try {
-      const response = await axios.post(process.env.API_URL + "/signin", userCredentialDTO);
+      console.log(process.env.API_URL + "/signin");
+      await axios.post(process.env.API_URL + "/signin", userCredentialDTO);
    } catch (err) {
       console.log("Login failed.", err);
    }
