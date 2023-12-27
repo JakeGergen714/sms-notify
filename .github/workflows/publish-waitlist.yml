@@ -6,7 +6,7 @@ on:
    push:
       paths:
          - "waitlist-service/**"
-         - ".github/**"
+         - ".github/publish-waitlist.yml"
    pull_request:
       paths:
          - "waitlist-service/**"
@@ -48,6 +48,6 @@ jobs:
 
          - name: Build and push Waitlist Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/waitlist:latest ./waitlist-service
+              docker build -t ghcr.io/jakegergen714/waitlist:$GITHUB_SHA -t ghcr.io/jakegergen714/waitlist:latest ./waitlist-service
               docker push ghcr.io/jakegergen714/waitlist:$GITHUB_SHA
               docker push ghcr.io/jakegergen714/waitlist:latest

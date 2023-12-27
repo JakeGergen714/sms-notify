@@ -48,5 +48,6 @@ jobs:
 
          - name: Build and push Auth Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/auth:latest ./auth
+              docker build -t ghcr.io/jakegergen714/auth:$GITHUB_SHA -t ghcr.io/jakegergen714/auth:latest ./auth
+              docker push ghcr.io/jakegergen714/auth:$GITHUB_SHA
               docker push ghcr.io/jakegergen714/auth:latest

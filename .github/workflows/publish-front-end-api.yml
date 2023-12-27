@@ -48,5 +48,6 @@ jobs:
 
          - name: Build and push Waitlist Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/waitlist:latest ./waitlist-service
-              docker push ghcr.io/jakegergen714/waitlist:latest
+              docker build -t ghcr.io/jakegergen714/frontend-api:$GITHUB_SHA -t ghcr.io/jakegergen714/frontend-api:latest ./frontend-api
+              docker push ghcr.io/jakegergen714/frontend-api:$GITHUB_SHA
+              docker push ghcr.io/jakegergen714/frontend-api:latest
