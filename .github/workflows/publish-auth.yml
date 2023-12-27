@@ -6,7 +6,7 @@ on:
    push:
       paths:
          - "auth/**"
-         - ".github/publish-auth.yml"
+         - ".github/**"
    pull_request:
       paths:
          - "auth/**"
