@@ -30,6 +30,6 @@ jobs:
 
          - name: Build and push Front Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/frontend:$GITHUB_SHA -t ghcr.io/jakegergen714/frontend:latest ./frontend
-              docker push ghcr.io/jakegergen714/frontend:$GITHUB_SHA
-              docker push ghcr.io/jakegergen714/frontend:latest
+              docker build -t ghcr.io/jakegergen714/sms-front-end:$GITHUB_SHA -t ghcr.io/jakegergen714/sms-front-end:latest ./sms-front-end
+              docker push ghcr.io/jakegergen714/sms-front-end:$GITHUB_SHA
+              docker push ghcr.io/jakegergen714/sms-front-end:latest
