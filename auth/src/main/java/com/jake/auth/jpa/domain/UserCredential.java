@@ -18,6 +18,6 @@ public class UserCredential {
     private String username;
 
     @Column(name = "password")
-    @JsonProperty("password") // Explicitly define the property name for Jackson
+    @JsonProperty("password")
     private String password;
 }
