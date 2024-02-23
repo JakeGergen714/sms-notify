@@ -22,7 +22,7 @@ export default function App() {
             <Routes>
                <Route path='/login' element={<SignIn />}></Route>
                <Route
-                  path='/home'
+                  path='/'
                   element={
                      <RequireAuth>
                         <Home />

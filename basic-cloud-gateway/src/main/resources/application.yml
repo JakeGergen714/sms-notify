@@ -1,0 +1,35 @@
+server:
+  port: 8090
+
+logging:
+  level:
+    root:
+      DEBUG
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay=
+      routes:
+        - id: angular
+          uri: http://localhost:3000/home
+          predicates:
+            - Path=/**
+            -
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          gateway:
+            provider: auth-server
+            client-id: gateway
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8090/login/oauth2/code/{registrationId}
+            scope: openid, profile
+        provider:
+          auth-server:
+            issuer-uri: http://localhost:9000
