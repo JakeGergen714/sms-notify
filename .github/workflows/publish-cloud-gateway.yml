@@ -1,6 +1,6 @@
 # @format
 
-name: Maven Package and Docker Build basic-cloud-gateway.
+name: Maven Package and Docker Build basic-cloud-gateway
 
 on:
    push:
