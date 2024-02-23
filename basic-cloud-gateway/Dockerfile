@@ -11,7 +11,7 @@ COPY ./pom.xml /app/pom.xml
 COPY ./src /app/src
 
 # Package the application
-RUN mvn -f /app/pom.xml clean package
+RUN gradle clean build
 
 # For the final image, use the official OpenJDK image
 FROM openjdk:17-slim
