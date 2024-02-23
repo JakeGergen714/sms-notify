@@ -1,36 +1,43 @@
 # @format
 
-name: Gradle Package and Docker Build basic-cloud-gateway
+name: Maven Package and Docker Build basic-cloud-gateway
+
+on:
+   push:
+      paths:
+         - "basic-cloud-gateway/**"
+         - ".github/**"
+   pull_request:
+      paths:
+         - "basic-cloud-gateway/**"
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+   build-and-deploy:
+      runs-on: ubuntu-latest
+      permissions:
+         contents: read
+         packages: write
 
-    steps:
-      - uses: actions/checkout@v3
+      steps:
+         - uses: actions/checkout@v3
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: "17"
-          distribution: "temurin"
-          server-id: github
-          settings-path: ${{ github.workspace }}
+         - name: Set up JDK 17
+           uses: actions/setup-java@v3
+           with:
+              java-version: "17"
+              distribution: "temurin"
+              server-id: github
+              settings-path: ${{ github.workspace }}
 
-      - name: Build with Gradle
-        working-directory: ./basic-cloud-gateway/
-        run: ./gradlew build
+         - name: Build with basic-cloud-gateway
+           working-directory: ./basic-cloud-gateway/
+           run: gradle build
 
-         # If you need to publish artifacts to a repository, you might need a custom task in your gradle build script.
-         # This example assumes you have configured a publishing task in your gradle script.
-         - name: Publish Cloud Gateway
+         - name: Publish basic-cloud-gateway
            env:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
            working-directory: ./basic-cloud-gateway/
-           run: ./gradlew publish -PgithubToken=${{ secrets.ACCESS_TOKEN }}
+           run: gradle install
 
          - name: Log in to GitHub Container Registry
            uses: docker/login-action@v1
