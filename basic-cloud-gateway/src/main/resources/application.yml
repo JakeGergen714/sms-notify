@@ -16,8 +16,6 @@ spring:
           uri: http://localhost:3000/home
           predicates:
             - Path=/**
-            -
-
 
   security:
     oauth2:
@@ -28,8 +26,8 @@ spring:
             client-id: gateway
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: {$REDIRECT_URI}
-            scope: openid, profile
+            redirect-uri: http://localhost:8090/login/oauth2/code/{registrationId}
+            scope: openid
         provider:
           auth-server:
-            issuer-uri: {$ISSUER_URI}
+            issuer-uri: http://localhost:9000
