@@ -71,7 +71,7 @@ services:
       context: .
     container_name: frontend
     environment:
-      - REACT_APP_API_URL=http://192.168.1.241:8082
+      - REACT_APP_API_URL=http://192.168.1.241:8081
     ports:
       - "3000:3000"
 
