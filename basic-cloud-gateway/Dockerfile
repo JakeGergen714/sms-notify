@@ -10,6 +10,8 @@ COPY ./gradlew /app/gradlew
 # Copy the source code into the container at /app
 COPY ./src /app/src
 
+RUN chmod +x /app/gradlew
+
 # Package the application
 RUN /app/gradlew clean build
 
