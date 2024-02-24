@@ -95,8 +95,8 @@ public class SecurityConfig {
                 .tokenSettings(TokenSettings
                         .builder()
                         .reuseRefreshTokens(false)
-                        .accessTokenTimeToLive(Duration.ofSeconds(10))
-                        .refreshTokenTimeToLive(Duration.ofSeconds(10))
+                        .accessTokenTimeToLive(Duration.ofSeconds(500))
+                        .refreshTokenTimeToLive(Duration.ofSeconds(500))
                         .build())
                 .build();
 
