@@ -17,9 +17,9 @@ spring:
           predicates:
             - Path=/**
         - id: waitlist-service
-            uri: ${WAITLIST_SERVICE_URL}
-            predicates:
-              - Path=/waitlist
+          uri: ${WAITLIST_SERVICE_URL}
+          predicates:
+            - Path=/waitlist
 
   security:
     oauth2:
