@@ -1,5 +1,5 @@
-# Use the official Maven image as a parent image
-FROM gradle:4.7.0-jdk17-alpine AS build
+# Use the official gradle image as a parent image
+FROM gradle:6.9.4-jdk17-alpine AS build
 
 # Set the working directory in the container
 WORKDIR /app
