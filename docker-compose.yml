@@ -13,7 +13,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - REDIRECT_URI=http://192.168.1.241:8090/login/oauth2/code/gateway
+      - REDIRECT_URI=http://localhost:8090/login/oauth2/code/gateway
     ports:
       - "9000:9000"
 
@@ -25,7 +25,6 @@ services:
       - REDIRECT_URI=http://localhost:8090/login/oauth2/code/{registrationId}
       - ISSUER_URI=http://192.168.1.241:9000
       - FRONTEND_URL=http://192.168.1.241:3000
-      - WAITLIST_SERVICE_URL=http://192.168.1.241:8080/waitlist
     container_name: gateway
     depends_on:
       - auth
@@ -44,7 +43,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - ISSUER_URI=http://192.168.1.241:9000
+      - URL_AUTH_SERVICE=http://192.168.1.241:8081
     ports:
       - "8080:8080"
 
@@ -71,7 +70,7 @@ services:
       context: .
     container_name: frontend
     environment:
-      - REACT_APP_API_URL=http://192.168.1.241:8081
+      - REACT_APP_API_URL=http://192.168.1.241:8082
     ports:
       - "3000:3000"
 
@@ -83,4 +82,3 @@ services:
       - POSTGRES_PASSWORD=compose-postgres
     ports:
       - "5432:5432"
-
