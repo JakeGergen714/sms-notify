@@ -15,7 +15,7 @@ spring:
         - id: frontend
           uri: ${FRONTEND_URL}
           predicates:
-            - Path=/**
+            - Path=/home/**
 
   security:
     oauth2:
