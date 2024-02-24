@@ -14,7 +14,18 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
-      - "8081:8081"
+      - "9000:9000"
+
+  gateway:
+    image: 'ghcr.io/jakegergen714/basic-cloud-gateway:latest'
+    build:
+      context: .
+    environment:
+      - REDIRECT_URI = http://localhost:8090/login/oauth2/code/{registrationId}
+      - $ISSUER_URI = http://auth:8090/login/oauth2/code/{registrationId}
+    container_name: gateway
+    ports:
+      - "8090:8090"
 
   waitlist:
     image: 'ghcr.io/jakegergen714/waitlist:latest'

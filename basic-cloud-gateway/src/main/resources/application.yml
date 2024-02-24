@@ -32,4 +32,4 @@ spring:
             scope: openid, profile
         provider:
           auth-server:
-            issuer-uri: {$ISSUER_URI}http://localhost:9000
+            issuer-uri: {$ISSUER_URI}
