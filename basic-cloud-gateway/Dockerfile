@@ -1,21 +1,17 @@
 # Use the official Maven image as a parent image
-FROM maven:3.8.4-openjdk-17-slim as build
+FROM gradle:4.7.0-jdk8-alpine AS build
 
 # Set the working directory in the container
 WORKDIR /app
 
-COPY ./gradle /app/gradle
-
 # Copy the pom.xml file into the container at /app
-COPY ./gradlew /app/gradlew
+COPY ./build.gradle /app/build.gradle
 
 # Copy the source code into the container at /app
 COPY ./src /app/src
 
-RUN chmod +x /app/gradlew
-
 # Package the application
-RUN /app/gradlew clean build
+RUN gradle clean build
 
 # For the final image, use the official OpenJDK image
 FROM openjdk:17-slim
