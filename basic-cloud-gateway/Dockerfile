@@ -11,7 +11,7 @@ COPY ./gradlew /app/gradlew
 COPY ./src /app/src
 
 # Package the application
-RUN gradlew clean build
+RUN /app/gradlew clean build
 
 # For the final image, use the official OpenJDK image
 FROM openjdk:17-slim
