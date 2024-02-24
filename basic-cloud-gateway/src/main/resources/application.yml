@@ -13,11 +13,11 @@ spring:
         - TokenRelay=
       routes:
         - id: waitlist-service
-            uri: ${WAITLIST_SERVICE_URL}
-            predicates:
-              - Path=/waitlist
-            filters:
-              - TokenRelay=
+          uri: ${WAITLIST_SERVICE_URL}
+          predicates:
+            - Path=/waitlist
+          filters:
+            - TokenRelay=
         - id: frontend
           uri: ${FRONTEND_URL}
           predicates:
