@@ -25,6 +25,7 @@ services:
       - REDIRECT_URI=http://localhost:8090/login/oauth2/code/{registrationId}
       - ISSUER_URI=http://192.168.1.241:9000
       - FRONTEND_URL=http://192.168.1.241:3000
+      - WAITLIST_SERVICE_URL=http://192.168.1.241:8080
     container_name: gateway
     depends_on:
       - auth
