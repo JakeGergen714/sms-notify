@@ -11,7 +11,7 @@ COPY ./build.gradle /app/build.gradle
 COPY ./src /app/src
 
 # Package the application
-RUN gradle clean build
+RUN gradle build
 
 # Copy the JAR from the build stage to the final image
 COPY --from=build /app/target/*.jar /usr/app/app.jar
