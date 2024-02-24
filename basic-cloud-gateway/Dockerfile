@@ -13,9 +13,6 @@ COPY ./src /app/src
 # Package the application
 RUN gradle clean build
 
-# For the final image, use the official OpenJDK image
-FROM openjdk:17-slim
-
 # Copy the JAR from the build stage to the final image
 COPY --from=build /app/target/*.jar /usr/app/app.jar
 
