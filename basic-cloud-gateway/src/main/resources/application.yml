@@ -16,6 +16,8 @@ spring:
           uri: ${FRONTEND_URL}
           predicates:
             - Path=/home/**
+          filters:
+            - RewritePath=/home/?(?<segment>.*), /$\{segment}
 
   security:
     oauth2:
