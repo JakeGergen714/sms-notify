@@ -12,8 +12,8 @@ spring:
       default-filters:
         - TokenRelay=
       routes:
-        - id: angular
-          uri: http://localhost:3000/home
+        - id: frontend
+          uri: ${FRONTEND_URL}
           predicates:
             - Path=/**
 
