@@ -17,31 +17,29 @@ import { AuthProvider } from "./AuthContext";
 
 export default function App() {
    return (
-      <AuthProvider>
-         <BrowserRouter>
-            <Routes>
-               <Route path='/login' element={<SignIn />}></Route>
-               <Route
-                  path='/'
-                  element={
-                     <RequireAuth>
-                        <Home />
-                     </RequireAuth>
-                  }
-               />
-               <Route path='/reservations' element={<Reservations />}></Route>
-               <Route
-                  path='/waitlist'
-                  element={
-                     <RequireAuth>
-                        <WaitList />
-                     </RequireAuth>
-                  }></Route>
-               <Route path='/settings' element={<Settings />}></Route>
-               <Route path='/seatmap' element={<SeatMap />}></Route>
-            </Routes>
-         </BrowserRouter>
-      </AuthProvider>
+      <BrowserRouter>
+         <Routes>
+            <Route path='/login' element={<SignIn />}></Route>
+            <Route
+               path='/'
+               element={
+                  <RequireAuth>
+                     <Home />
+                  </RequireAuth>
+               }
+            />
+            <Route path='/reservations' element={<Reservations />}></Route>
+            <Route
+               path='/waitlist'
+               element={
+                  <RequireAuth>
+                     <WaitList />
+                  </RequireAuth>
+               }></Route>
+            <Route path='/settings' element={<Settings />}></Route>
+            <Route path='/seatmap' element={<SeatMap />}></Route>
+         </Routes>
+      </BrowserRouter>
    );
 }
 
