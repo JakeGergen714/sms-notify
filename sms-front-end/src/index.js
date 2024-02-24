@@ -23,18 +23,14 @@ export default function App() {
             <Route
                path='/'
                element={
-                  <RequireAuth>
                      <Home />
-                  </RequireAuth>
                }
             />
             <Route path='/reservations' element={<Reservations />}></Route>
             <Route
                path='/waitlist'
                element={
-                  <RequireAuth>
                      <WaitList />
-                  </RequireAuth>
                }></Route>
             <Route path='/settings' element={<Settings />}></Route>
             <Route path='/seatmap' element={<SeatMap />}></Route>
