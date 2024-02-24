@@ -1,5 +1,5 @@
 # Use the official gradle image as a parent image
-FROM openjdk:17-slim
+FROM gradle:jdk17 AS build
 
 # Set the working directory in the container
 WORKDIR /app
