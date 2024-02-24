@@ -20,18 +20,9 @@ export default function App() {
       <BrowserRouter>
          <Routes>
             <Route path='/login' element={<SignIn />}></Route>
-            <Route
-               path='/'
-               element={
-                     <Home />
-               }
-            />
+            <Route path='/home' element={<Home />} />
             <Route path='/reservations' element={<Reservations />}></Route>
-            <Route
-               path='/waitlist'
-               element={
-                     <WaitList />
-               }></Route>
+            <Route path='/waitlist' element={<WaitList />}></Route>
             <Route path='/settings' element={<Settings />}></Route>
             <Route path='/seatmap' element={<SeatMap />}></Route>
          </Routes>
