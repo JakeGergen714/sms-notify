@@ -26,8 +26,8 @@ spring:
             client-id: gateway
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8090/login/oauth2/code/{registrationId}
+            redirect-uri: ${REDIRECT_URI}
             scope: openid
         provider:
           auth-server:
-            issuer-uri: http://localhost:9000
+            issuer-uri: ${ISSUER_URI}
