@@ -22,7 +22,7 @@ import java.util.Optional;
 public class Controller {
     private final WaitListService service;
 
-    @CrossOrigin(origins = "http://192.168.1.241/:8090", allowCredentials = "true") // Replace with your allowed origin
+    @CrossOrigin(origins = "http://localhost/:8090", allowCredentials = "true") // Replace with your allowed origin
     @GetMapping(value="/waitList")
     public ResponseEntity<List<WaitListItem>> getAllWaitListItems(Authentication authenticationToken) {
         Jwt jwt = (Jwt)authenticationToken.getPrincipal();
