@@ -5,13 +5,13 @@ FROM maven:3.8.4-openjdk-17-slim as build
 WORKDIR /app
 
 # Copy the pom.xml file into the container at /app
-COPY ./gradle /app/gradle
+COPY ./gradlew /app/gradlew
 
 # Copy the source code into the container at /app
 COPY ./src /app/src
 
 # Package the application
-RUN gradle clean build
+RUN gradlew clean build
 
 # For the final image, use the official OpenJDK image
 FROM openjdk:17-slim
