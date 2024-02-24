@@ -12,18 +12,18 @@ spring:
       default-filters:
         - TokenRelay=
       routes:
-        - id: waitlist-service
-          uri: ${WAITLIST_SERVICE_URL}
-          predicates:
-            - Path=/waitlist
-          filters:
-            - TokenRelay=
+       # - id: waitlist-service
+       #   uri: ${WAITLIST_SERVICE_URL}
+        #  predicates:
+       #     - Path=/waitlist
+       #   filters:
+       #     - TokenRelay=
         - id: frontend
           uri: ${FRONTEND_URL}
           predicates:
             - Path=/**
-          filters:
-            - RewritePath=/ui/(?<segment>.*), /$\{segment}
+         # filters:
+            #- RewritePath=/ui/(?<segment>.*), /$\{segment}
 
 
   security:
