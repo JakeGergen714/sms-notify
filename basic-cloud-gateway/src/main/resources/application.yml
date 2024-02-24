@@ -15,7 +15,9 @@ spring:
         - id: frontend
           uri: ${FRONTEND_URL}
           predicates:
-            - Path=/
+            - Path=/ui/,/favicon.ico/,/static/**,
+          filters:
+            - RewritePath=/ui/?(?<segment>.*), /$\{segment}
 
   security:
     oauth2:
