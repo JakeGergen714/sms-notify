@@ -1,5 +1,5 @@
 # Use the official gradle image as a parent image
-FROM gradle:6.9.4-jdk17-alpine AS build
+FROM openjdk:17-slim
 
 # Set the working directory in the container
 WORKDIR /app
