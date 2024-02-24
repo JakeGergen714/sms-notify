@@ -30,4 +30,4 @@ spring:
             scope: openid
         provider:
           auth-server:
-            issuer-uri: ${ISSUER_URI}
+            issuer-uri: ${REDIRECT_URI}
