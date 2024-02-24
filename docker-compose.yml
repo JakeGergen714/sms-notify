@@ -22,8 +22,8 @@ services:
     build:
       context: .
     environment:
-      - REDIRECT_URI = http://localhost:8090/login/oauth2/code/{registrationId}
-      - ISSUER_URI = http://auth:9000
+      - REDIRECT_URI=http://localhost:8090/login/oauth2/code/{registrationId}
+      - ISSUER_URI=http://auth:9000
     container_name: gateway
     ports:
       - "8090:8090"
