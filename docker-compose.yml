@@ -25,6 +25,7 @@ services:
       - REDIRECT_URI=http://192.168.1.241:8090/login/oauth2/code/{registrationId}
       - ISSUER_URI=http://192.168.1.241:9000
       - FRONTEND_URL=http://192.168.1.241:3000/home
+      - WAITLIST_URL=http://192.168.1.241:8080/waitlist
     container_name: gateway
     depends_on:
       - auth
@@ -43,7 +44,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - URL_AUTH_SERVICE=http://192.168.1.241:8081
+      - ISSUER_URI=http://192.168.1.241:9000
     ports:
       - "8080:8080"
 
