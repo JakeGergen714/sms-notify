@@ -6,6 +6,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -39,6 +40,9 @@ import java.util.UUID;
 @EnableWebSecurity
 @Log4j2
 public class SecurityConfig {
+
+    @Value("${redirectUri}")
+    private String REDIRECT_URL;
 
     private static KeyPair generateRsaKey() {
         KeyPair keyPair;
@@ -83,7 +87,7 @@ public class SecurityConfig {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://localhost:8090/login/oauth2/code/gateway")
+                .redirectUri(REDIRECT_URL)
                 .postLogoutRedirectUri("http://localhost:8080/")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)

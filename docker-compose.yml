@@ -13,6 +13,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - REDIRECT_URI=http://gateway:8090/login/oauth2/code/gateway
     ports:
       - "9000:9000"
 
