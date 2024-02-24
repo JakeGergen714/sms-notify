@@ -22,8 +22,8 @@ COPY --from=build /app/target/*.jar /usr/app/app.jar
 # Set the working directory in the container to /usr/app
 WORKDIR /usr/app
 
-# Make port 8081 available to the world outside this container
-EXPOSE 8081
+# Make port 9000 available to the world outside this container
+EXPOSE 9000
 
 ENV DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
 

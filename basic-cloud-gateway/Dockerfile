@@ -22,7 +22,7 @@ COPY --from=build /app/target/*.jar /usr/app/app.jar
 # Set the working directory in the container to /usr/app
 WORKDIR /usr/app
 
-# Make port 8081 available to the world outside this container
+# Make port 8090 available to the world outside this container
 EXPOSE 8090
 
 # Run the jar file 
