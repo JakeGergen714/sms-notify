@@ -4,6 +4,8 @@ FROM maven:3.8.4-openjdk-17-slim as build
 # Set the working directory in the container
 WORKDIR /app
 
+COPY ./gradle /app/gradle
+
 # Copy the pom.xml file into the container at /app
 COPY ./gradlew /app/gradlew
 
