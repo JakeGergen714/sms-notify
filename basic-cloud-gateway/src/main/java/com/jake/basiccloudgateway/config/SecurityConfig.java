@@ -28,7 +28,7 @@ public class SecurityConfig {
         CookieServerCsrfTokenRepository tokenRepository = CookieServerCsrfTokenRepository.withHttpOnlyFalse();
 
         http
-                .authorizeExchange(exchange -> exchange.anyExchange().authenticated())
+                .authorizeExchange(exchange -> exchange.pathMatchers("/ui/**").permitAll().anyExchange().authenticated())
                 .oauth2Login(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .oauth2Client(Customizer.withDefaults());
