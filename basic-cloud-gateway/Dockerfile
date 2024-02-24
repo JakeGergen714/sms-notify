@@ -14,7 +14,7 @@ COPY ./src /app/src
 RUN gradle build
 
 # Copy the JAR from the build stage to the final image
-COPY --from=build /app/target/*.jar /usr/app/app.jar
+#COPY --from=build /app/target/*.jar /usr/app/app.jar
 
 # Set the working directory in the container to /usr/app
 WORKDIR /usr/app
