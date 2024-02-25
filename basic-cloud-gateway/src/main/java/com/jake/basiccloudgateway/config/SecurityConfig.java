@@ -11,11 +11,14 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.csrf.ServerCsrfTokenRepository;
+import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestHandler;
 
 @Log4j2
 @Configuration
@@ -29,19 +32,10 @@ public class SecurityConfig {
     @Bean
     @Order(0)
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        ServerCsrfTokenRepository tokenRepository = CookieServerCsrfTokenRepository.withHttpOnlyFalse();
-        XorCsrfTokenRequestAttributeHandler delegate = new XorCsrfTokenRequestAttributeHandler();
-        // set the name of the attribute the CsrfToken will be populated on
-        delegate.setCsrfRequestAttributeName("_csrf");
-        // Use only the handle() method of XorCsrfTokenRequestAttributeHandler and the
-        // default implementation of resolveCsrfTokenValue() from CsrfTokenRequestHandler
-        CsrfTokenRequestHandler requestHandler = delegate::handle;
 
         http
                 .authorizeExchange(exchange -> exchange.anyExchange().authenticated())
-                .csrf((csrf) -> csrf
-                        .csrfTokenRepository(tokenRepository)
-                        .csrfTokenRequestHandler(requestHandler)
+                .csrf((csrf) -> csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
                 )
                 .oauth2Login(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
