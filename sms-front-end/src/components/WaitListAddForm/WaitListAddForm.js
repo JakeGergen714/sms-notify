@@ -43,7 +43,11 @@ const WaitListAddForm = () => {
       setModalOpen(false);
       try {
          const xsrfToken = Cookies.get("XSRF-TOKEN");
-         const response = await axios.post(process.env.REACT_APP_API_URL + "/waitList", formData);
+         const headers = {
+            'X-CSRF-TOKEN': csrfToken,
+            // Add other headers as needed
+        };
+         const response = await axios.post(process.env.REACT_APP_API_URL + "/waitList", formData. {headers});
          console.log("Submit response", response.data);
          window.location.reload();
       } catch (error) {
