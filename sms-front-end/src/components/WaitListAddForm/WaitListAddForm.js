@@ -8,8 +8,6 @@ import { BsFillPersonPlusFill, BsPersonPlus } from "react-icons/bs";
 import Modal from "react-modal";
 import "./WaitListAddForm.css";
 
-axios.defaults.withCredentials = true;
-
 const WaitListAddForm = () => {
    const [formData, setFormData] = useState({
       phoneNumber: "",
