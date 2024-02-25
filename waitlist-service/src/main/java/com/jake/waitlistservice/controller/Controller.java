@@ -26,14 +26,11 @@ public class Controller {
     @GetMapping(value="/waitlist")
     public ResponseEntity<List<WaitListItem>> getAllWaitListItems(Authentication authenticationToken) {
         Jwt jwt = (Jwt)authenticationToken.getPrincipal();
+        String username = jwt.getSubject();
         log.info(jwt.getClaims());
-      /*  String username = jwt.getClaimAsString("username");
-        log.info("getAllWaitListItems <{}>", accessToken);
-
-        log.info("Validation Successful");
-
-        List<WaitListItem> items = service.findAllForUser(authorizationDTO.getUsername());
-        log.info("Found Items <{}>", items);*/
+        
+        List<WaitListItem> items = service.findAllForUser(username);
+        log.info("Found Items <{}>", items);
         return ResponseEntity.ok(List.of(new WaitListItem()));
     }
 
