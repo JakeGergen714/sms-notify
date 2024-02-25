@@ -2,10 +2,13 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { BsThreeDots } from "react-icons/bs";
 import { BsFillPersonPlusFill, BsPersonPlus } from "react-icons/bs";
 import Modal from "react-modal";
 import "./WaitListAddForm.css";
+
+axios.defaults.withCredentials = true;
 
 const WaitListAddForm = () => {
    const [formData, setFormData] = useState({
@@ -39,6 +42,7 @@ const WaitListAddForm = () => {
       console.log(formData);
       setModalOpen(false);
       try {
+         const xsrfToken = Cookies.get("XSRF-TOKEN");
          const response = await axios.post(process.env.REACT_APP_API_URL + "/waitList", formData);
          console.log("Submit response", response.data);
          window.location.reload();
