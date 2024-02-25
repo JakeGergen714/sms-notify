@@ -16,7 +16,6 @@ import java.time.Duration;
 @Log4j2
 public class CsrfCookieWebFilter implements WebFilter {
 
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String key = CsrfToken.class.getName();
