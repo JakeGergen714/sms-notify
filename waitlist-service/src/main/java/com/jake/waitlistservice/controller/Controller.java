@@ -36,15 +36,12 @@ public class Controller {
 
     @CrossOrigin(origins = "http://192.168.1.241/:8090", allowCredentials = "true") // Replace with your allowed origin
     @PostMapping(value="/waitList")
-    public ResponseEntity<HttpStatus> addWaitListItem(@RequestHeader String accessToken, @RequestBody WaitListItemDTO waitListItemDTO) {
-        log.info("addWaitListItem <{}>, <{}>", accessToken, waitListItemDTO);
-
-        log.info("Validation Successful");
-
-
-
-        //log.info("Adding waitlist item for username <{}>", authorizationDTO.getUsername());
-        //service.add(waitListItemDTO, authorizationDTO.getUsername());
+    public ResponseEntity<HttpStatus> addWaitListItem(Authentication authenticationToken, @RequestBody WaitListItemDTO waitListItemDTO) {
+        Jwt jwt = (Jwt)authenticationToken.getPrincipal();
+        String username = jwt.getSubject();
+        
+        log.info("Adding waitlist item for username <{}>", username);
+        service.add(waitListItemDTO, username);
 
         return ResponseEntity.ok().build();
     }
