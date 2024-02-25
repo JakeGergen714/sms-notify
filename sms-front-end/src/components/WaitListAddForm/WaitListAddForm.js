@@ -47,7 +47,7 @@ const WaitListAddForm = () => {
             "X-CSRF-TOKEN": csrfToken,
             // Add other headers as needed
          };
-         const response = await axios.post(process.env.REACT_APP_API_URL + "/waitList", formData, { headers });
+         const response = await axios.post(process.env.REACT_APP_API_URL + "/waitlist", formData, { headers });
          console.log("Submit response", response.data);
          window.location.reload();
       } catch (error) {
