@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-@Component
 @Log4j2
 public class CsrfCookieWebFilter implements WebFilter {
 
