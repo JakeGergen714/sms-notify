@@ -28,10 +28,10 @@ public class Controller {
         Jwt jwt = (Jwt)authenticationToken.getPrincipal();
         String username = jwt.getSubject();
         log.info(jwt.getClaims());
-        
+
         List<WaitListItem> items = service.findAllForUser(username);
         log.info("Found Items <{}>", items);
-        return ResponseEntity.ok(List.of(new WaitListItem()));
+        return ResponseEntity.ok(items);
     }
 
     @CrossOrigin(origins = "http://192.168.1.241/:8090", allowCredentials = "true") // Replace with your allowed origin
