@@ -42,7 +42,7 @@ const WaitListAddForm = () => {
       console.log(formData);
       setModalOpen(false);
       try {
-         const xsrfToken = Cookies.get("XSRF-TOKEN");
+         const csrfToken = Cookies.get("XSRF-TOKEN");
          const headers = {
             "X-CSRF-TOKEN": csrfToken,
             // Add other headers as needed
