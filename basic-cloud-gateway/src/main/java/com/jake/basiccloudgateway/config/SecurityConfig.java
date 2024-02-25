@@ -29,7 +29,6 @@ public class SecurityConfig {
 
         http
                 .authorizeExchange(exchange -> exchange.anyExchange().authenticated())
-                .csrf(csrf->csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()))
                 .oauth2Login(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .oauth2Client(Customizer.withDefaults());

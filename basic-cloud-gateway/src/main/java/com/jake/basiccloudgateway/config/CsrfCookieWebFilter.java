@@ -25,7 +25,7 @@ public class CsrfCookieWebFilter implements WebFilter {
             log.info("ADDING COOKIE");
             return csrfToken.doOnSuccess(token -> {
                 ResponseCookie cookie = ResponseCookie.from("XSRF-TOKEN", token.getToken())
-                        .maxAge(Duration.ofHours(1)).httpOnly(false).path("/").sameSite(Cookie.SameSite.NONE.attributeValue()).build();
+                        .maxAge(Duration.ofHours(1)).httpOnly(false).path("/").sameSite(Cookie.SameSite.LAX.attributeValue()).build();
                 exchange.getResponse().getCookies().add("XSRF-TOKEN", cookie);
             }).then(chain.filter(exchange));
         } else {
