@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
+@Component
 @Log4j2
 public class CsrfCookieWebFilter implements WebFilter {
 
@@ -25,7 +26,7 @@ public class CsrfCookieWebFilter implements WebFilter {
             return csrfToken.doOnSuccess(token -> {
                 ResponseCookie cookie = ResponseCookie.from("XSRF-TOKEN", token.getToken())
                         .maxAge(Duration.ofHours(1)).httpOnly(false).path("/").sameSite(Cookie.SameSite.LAX.attributeValue()).build();
-                exchange.getResponse().getCookies().add("XSRF-TOKEN", cookie);
+                exchange.getResponse().getCookies().add("js-XSRF-TOKEN", cookie);
             }).then(chain.filter(exchange));
         } else {
             log.info("NOT ADDING COOKIE");
