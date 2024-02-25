@@ -3,7 +3,7 @@ package com.jake.basiccloudgateway.config;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.web.server.Cookie;
 import org.springframework.http.ResponseCookie;
-import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
+@Component
 @Log4j2
 public class CsrfCookieWebFilter implements WebFilter {
 
