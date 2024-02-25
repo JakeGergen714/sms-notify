@@ -27,7 +27,7 @@ services:
       - ISSUER_URI=http://192.168.1.241:9000
       - FRONTEND_URL=http://192.168.1.241:3000/home
       - WAITLIST_SERVICE_URL=http://192.168.1.241:8080/waitlist
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=TRACE
     container_name: gateway
     depends_on:
       - auth
