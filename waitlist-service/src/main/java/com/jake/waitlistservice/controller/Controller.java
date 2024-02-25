@@ -34,8 +34,8 @@ public class Controller {
         return ResponseEntity.ok(items);
     }
 
-    @CrossOrigin(origins = "http://192.168.1.241/:8090", allowCredentials = "true") // Replace with your allowed origin
-    @PostMapping(value="/waitList")
+    @CrossOrigin(origins = "http://localhost/:8090", allowCredentials = "true") // Replace with your allowed origin
+    @PostMapping(value="/waitlist")
     public ResponseEntity<HttpStatus> addWaitListItem(Authentication authenticationToken, @RequestBody WaitListItemDTO waitListItemDTO) {
         Jwt jwt = (Jwt)authenticationToken.getPrincipal();
         String username = jwt.getSubject();
@@ -44,13 +44,5 @@ public class Controller {
         service.add(waitListItemDTO, username);
 
         return ResponseEntity.ok().build();
-    }
-
-    private Optional<Cookie> getAccessTokenCookie(Cookie[] cookies) {
-        if(cookies==null) {
-            return Optional.empty();
-        }
-        Arrays.stream(cookies).forEach(cookie->log.info(cookie.getName()));
-        return Arrays.stream(cookies).filter(cookie->cookie.getName().equalsIgnoreCase("accessToken")).findFirst();
     }
 }

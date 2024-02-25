@@ -40,9 +40,6 @@ const WaitListAddForm = () => {
       console.log(formData);
       setModalOpen(false);
 
-      const response = await axios.get(process.env.REACT_APP_API_URL + "/csrf");
-      console.log(response);
-
       try {
          const csrfToken = Cookies.get("XSRF-TOKEN");
          const headers = {
