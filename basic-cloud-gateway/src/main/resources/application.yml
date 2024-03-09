@@ -20,7 +20,6 @@ spring:
           uri: ${WAITLIST_SERVICE_URL}
           predicates:
             - Path=/waitlist
-            -
         - id: floor-plan-service
           uri: ${FLOOR_PLAN_SERVICE_URL}
           predicates:

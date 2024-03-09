@@ -42,6 +42,8 @@ const SeatMap = () => {
          });
    };
 
+   loadFloorPlans();
+
    const handleDragStartToolbox = (event, shapeType) => {
       setCurrentTableType(shapeType);
    };
