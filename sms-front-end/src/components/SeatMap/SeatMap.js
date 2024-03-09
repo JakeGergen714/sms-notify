@@ -27,6 +27,19 @@ const SeatMap = () => {
    const stageWidth = window.innerWidth;
    const stageHeight = window.innerHeight;
 
+   const loadFloorPlans = () => {
+      return axios
+         .get(process.env.REACT_APP_API_URL + "/floorMap")
+         .then((res) => {
+            console.log(res.data);
+            return res.data;
+         })
+         .catch((err) => {
+            console.error(err);
+            return [];
+         });
+   };
+
    const handleDragStartToolbox = (event, shapeType) => {
       setCurrentTableType(shapeType);
    };
