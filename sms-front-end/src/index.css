@@ -13,14 +13,14 @@ code {
 }
 
 :root {
-   --dark-bg: #181818; /* Near black */
-   --dark-sidebar: #202020; /* Slightly lighter than background */
-   --light-text: #eaeaea; /* Near white */
+   --dark-bg: rgb(8, 8, 8); /* Near black */
+   --dark-sidebar: rgb(32, 32, 32); /* Slightly lighter than background */
+   --light-text: rgb(234, 234, 234); /* Near white */
    --accent: rgb(8, 102, 255);
-   --light-accent: #449bff; /* Accent color, can be any bright color. I used a green as an example. */
-   --border-color: #2a2a2a; /* Slightly lighter than dark-bg for borders */
-   --input-color: #3d3d3d; /* Slightly lighter than dark-bg for borders */
-   --icon: #67c4fa;
+   --light-accent: rgb(68, 155, 255); /* Accent color, can be any bright color. I used a green as an example. */
+   --border-color: rgb(42, 42, 42); /* Slightly lighter than dark-bg for borders */
+   --input-color: rgb(61, 61, 61); /* Slightly lighter than dark-bg for borders */
+   --icon: rgb(103, 196, 250);
 }
 
 /* For WebKit Browsers (e.g., Chrome, Safari) */

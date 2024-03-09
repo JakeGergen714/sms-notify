@@ -1,26 +1,93 @@
 /** @format */
 
-.seat-map-container {
-   background: lightblue;
-   height: 100vh;
-   width: 100vw;
-   display: flex;
+* {
+   box-sizing: border-box;
+}
+
+.seat-map-content {
+   background-color: var(--dark-bg);
+   display: grid;
+   grid-template-rows: auto;
+}
+
+.seat-map-editor-container {
+   background-color: rgb(255, 255, 255, 0.05);
+   display: grid;
+   grid-template-rows: auto;
+   margin: 10px;
+   margin-top: 80px;
+}
+
+.seat-map-header {
+   grid-row: 1; /* Place item in the second row */
+   color: var(--light-text);
+}
+
+.seat-map-editor {
+   background-color: rgb(255, 255, 255, 0.02);
+   color: var(--light-text);
+   display: grid;
+   grid-template-columns: auto 2fr 1fr; /* Adjusted for equal width side columns */
+   gap: 40px; /* Use gap for spacing between grid items */
+   align-items: start;
+   padding: 20px; /* Consistent padding around the grid */
 }
 
 .table-type-selector {
-   flex: 0 0 200px; /* Fixed width of 200px for the sidebar */
-   height: 100vh;
-   border-right: 1px solid #ccc;
-   padding: 20px;
    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+   border-radius: 6px;
+}
+
+.table-type-selector,
+.table-properties-container {
+   background-color: rgba(255, 255, 255, 0.03);
+
+   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+   border-radius: 6px;
+}
+
+#table-editor-panel {
+   background-color: rgba(255, 255, 255, 0.03);
+}
+
+.table-properties-header {
+   font-size: 30px;
+   letter-spacing: -2px;
+   text-align: left;
+   width: 100%;
+   color: var(--light-text);
+   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+#table-properties-input-group {
+   display: grid;
+   grid-template-columns: auto auto;
+   grid-template-rows: auto auto;
+   column-gap: 10px;
+   row-gap: 10px;
+   padding: 20px;
+}
+
+#table-input {
+   width: 100%;
+}
+
+.seat-map-container {
+   padding: 10px;
+   border-radius: 6px;
+   overflow: hidden;
+   height: 75%;
+}
+
+.seat-map-grid {
+   border: 2px solid rgba(255, 255, 255, 0.1);
+   background-color: white 40%;
+   overflow: hidden;
+   height: 99%;
 }
 
 .seat-map {
-   flex-grow: 1; /* Take the remaining width */
-   overflow: hidden;
-   position: relative;
-   height: 100%;
-   width: 100%;
+   background: white;
 }
 
 .circle {
