@@ -22,9 +22,9 @@ spring:
             - Path=/waitlist
             -
         - id: floor-plan-service
-            uri: ${FLOOR_PLAN_SERVICE_URL}
-            predicates:
-              - Path=/floorMap
+          uri: ${FLOOR_PLAN_SERVICE_URL}
+          predicates:
+            - Path=/floorMap
 
   security:
     oauth2:

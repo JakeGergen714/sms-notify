@@ -13,6 +13,8 @@ import { v4 as uuidv4 } from "uuid";
 import CircleTable from "../Tables/Circle/CircleTable";
 import CustomShape from "../Tables/CustomShape/CustomShape";
 import RectangleTable from "../Tables/Rectangle/RectangleTable";
+import axios from "axios";
+
 import "./SeatMap.css";
 
 const SeatMap = () => {

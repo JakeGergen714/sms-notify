@@ -29,7 +29,7 @@ public class Controller {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
         log.info(jwt.getClaims());
-        BigInteger businessId = BigInteger.valueOf( Long.valueOf(jwt.getClaimAsString("businessId")));
+        long businessId =Long.valueOf(jwt.getClaimAsString("businessId"));
 
         List<FloorMap> items = service.findAllForBusinessId(businessId);
         log.info("Found Items <{}>", items);
@@ -43,7 +43,7 @@ public class Controller {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
         log.info(jwt.getClaims());
-        BigInteger businessId = BigInteger.valueOf( Long.valueOf(jwt.getClaimAsString("businessId")));
+        long businessId = Long.valueOf(jwt.getClaimAsString("businessId"));
 
         return ResponseEntity.ok(service.save(floorMapDTO, businessId));
     }
@@ -56,7 +56,7 @@ public class Controller {
         String username = jwt.getSubject();
         log.info(jwt.getClaims());
 
-        List<FloorMapItem> items = service.findAllForUser(BigInteger.ONE);
+        List<FloorMapItem> items = service.findAllForUser(1l);
         log.info("Found Items <{}>", items);
         return ResponseEntity.ok(items);
     }

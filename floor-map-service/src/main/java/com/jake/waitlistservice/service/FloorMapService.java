@@ -18,11 +18,11 @@ public class FloorMapService {
     private final FloorMapItemRepository repo;
     private final FloorMapRepository floorMapRepository;
 
-    public List<FloorMap> findAllForBusinessId(BigInteger businessId) {
+    public List<FloorMap> findAllForBusinessId(long businessId) {
         return floorMapRepository.findAllByBusinessId(businessId);
     }
 
-    public FloorMap save(FloorMapDTO floorMapDTO, BigInteger businessId) {
+    public FloorMap save(FloorMapDTO floorMapDTO, long businessId) {
         FloorMap floorMap = new FloorMap();
         floorMap.setName(floorMapDTO.getName());
         floorMap.setBusinessId(businessId);
@@ -30,7 +30,7 @@ public class FloorMapService {
     }
 
 
-    public List<FloorMapItem> findAllForUser(BigInteger floorMapId) {
+    public List<FloorMapItem> findAllForUser(long floorMapId) {
         return repo.findAllByFloorMapId(floorMapId);
     }
 

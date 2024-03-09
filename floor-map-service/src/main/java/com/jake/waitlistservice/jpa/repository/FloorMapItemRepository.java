@@ -8,7 +8,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface FloorMapItemRepository extends JpaRepository<FloorMapItem, BigInteger> {
-    List<FloorMapItem> findAllByFloorMapId(BigInteger floorMapId, Sort sortedBy);
+    List<FloorMapItem> findAllByFloorMapId(long floorMapId, Sort sortedBy);
 
-    List<FloorMapItem> findAllByFloorMapId(BigInteger floorMapId);
+    List<FloorMapItem> findAllByFloorMapId(long floorMapId);
 }

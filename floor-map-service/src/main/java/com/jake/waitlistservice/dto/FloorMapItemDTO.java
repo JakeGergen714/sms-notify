@@ -6,9 +6,9 @@ import java.math.BigInteger;
 
 @Data
 public class FloorMapItemDTO {
-    private BigInteger id;
+    private long id;
 
-    private BigInteger floorMapId;
+    private long floorMapId;
 
     private String name;
     private int minPartySize;

@@ -10,10 +10,10 @@ import java.math.BigInteger;
 public class FloorMapItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private long id;
 
     @Column
-    private BigInteger floorMapId;
+    private long floorMapId;
 
     @Column
     private String name;
