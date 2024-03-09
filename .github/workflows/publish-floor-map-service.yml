@@ -1,15 +1,15 @@
 # @format
 
-name: Maven Package and Docker Build Waitlist
+name: Maven Package and Docker Build Floor Map Service
 
 on:
    push:
       paths:
          - "floor-map-service/**"
-         - ".github/publish-floormap-service.yml"
+         - ".github/publish-floor-map-service.yml"
    pull_request:
       paths:
-         - "waitlist-service/**"
+         - "floor-map-service/**"
 
 jobs:
    build-and-deploy:
@@ -30,13 +30,13 @@ jobs:
               settings-path: ${{ github.workspace }}
 
          - name: Build with Wait List
-           working-directory: ./waitlist-service/
+           working-directory: ./floor-map-service/
            run: mvn -B package --file pom.xml
 
-         - name: Publish Waitlist Service
+         - name: Publish Floor Map Service
            env:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
-           working-directory: ./waitlist-service/
+           working-directory: ./floor-map-service/
            run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
 
          - name: Log in to GitHub Container Registry
@@ -48,6 +48,6 @@ jobs:
 
          - name: Build and push Waitlist Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/waitlist:$GITHUB_SHA -t ghcr.io/jakegergen714/waitlist:latest ./waitlist-service
-              docker push ghcr.io/jakegergen714/waitlist:$GITHUB_SHA
-              docker push ghcr.io/jakegergen714/waitlist:latest
+              docker build -t ghcr.io/jakegergen714/floor-map-service:$GITHUB_SHA -t ghcr.io/jakegergen714/floor-map-service:latest ./floor-map-service
+              docker push ghcr.io/jakegergen714/floor-map-service:$GITHUB_SHA
+              docker push ghcr.io/jakegergen714/floor-map-service:latest
