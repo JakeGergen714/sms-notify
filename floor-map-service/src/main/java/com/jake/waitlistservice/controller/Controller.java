@@ -1,5 +1,6 @@
 package com.jake.waitlistservice.controller;
 
+import com.jake.waitlistservice.dto.FloorMapDTO;
 import com.jake.waitlistservice.dto.FloorMapItemDTO;
 import com.jake.waitlistservice.jpa.domain.FloorMap;
 import com.jake.waitlistservice.jpa.domain.FloorMapItem;
@@ -28,10 +29,23 @@ public class Controller {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
         log.info(jwt.getClaims());
+        BigInteger businessId = BigInteger.valueOf( Long.valueOf(jwt.getClaimAsString("businessId")));
 
-        List<FloorMap> items = service.findAllForBusinessId(BigInteger.ONE);
+        List<FloorMap> items = service.findAllForBusinessId(businessId);
         log.info("Found Items <{}>", items);
         return ResponseEntity.ok(items);
+    }
+
+    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
+    // Replace with your allowed origin
+    @PostMapping(value = "/floorMap")
+    public ResponseEntity<FloorMap> addFloorMap(Authentication authenticationToken, FloorMapDTO floorMapDTO) {
+        Jwt jwt = (Jwt) authenticationToken.getPrincipal();
+        String username = jwt.getSubject();
+        log.info(jwt.getClaims());
+        BigInteger businessId = BigInteger.valueOf( Long.valueOf(jwt.getClaimAsString("businessId")));
+
+        return ResponseEntity.ok(service.save(floorMapDTO, businessId));
     }
 
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")

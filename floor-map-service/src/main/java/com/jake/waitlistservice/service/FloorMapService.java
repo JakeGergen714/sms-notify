@@ -1,5 +1,6 @@
 package com.jake.waitlistservice.service;
 
+import com.jake.waitlistservice.dto.FloorMapDTO;
 import com.jake.waitlistservice.dto.FloorMapItemDTO;
 import com.jake.waitlistservice.jpa.domain.FloorMap;
 import com.jake.waitlistservice.jpa.domain.FloorMapItem;
@@ -19,6 +20,13 @@ public class FloorMapService {
 
     public List<FloorMap> findAllForBusinessId(BigInteger businessId) {
         return floorMapRepository.findAllByBusinessId(businessId);
+    }
+
+    public FloorMap save(FloorMapDTO floorMapDTO, BigInteger businessId) {
+        FloorMap floorMap = new FloorMap();
+        floorMap.setName(floorMapDTO.getName());
+        floorMap.setBusinessId(businessId);
+        return floorMapRepository.save(floorMap);
     }
 
 
