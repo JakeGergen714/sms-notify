@@ -20,15 +20,12 @@ import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttrib
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final ReactiveClientRegistrationRepository clientRegistrationRepository;
-    private final ServerOAuth2AuthorizedClientRepository authorizedClientRepository;
-
     @Bean
     @Order(0)
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
         http
-                .authorizeExchange(exchange -> exchange.pathMatchers("/csrf").permitAll().anyExchange().authenticated())
+                .authorizeExchange(exchange -> exchange.anyExchange().authenticated())
                 .csrf((csrf) -> csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(new ServerCsrfTokenRequestAttributeHandler()))
                 .oauth2Login(Customizer.withDefaults())
