@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
@@ -139,14 +138,9 @@ public class SecurityConfig {
                 log.info("Here");
                 log.info(context.getClaims());
                 UsernamePasswordAuthenticationToken token = context.getPrincipal();
-                log.info(token.getCredentials());
-                log.info(token.getAuthorities());
-                log.info(token.getName());
-                log.info(token.getDetails());
-                Jwt jwt = (Jwt) context.getPrincipal();
-                String username = jwt.getSubject();
+                //todo add service to get business id from username
                 context.getClaims().claims((claims) -> {
-                    claims.put("businessId", username);
+                    claims.put("businessId", token.getName());
                 });
                 log.info(context.getClaims());
             }
