@@ -134,6 +134,7 @@ public class SecurityConfig {
    @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtTokenCustomizer() {
         return (context) -> {
+            log.info("Here");
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 log.info("Here");
                 log.info(context.getClaims());
