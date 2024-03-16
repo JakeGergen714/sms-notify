@@ -2,34 +2,43 @@
 
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import SideBar from "../SideBar/SideBar";
 import WaitList from "../WaitList/WaitList";
 import Reservations from "../Reservations/Reservations";
 import Header from "../Header/Header";
-
+import { PiUserListFill, PiUserList } from "react-icons/pi";
+import { BsClockFill, BsClock } from "react-icons/bs";
 import "./Home.css";
+import SideBarItem from "../SideBar/SiderBarItem";
 
 const Home = (content) => {
-   const [searchParams, setSearchParams] = useSearchParams();
-
-   function getActivePage() {
-      const activePage = searchParams.get("active");
-      if (activePage === "waitlist") {
-         return 0;
-      }
-      if (activePage === "reservations") {
-         return 1;
-      }
-      return 0;
-   }
+   const [activePage, setActivePage] = useState(0);
 
    return (
       <div className='home'>
-         <SideBar activePage={getActivePage()} />
+         <div className='sidebar'>
+            <SideBarItem
+               onClick={() => {
+                  setActivePage(0);
+               }}
+               isActive={activePage == 0}
+               text='Wait List'
+               icon={PiUserList}
+               activeIcon={PiUserListFill}
+            />
+            <SideBarItem
+               onClick={() => {
+                  setActivePage(1);
+               }}
+               isActive={activePage == 1}
+               text='Reservations'
+               icon={BsClock}
+               activeIcon={BsClockFill}
+            />
+         </div>
          <div className='main-content'>
             <Header></Header>
-            {getActivePage() === 0 && <WaitList></WaitList>}
-            {getActivePage() === 1 && <Reservations />}
+            {activePage === 0 && <WaitList></WaitList>}
+            {activePage === 1 && <Reservations />}
          </div>
       </div>
    );

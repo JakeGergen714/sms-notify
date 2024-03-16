@@ -42,7 +42,15 @@ const SeatMap = () => {
          });
    };
 
-   loadFloorPlans();
+   var floorPlans = loadFloorPlans();
+   console.log(floorPlans);
+
+   const addFloorPlan = () => {
+      var floorMapDto = {
+         name: "Unnamed Floor Plan",
+      };
+      return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto);
+   };
 
    const handleDragStartToolbox = (event, shapeType) => {
       setCurrentTableType(shapeType);

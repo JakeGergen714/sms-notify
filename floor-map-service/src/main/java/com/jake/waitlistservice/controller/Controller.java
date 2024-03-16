@@ -43,22 +43,12 @@ public class Controller {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
         log.info(jwt.getClaims());
+        log.info(jwt.getSubject());
+        log.info(jwt.getHeaders());
+        log.info(jwt.getAudience());
         long businessId = Long.valueOf(jwt.getClaimAsString("businessId"));
 
         return ResponseEntity.ok(service.save(floorMapDTO, businessId));
-    }
-
-    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
-    // Replace with your allowed origin
-    @GetMapping(value = "/floorMapItem")
-    public ResponseEntity<List<FloorMapItem>> getAllWaitListItems(Authentication authenticationToken) {
-        Jwt jwt = (Jwt) authenticationToken.getPrincipal();
-        String username = jwt.getSubject();
-        log.info(jwt.getClaims());
-
-        List<FloorMapItem> items = service.findAllForUser(1l);
-        log.info("Found Items <{}>", items);
-        return ResponseEntity.ok(items);
     }
 
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
