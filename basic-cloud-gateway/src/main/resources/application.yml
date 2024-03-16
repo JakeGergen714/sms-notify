@@ -7,15 +7,27 @@ logging:
       ${LOG_LEVEL}
 
 spring:
-  #cloud:
-  #  gateway:
-  #    routes:
-  #      - id: frontend
-  #        uri: ${FRONTEND_URL}
-  #        predicates:
-  #          - Path=/home**,/favicon.ico/,/static/**,
+  cloud:
+    gateway:
+      routes:
+        - id: frontend
+          uri: ${FRONTEND_URL}
+          predicates:
+            - Path=/home**,/favicon.ico/,/static/**,
 
-
+        - id: waitlist-service
+          uri: ${WAITLIST_SERVICE_URL}
+          predicates:
+            - Path=/waitlist
+          filters:
+            - TokenRelay=
+            -
+        - id: floor-plan-service
+          uri: ${FLOOR_PLAN_SERVICE_URL}
+          predicates:
+            - Path=/floorMap
+          filters:
+            - TokenRelay=
 
   security:
     oauth2:
