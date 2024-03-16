@@ -6,6 +6,14 @@ logging:
     root:
       ${LOG_LEVEL}
 
+spring:
+  #cloud:
+  #  gateway:
+  #    routes:
+  #      - id: frontend
+  #        uri: ${FRONTEND_URL}
+  #        predicates:
+  #          - Path=/home**,/favicon.ico/,/static/**,
 
 
 
