@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -135,6 +136,12 @@ public class SecurityConfig {
         return (context) -> {
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 log.info("Here");
+                log.info(context.getClaims());
+                UsernamePasswordAuthenticationToken token = context.getPrincipal();
+                log.info(token.getCredentials());
+                log.info(token.getAuthorities());
+                log.info(token.getName());
+                log.info(token.getDetails());
                 Jwt jwt = (Jwt) context.getPrincipal();
                 String username = jwt.getSubject();
                 context.getClaims().claims((claims) -> {
