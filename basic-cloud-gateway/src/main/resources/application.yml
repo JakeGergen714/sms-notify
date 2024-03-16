@@ -21,7 +21,7 @@ spring:
             - Path=/waitlist
           filters:
             - TokenRelay=
-            -
+            
         - id: floor-plan-service
           uri: ${FLOOR_PLAN_SERVICE_URL}
           predicates:
