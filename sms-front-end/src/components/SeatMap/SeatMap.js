@@ -169,7 +169,7 @@ const SeatMap = () => {
             <div className='d-flex align-items-center'>
                <h1 className='seat-map-header'> {getFloorPlanTitle()}</h1>
                <div onMouseEnter={() => setIsHoveringOverEdit(true)} onMouseLeave={() => setIsHoveringOverEdit(false)}>
-                  {isHovering ? <MdModeEdit /> : <MdOutlineModeEdit />}
+                  {isHoveringOverEdit ? <MdModeEdit /> : <MdOutlineModeEdit />}
                </div>
                <MdOutlineModeEdit />
                <MdModeEdit />
