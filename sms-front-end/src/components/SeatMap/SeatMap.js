@@ -21,6 +21,7 @@ const SeatMap = () => {
    const [currentTableType, setCurrentTableType] = useState("circle"); // Default to circle
    const [currentTable, setCurrentTable] = useState(null);
    const [floorPlan, setFloorPlan] = useState(null);
+   const [floorPlans, setFloorPlans] = useState(null);
    const [shapes, setShapes] = useState([]);
    const layerRef = useRef(null);
    const stageRef = useRef(null);
@@ -42,7 +43,7 @@ const SeatMap = () => {
          });
    };
 
-   var floorPlans = loadFloorPlans();
+   setFloorPlans(loadFloorPlans());
    console.log(floorPlans);
 
    const addFloorPlan = () => {
@@ -50,6 +51,10 @@ const SeatMap = () => {
          name: "Unnamed Floor Plan",
       };
       return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto);
+   };
+
+   const setFloorPlanName = (newName) => {
+      floorPlan;
    };
 
    const handleDragStartToolbox = (event, shapeType) => {
@@ -139,12 +144,20 @@ const SeatMap = () => {
    };
 
    const getFloorPlanTitle = () => {
-      return floorPlan == null ? "Select a Floor Plan" : floorPlan;
+      return floorPlan == null ? "Select a Floor Plan" : floorPlan.name;
    };
 
    const handleTableClick = (table) => {
       console.log(table);
       setCurrentTable(table);
+   };
+
+   const generateDropdownItems = () => {
+      let items = [];
+      for (curFloorPlan in floorPlans) {
+         items.push(<Dropdown.Item onClick={() => setFloorPlan(curFloorPlan)}>curFloorPlan.name</Dropdown.Item>);
+      }
+      return items;
    };
 
    return (
@@ -156,9 +169,7 @@ const SeatMap = () => {
                   <Dropdown.Toggle variant='secondary' id='dropdown-basic'></Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                     <Dropdown.Item onClick={() => setFloorPlan("Main Floor")}>Action</Dropdown.Item>
-                     <Dropdown.Item>Another action</Dropdown.Item>
-                     <Dropdown.Divider style={{ backgroundColor: "black" }} />
+                     {generateDropdownItems()}
 
                      <Dropdown.Item>
                         Create a new Floor Plan <IoMdAddCircle />
