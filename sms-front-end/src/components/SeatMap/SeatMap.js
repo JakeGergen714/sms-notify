@@ -185,38 +185,39 @@ const SeatMap = () => {
       <div className='seat-map-content'>
          <div className='seat-map-editor-container'>
             <div className='d-flex align-items-center'>
-               {floorPlan && // Check if floorPlan is not null
-                  (isEditMode ? (
-                     <input
-                        type='text'
-                        className='seat-map-header-editable'
-                        value={floorPlan.name}
-                        onChange={handleHeaderChange}
-                        onKeyPress={handleKeyPress}
-                        autoFocus // Automatically focus the input
-                     />
-                  ) : (
-                     <div className='floor-plan-header'>
-                        <h1 className='seat-map-header'>{floorPlan.name}</h1>
-                        <div
-                           className='name-edit'
-                           onMouseEnter={() => setIsHoveringOverEdit(true)}
-                           onMouseLeave={() => setIsHoveringOverEdit(false)}
-                           onClick={handleEditClick} // Add click handler to enter edit mode
-                        >
-                           {isHoveringOverEdit ? <MdModeEdit /> : <MdOutlineModeEdit />}
-                        </div>
+               {floorPlan && ( // Check if floorPlan is not null
+                  <>
+                     {isEditMode ? (
+                        <input
+                           type='text'
+                           className='seat-map-header-editable me-2' // Add some right margin
+                           value={floorPlan.name}
+                           onChange={handleHeaderChange}
+                           onKeyPress={handleKeyPress}
+                           autoFocus // Automatically focus the input
+                        />
+                     ) : (
+                        <h1 className='seat-map-header me-2'>{floorPlan.name}</h1> // Add some right margin
+                     )}
+
+                     <div
+                        className='edit-name me-2' // Add some right margin
+                        onMouseEnter={() => setIsHoveringOverEdit(true)}
+                        onMouseLeave={() => setIsHoveringOverEdit(false)}
+                        onClick={handleEditClick} // Add click handler to enter edit mode
+                     >
+                        {isHoveringOverEdit ? <MdModeEdit /> : <MdOutlineModeEdit />}
                      </div>
-                  ))}
+                  </>
+               )}
 
                <Dropdown>
                   <Dropdown.Toggle variant='secondary' id='dropdown-basic'>
-                     Select a FloorPlan
+                     {floorPlan == null ? "Select a Floor Plan" : null}
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
                      {generateDropdownItems()}
-
                      <Dropdown.Item onClick={() => addFloorPlan("Unnamed Floor Plan")}>
                         Create a new Floor Plan <IoMdAddCircle />
                      </Dropdown.Item>
