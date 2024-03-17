@@ -28,7 +28,7 @@ services:
       - FRONTEND_URL=http://192.168.1.241:3000/
       - WAITLIST_SERVICE_URL=http://192.168.1.241:8080/waitlist
       - FLOOR_PLAN_SERVICE_URL=http://192.168.1.241:8085/floorMap
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=INFO
     container_name: gateway
     depends_on:
       - auth
@@ -48,7 +48,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - ISSUER_URI=http://192.168.1.241:9000
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=INFO
     ports:
       - "8080:8080"
 
@@ -65,7 +65,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - ISSUER_URI=http://192.168.1.241:9000
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=INFO
       - PORT=8085
     ports:
       - "8085:8085"

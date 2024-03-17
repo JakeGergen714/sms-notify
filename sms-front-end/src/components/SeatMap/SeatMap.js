@@ -30,21 +30,21 @@ const SeatMap = () => {
    const stageWidth = window.innerWidth;
    const stageHeight = window.innerHeight;
 
-   useEffect(() => {
-      const loadFloorPlans = () => {
-         axios
-            .get(process.env.REACT_APP_API_URL + "/floorMap")
-            .then((res) => {
-               console.log(res.data);
-               setFloorPlans(res.data); // Set state here after fetching
-            })
-            .catch((err) => {
-               console.error(err);
-               setFloorPlans([]); // Set to an empty array in case of error
-            });
-      };
+   const loadFloorPlans = () => {
+      axios
+         .get(process.env.REACT_APP_API_URL + "/floorMap")
+         .then((res) => {
+            console.log(res.data);
+            setFloorPlans(res.data); // Set state here after fetching
+         })
+         .catch((err) => {
+            console.error(err);
+            setFloorPlans([]); // Set to an empty array in case of error
+         });
+   };
 
-      loadFloorPlans(); // Call the function inside useEffect
+   useEffect(() => {
+      loadFloorPlans();
    }, []); // Empty dependency array means this effect runs once after initial render
 
    const addFloorPlan = (name) => {
@@ -52,7 +52,7 @@ const SeatMap = () => {
          name: name,
       };
       console.log(floorMapDto);
-      return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto);
+      return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto).then(loadFloorPlans());
    };
 
    const handleDragStartToolbox = (event, shapeType) => {
