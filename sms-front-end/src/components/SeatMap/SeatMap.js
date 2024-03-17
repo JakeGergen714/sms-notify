@@ -52,7 +52,10 @@ const SeatMap = () => {
          name: name,
       };
       console.log(floorMapDto);
-      return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto).then(loadFloorPlans());
+      return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto).then(() => {
+         loadFloorPlans();
+         console.log("relod");
+      });
    };
 
    const handleDragStartToolbox = (event, shapeType) => {
