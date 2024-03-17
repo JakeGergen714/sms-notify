@@ -7,8 +7,11 @@ import Reservations from "../Reservations/Reservations";
 import Header from "../Header/Header";
 import { PiUserListFill, PiUserList } from "react-icons/pi";
 import { BsClockFill, BsClock } from "react-icons/bs";
+import { PiMapTrifold, PiMapTrifoldBold } from "react-icons/pi";
+
 import "./Home.css";
 import SideBarItem from "../SideBar/SiderBarItem";
+import SeatMap from "../SeatMap/SeatMap";
 
 const Home = (content) => {
    const [activePage, setActivePage] = useState(0);
@@ -34,11 +37,21 @@ const Home = (content) => {
                icon={BsClock}
                activeIcon={BsClockFill}
             />
+            <SideBarItem
+               onClick={() => {
+                  setActivePage(2);
+               }}
+               isActive={activePage == 1}
+               text='Reservations'
+               icon={PiMapTrifold}
+               activeIcon={PiMapTrifoldBold}
+            />
          </div>
          <div className='main-content'>
             <Header></Header>
             {activePage === 0 && <WaitList></WaitList>}
             {activePage === 1 && <Reservations />}
+            {activePage === 2 && <SeatMap />}
          </div>
       </div>
    );
