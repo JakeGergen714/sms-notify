@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -23,11 +24,20 @@ public class FloorMapService {
     }
 
     public FloorMap save(FloorMapDTO floorMapDTO, long businessId) {
-        FloorMap floorMap = new FloorMap();
-        floorMap.setId(floorMapDTO.getId());
-        floorMap.setName(floorMapDTO.getName());
-        floorMap.setBusinessId(businessId);
-        return floorMapRepository.save(floorMap);
+        Optional<FloorMap> floorMapOptional = floorMapRepository.findByName(floorMapDTO.getName());
+        FloorMap floorMap;
+        if(floorMapOptional.isEmpty()) {
+            floorMap = new FloorMap();
+            floorMap.setName(floorMapDTO.getName());
+            floorMap.setBusinessId(businessId);
+            FloorMap saved =  floorMapRepository.save(floorMap);
+        } else {
+            FloorMap existing = floorMapOptional.get();
+            existing.setName(floorMapDTO.getName());
+            floorMap = floorMapRepository.save(existing);
+        }
+
+        return floorMap;
     }
 
 
