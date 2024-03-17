@@ -229,7 +229,7 @@ const SeatMap = () => {
                <div id='table-editor-panel' className='table-type-selector'>
                   <h1>Tables</h1>
                   <img
-                     src={`${process.env.PUBLIC_URL}/circle-table.png`}
+                     src={`${process.env.PUBLIC_URL}/icon/circle-table.png`}
                      alt='Circle Table'
                      draggable='true'
                      onDragStart={(e) => handleDragStartToolbox(e, "custom")}
