@@ -21,7 +21,7 @@ const SeatMap = () => {
    const [currentTableType, setCurrentTableType] = useState("circle"); // Default to circle
    const [currentTable, setCurrentTable] = useState(null);
    const [floorPlan, setFloorPlan] = useState(null);
-   const [floorPlans, setFloorPlans] = useState(null);
+   const [floorPlans, setFloorPlans] = useState([]);
    const [shapes, setShapes] = useState([]);
    const layerRef = useRef(null);
    const stageRef = useRef(null);
