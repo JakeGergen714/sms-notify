@@ -51,6 +51,7 @@ const SeatMap = () => {
       var floorMapDto = {
          name: name,
       };
+      console.log(floorMapDto);
       return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto);
    };
 

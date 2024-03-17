@@ -26,6 +26,8 @@ public class Controller {
     // Replace with your allowed origin
     @GetMapping(value = "/floorMap")
     public ResponseEntity<List<FloorMap>> getAllFloorMaps(Authentication authenticationToken) {
+        log.info("GET /floorMap");
+
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
         log.info(jwt.getClaims());
@@ -40,6 +42,8 @@ public class Controller {
     // Replace with your allowed origin
     @PostMapping(value = "/floorMap")
     public ResponseEntity<FloorMap> addFloorMap(Authentication authenticationToken, FloorMapDTO floorMapDTO) {
+        log.info("POST /floorMap <{}>",floorMapDTO);
+
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
         log.info(jwt.getClaims());
