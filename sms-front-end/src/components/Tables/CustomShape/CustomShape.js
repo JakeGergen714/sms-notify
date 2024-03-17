@@ -8,7 +8,7 @@ const CustomShape = ({ xPos, yPos, width, height, onDragEnd, onClick }) => {
 
    useEffect(() => {
       const img = new window.Image();
-      img.src = `${process.env.PUBLIC_URL}/circle-table.png`;
+      img.src = `${process.env.PUBLIC_URL}/icons/circle-table.png`;
       img.onload = () => {
          setImage(img);
       };
