@@ -1,5 +1,6 @@
 package com.jake.auth.config;
 
+import com.jake.auth.userdetails.UserDetailsImpl;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -138,6 +140,10 @@ public class SecurityConfig {
                 log.info("Here");
                 log.info(context.getClaims());
                 UsernamePasswordAuthenticationToken token = context.getPrincipal();
+                Authentication auth = context.getPrincipal();
+                if(auth.getPrincipal() instanceof UserDetailsImpl) {
+                    log.info("Got it");
+                }
                 log.info(token.getCredentials());
                 log.info(token.getDetails());
                 log.info(token.getPrincipal());
