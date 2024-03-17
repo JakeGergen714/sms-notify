@@ -13,7 +13,7 @@ spring:
         - id: frontend
           uri: ${FRONTEND_URL}
           predicates:
-            - Path=/home**,/favicon.ico/,/static/**, **/*.png
+            - Path=/home**,/favicon.ico/,/static/**, /circle-table.png
 
         - id: waitlist-service
           uri: ${WAITLIST_SERVICE_URL}
