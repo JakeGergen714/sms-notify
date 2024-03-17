@@ -12,4 +12,4 @@ WORKDIR /app
 COPY --from=build /app/build .
 RUN npm install -g serve
 CMD ["serve", "-s", "."]
-EXPOSE 5000
+EXPOSE 3000
