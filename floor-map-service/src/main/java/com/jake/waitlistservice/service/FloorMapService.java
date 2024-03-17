@@ -26,10 +26,10 @@ public class FloorMapService {
     }
 
     public FloorMap save(FloorMapDTO floorMapDTO, long businessId) {
-        Optional<FloorMap> floorMapOptional = floorMapRepository.findByName(floorMapDTO.getName());
+        Optional<FloorMap> floorMapOptional = floorMapRepository.findById(floorMapDTO.getId());
         FloorMap floorMap;
         if(floorMapOptional.isEmpty()) {
-            log.info("No existing Floor Plan found.");
+            log.info("No existing floor plan found");
             floorMap = new FloorMap();
             floorMap.setName(floorMapDTO.getName());
             floorMap.setBusinessId(businessId);

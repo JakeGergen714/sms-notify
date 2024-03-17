@@ -9,10 +9,8 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-public interface FloorMapRepository extends JpaRepository<FloorMap, BigInteger> {
+public interface FloorMapRepository extends JpaRepository<FloorMap, Long> {
     List<FloorMap> findAllByBusinessId(long businessId, Sort sortedBy);
 
     List<FloorMap> findAllByBusinessId(long businessId);
-
-    Optional<FloorMap> findByName(String name);
 }
