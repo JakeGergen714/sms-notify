@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Dropdown } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
@@ -52,10 +52,6 @@ const SeatMap = () => {
          name: "Unnamed Floor Plan",
       };
       return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto);
-   };
-
-   const setFloorPlanName = (newName) => {
-      floorPlan;
    };
 
    const handleDragStartToolbox = (event, shapeType) => {
