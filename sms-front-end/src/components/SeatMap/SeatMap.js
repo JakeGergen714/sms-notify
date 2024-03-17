@@ -47,9 +47,9 @@ const SeatMap = () => {
       loadFloorPlans(); // Call the function inside useEffect
    }, []); // Empty dependency array means this effect runs once after initial render
 
-   const addFloorPlan = () => {
+   const addFloorPlan = (name) => {
       var floorMapDto = {
-         name: "Unnamed Floor Plan",
+         name: name,
       };
       return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto);
    };
@@ -168,7 +168,7 @@ const SeatMap = () => {
                   <Dropdown.Menu>
                      {generateDropdownItems()}
 
-                     <Dropdown.Item>
+                     <Dropdown.Item onClick={() => addFloorPlan("Unnamed Floor Plan")}>
                         Create a new Floor Plan <IoMdAddCircle />
                      </Dropdown.Item>
                   </Dropdown.Menu>
