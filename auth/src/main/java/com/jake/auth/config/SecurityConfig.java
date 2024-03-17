@@ -11,11 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -137,20 +135,9 @@ public class SecurityConfig {
         return (context) -> {
             log.info("Here");
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
-                log.info("Here");
-                log.info(context.getClaims());
-                UsernamePasswordAuthenticationToken token = context.getPrincipal();
-                Authentication auth = context.getPrincipal();
-                if(auth.getPrincipal() instanceof UserDetailsImpl) {
-                    log.info("Got it");
-                }
-                log.info(token.getCredentials());
-                log.info(token.getDetails());
-                log.info(token.getPrincipal());
-                log.info("end");
-                //todo add service to get business id from username
+                UserDetailsImpl userDetails = (UserDetailsImpl) context.getPrincipal().getPrincipal();
                 context.getClaims().claims((claims) -> {
-                    claims.put("businessId", token.getName());
+                    claims.put("businessId", userDetails.getUser().getBusinessId());
                 });
                 log.info(context.getClaims());
             }

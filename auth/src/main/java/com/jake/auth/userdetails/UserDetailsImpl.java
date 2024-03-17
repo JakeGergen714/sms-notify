@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 public class UserDetailsImpl implements UserDetails {
     private final User user;
+
     private final List<UserRole> roles;
 
     @Override

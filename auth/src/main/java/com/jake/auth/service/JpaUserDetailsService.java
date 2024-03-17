@@ -40,7 +40,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Looking user up by username <{}>", username);
         User user = userRepo.findByUsername(username);
-
+        user.setBusinessId(1L); //todo
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
