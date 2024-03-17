@@ -13,7 +13,7 @@ spring:
         - id: frontend
           uri: ${FRONTEND_URL}
           predicates:
-            - Path=/ui**
+            - Path=/ui/**
 
         - id: waitlist-service
           uri: ${WAITLIST_SERVICE_URL}
