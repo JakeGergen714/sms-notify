@@ -17,7 +17,7 @@ import { AuthProvider } from "./AuthContext";
 
 export default function App() {
    return (
-      <BrowserRouter>
+      <BrowserRouter basename='/ui'>
          <Routes>
             <Route path='/login' element={<SignIn />}></Route>
             <Route path='/home' element={<Home />} />
