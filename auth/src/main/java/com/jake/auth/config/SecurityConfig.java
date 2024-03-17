@@ -138,6 +138,10 @@ public class SecurityConfig {
                 log.info("Here");
                 log.info(context.getClaims());
                 UsernamePasswordAuthenticationToken token = context.getPrincipal();
+                log.info(token.getCredentials());
+                log.info(token.getDetails());
+                log.info(token.getPrincipal());
+                log.info("end");
                 //todo add service to get business id from username
                 context.getClaims().claims((claims) -> {
                     claims.put("businessId", token.getName());

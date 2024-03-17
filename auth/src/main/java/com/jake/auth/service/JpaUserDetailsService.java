@@ -47,8 +47,6 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         List<UserRole> roles = roleRepo.findAllByUserId(user.getId());
 
-
-
         return new UserDetailsImpl(user, roles);
     }
 }
