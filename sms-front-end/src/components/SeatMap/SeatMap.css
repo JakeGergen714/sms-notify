@@ -18,6 +18,13 @@
    margin-top: 80px;
 }
 
+.name-edit {
+   color: var(--accent);
+   font-size: 25px;
+   margin-bottom: 10px;
+   padding-left: 10px;
+}
+
 .seat-map-header {
    grid-row: 1; /* Place item in the second row */
    color: var(--light-text);

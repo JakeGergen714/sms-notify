@@ -25,6 +25,7 @@ const SeatMap = () => {
    const [floorPlans, setFloorPlans] = useState([]);
    const [shapes, setShapes] = useState([]);
    const [isHoveringOverEdit, setIsHoveringOverEdit] = useState(false);
+   const [isEditMode, setIsEditMode] = useState(false);
    const layerRef = useRef(null);
    const stageRef = useRef(null);
 
@@ -163,18 +164,53 @@ const SeatMap = () => {
       ));
    };
 
+   const handleEditClick = () => {
+      setIsEditMode(true);
+   };
+
+   const handleHeaderChange = (e) => {
+      floorPlan.name = e.target.value;
+   };
+
+   const handleKeyPress = (e) => {
+      if (e.key === "Enter") {
+         // Exit edit mode when Enter is pressed
+         setIsEditMode(false);
+      }
+   };
+
    return (
       <div className='seat-map-content'>
          <div className='seat-map-editor-container'>
             <div className='d-flex align-items-center'>
-               <h1 className='seat-map-header'> {getFloorPlanTitle()}</h1>
-               <div onMouseEnter={() => setIsHoveringOverEdit(true)} onMouseLeave={() => setIsHoveringOverEdit(false)}>
-                  {isHoveringOverEdit ? <MdModeEdit /> : <MdOutlineModeEdit />}
-               </div>
-               <MdOutlineModeEdit />
-               <MdModeEdit />
+               {floorPlan && // Check if floorPlan is not null
+                  (isEditMode ? (
+                     <input
+                        type='text'
+                        className='seat-map-header-editable'
+                        value={floorPlan.name}
+                        onChange={handleHeaderChange}
+                        onKeyPress={handleKeyPress}
+                        autoFocus // Automatically focus the input
+                     />
+                  ) : (
+                     <div className='floor-plan-header'>
+                        <h1 className='seat-map-header'>{floorPlan.name}</h1>
+                        <div
+                           className='name-edit'
+                           onMouseEnter={() => setIsHoveringOverEdit(true)}
+                           onMouseLeave={() => setIsHoveringOverEdit(false)}
+                           onClick={handleEditClick} // Add click handler to enter edit mode
+                        >
+                           {isHoveringOverEdit ? <MdModeEdit /> : <MdOutlineModeEdit />}
+                        </div>
+                     </div>
+                  ))}
+
                <Dropdown>
-                  <Dropdown.Toggle variant='secondary' id='dropdown-basic'></Dropdown.Toggle>
+                  <Dropdown.Toggle variant='secondary' id='dropdown-basic'>
+                     Select a FloorPlan
+                  </Dropdown.Toggle>
 
                   <Dropdown.Menu>
                      {generateDropdownItems()}
