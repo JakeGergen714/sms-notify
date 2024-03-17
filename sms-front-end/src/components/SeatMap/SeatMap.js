@@ -30,21 +30,22 @@ const SeatMap = () => {
    const stageWidth = window.innerWidth;
    const stageHeight = window.innerHeight;
 
-   const loadFloorPlans = () => {
-      return axios
-         .get(process.env.REACT_APP_API_URL + "/floorMap")
-         .then((res) => {
-            console.log(res.data);
-            return res.data;
-         })
-         .catch((err) => {
-            console.error(err);
-            return [];
-         });
-   };
+   useEffect(() => {
+      const loadFloorPlans = () => {
+         axios
+            .get(process.env.REACT_APP_API_URL + "/floorMap")
+            .then((res) => {
+               console.log(res.data);
+               setFloorPlans(res.data); // Set state here after fetching
+            })
+            .catch((err) => {
+               console.error(err);
+               setFloorPlans([]); // Set to an empty array in case of error
+            });
+      };
 
-   setFloorPlans(loadFloorPlans());
-   console.log(floorPlans);
+      loadFloorPlans(); // Call the function inside useEffect
+   }, []); // Empty dependency array means this effect runs once after initial render
 
    const addFloorPlan = () => {
       var floorMapDto = {
@@ -153,11 +154,11 @@ const SeatMap = () => {
    };
 
    const generateDropdownItems = () => {
-      let items = [];
-      for (curFloorPlan in floorPlans) {
-         items.push(<Dropdown.Item onClick={() => setFloorPlan(curFloorPlan)}>curFloorPlan.name</Dropdown.Item>);
-      }
-      return items;
+      return floorPlans.map((curFloorPlan) => (
+         <Dropdown.Item key={curFloorPlan.id} onClick={() => setFloorPlan(curFloorPlan)}>
+            {curFloorPlan.name}
+         </Dropdown.Item>
+      ));
    };
 
    return (
