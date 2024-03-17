@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 
 import Form from "react-bootstrap/Form";
 import { IoMdAddCircle } from "react-icons/io";
+import { MdOutlineModeEdit, MdModeEdit } from "react-icons/md";
 
 import InputGroup from "react-bootstrap/InputGroup";
 import { Layer, Line, Stage } from "react-konva";
@@ -23,6 +24,7 @@ const SeatMap = () => {
    const [floorPlan, setFloorPlan] = useState(null);
    const [floorPlans, setFloorPlans] = useState([]);
    const [shapes, setShapes] = useState([]);
+   const [isHoveringOverEdit, setIsHoveringOverEdit] = useState(false);
    const layerRef = useRef(null);
    const stageRef = useRef(null);
 
@@ -166,6 +168,11 @@ const SeatMap = () => {
          <div className='seat-map-editor-container'>
             <div className='d-flex align-items-center'>
                <h1 className='seat-map-header'> {getFloorPlanTitle()}</h1>
+               <div onMouseEnter={() => setIsHoveringOverEdit(true)} onMouseLeave={() => setIsHoveringOverEdit(false)}>
+                  {isHovering ? <MdModeEdit /> : <MdOutlineModeEdit />}
+               </div>
+               <MdOutlineModeEdit />
+               <MdModeEdit />
                <Dropdown>
                   <Dropdown.Toggle variant='secondary' id='dropdown-basic'></Dropdown.Toggle>
 
