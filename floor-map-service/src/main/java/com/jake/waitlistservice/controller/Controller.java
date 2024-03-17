@@ -57,6 +57,19 @@ public class Controller {
 
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     // Replace with your allowed origin
+    @PutMapping(value = "/floorMap")
+    public ResponseEntity<FloorMap> editFloorMap(Authentication authenticationToken, @RequestBody FloorMapDTO floorMapDTO) {
+        log.info("PUT /floorMap <{}>",floorMapDTO);
+
+        Jwt jwt = (Jwt) authenticationToken.getPrincipal();
+        String username = jwt.getSubject();
+        long businessId = Long.valueOf(jwt.getClaimAsString("businessId"));
+
+        return ResponseEntity.ok(service.save(floorMapDTO, businessId));
+    }
+
+    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
+    // Replace with your allowed origin
     @PostMapping(value = "/floorMapItem")
     public ResponseEntity<HttpStatus> save(Authentication authenticationToken, @RequestBody FloorMapItemDTO floorMapItemDTO) {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();

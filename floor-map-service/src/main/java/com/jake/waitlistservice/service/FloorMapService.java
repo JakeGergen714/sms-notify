@@ -24,6 +24,7 @@ public class FloorMapService {
 
     public FloorMap save(FloorMapDTO floorMapDTO, long businessId) {
         FloorMap floorMap = new FloorMap();
+        floorMap.setId(floorMapDTO.getId());
         floorMap.setName(floorMapDTO.getName());
         floorMap.setBusinessId(businessId);
         return floorMapRepository.save(floorMap);

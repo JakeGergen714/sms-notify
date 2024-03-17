@@ -42,7 +42,7 @@ const SeatMap = () => {
          })
          .catch((err) => {
             console.error(err);
-            setFloorPlans([]); // Set to an empty array in case of error
+            setFloorPlans([{ name: "some name" }]); // Set to an empty array in case of error
          });
    };
 
@@ -147,10 +147,6 @@ const SeatMap = () => {
       return lines;
    };
 
-   const getFloorPlanTitle = () => {
-      return floorPlan == null ? "Select a Floor Plan" : floorPlan.name;
-   };
-
    const handleTableClick = (table) => {
       console.log(table);
       setCurrentTable(table);
@@ -169,13 +165,19 @@ const SeatMap = () => {
    };
 
    const handleHeaderChange = (e) => {
-      floorPlan.name = e.target.value;
+      const updatedFloorPlan = { ...floorPlan, name: e.target.value }; // Create a new object with updated name
+      setFloorPlan(updatedFloorPlan); // Set the new floor plan object as the new state
    };
 
    const handleKeyPress = (e) => {
       if (e.key === "Enter") {
          // Exit edit mode when Enter is pressed
          setIsEditMode(false);
+         console.log(floorPlan);
+         return axios.put(process.env.REACT_APP_API_URL + "/floorMap", floorPlan).then(() => {
+            loadFloorPlans();
+            console.log("relod");
+         });
       }
    };
 

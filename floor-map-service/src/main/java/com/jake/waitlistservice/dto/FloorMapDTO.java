@@ -7,8 +7,8 @@ import java.util.List;
 
 @Data
 public class FloorMapDTO {
-    private BigInteger id;
-    private BigInteger businessId;
+    private Long id;
+    private Long businessId;
     private String name;
     private List<FloorMapItemDTO> floorMapItems;
 }
