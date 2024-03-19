@@ -254,7 +254,8 @@ const SeatMap = () => {
                         <Layer ref={layerRef}>
                            {generateGridLines()}
 
-                           {floorPlan.floorMapItems &&
+                           {floorPlan &&
+                              floorPlan.floorMapItems &&
                               floorPlan.floorMapItems.map((shape) => {
                                  switch (shape.tableType) {
                                     case "custom":
