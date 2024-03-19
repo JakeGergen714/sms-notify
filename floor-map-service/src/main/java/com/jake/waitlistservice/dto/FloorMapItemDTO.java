@@ -11,7 +11,10 @@ public class FloorMapItemDTO {
     private long floorMapId;
 
     private String name;
-    private int minPartySize;
-    private int maxPartySize;
+    private String tableType;
+    private Integer xPosition;
+    private Integer yPosition;
+    private Integer minPartySize;
+    private Integer maxPartySize;
     private boolean isReservable;
 }

@@ -33,13 +33,25 @@ public class FloorMapService {
         return dto;
     }
 
+    private FloorMapItem toEntity(FloorMapItemDTO dto) {
+        FloorMapItem entity = new FloorMapItem();
+        entity.setId(dto.getId());
+        entity.setFloorMapId(dto.getFloorMapId());
+        entity.setName(dto.getName());
+        entity.setTableType(dto.getTableType());
+        entity.setXPosition(dto.getXPosition());
+        entity.setYPosition(dto.getYPosition());
+        entity.setMinTableSize(dto.getMinPartySize());
+        entity.setMaxTableSize(dto.getMaxPartySize());
+        entity.setReservable(dto.isReservable());
+        return entity;
+    }
+
     public List<FloorMapDTO> findAllForBusinessId(long businessId) {
         List<FloorMap> floorMaps = floorMapRepository.findAllByBusinessId(businessId);
         List<FloorMapDTO> floorMapDTOS = new ArrayList<>();
         for (FloorMap floorMap : floorMaps) {
             List<FloorMapItem> floorMapItems = findAllForMapId(floorMap.getId());
-
-
             FloorMapDTO floorMapDTO = new FloorMapDTO();
             floorMapDTO.setId(floorMap.getId());
             floorMapDTO.setBusinessId(businessId);
@@ -60,7 +72,10 @@ public class FloorMapService {
             floorMap = new FloorMap();
             floorMap.setName(floorMapDTO.getName());
             floorMap.setBusinessId(businessId);
+            log.info("Saved Floor Plan <{}>.", floorMap);
             FloorMap saved =  floorMapRepository.save(floorMap);
+
+            repo.saveAll(floorMapDTO.getFloorMapItems().stream().map(this::toEntity).toList());
         } else {
             FloorMap existing = floorMapOptional.get();
             log.info("Found existing Floor Plan <{}>.", existing);
@@ -68,6 +83,7 @@ public class FloorMapService {
             log.info("Edited existing Floor Plan <{}>.", existing);
             floorMap = floorMapRepository.save(existing);
             log.info("Saved Floor Plan <{}>.", existing);
+            repo.saveAll(floorMapDTO.getFloorMapItems().stream().map(this::toEntity).toList());
         }
 
         return floorMap;

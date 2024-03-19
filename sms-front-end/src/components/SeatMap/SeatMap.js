@@ -122,7 +122,13 @@ const SeatMap = () => {
       }
 
       // Construct the new shape object
-      const newShape = { id: uuidv4(), x, y, tableType: currentTableType };
+      const newShape = { xPosition: x, yPosition: y, tableType: currentTableType };
+      floorPlan.floorMapItems.add(newShape);
+      
+      return axios.put(process.env.REACT_APP_API_URL + "/floorMap", floorPlan).then(() => {
+         loadFloorPlans();
+         console.log("relod");
+      });
 
       // Add the new shape to the shapes array
       setShapes([...shapes, newShape]);
@@ -249,36 +255,14 @@ const SeatMap = () => {
                         <Layer ref={layerRef}>
                            {generateGridLines()}
 
-                           {shapes.map((shape) => {
+                           {floorPlan.floorMapItems.map((shape) => {
                               switch (shape.tableType) {
-                                 case "circle":
-                                    return (
-                                       <CircleTable
-                                          key={shape.id}
-                                          xPos={shape.x}
-                                          yPos={shape.y}
-                                          radius={20}
-                                          onDragEnd={(e) => handleDragEnd(shape.id, e)}
-                                          onClick={(e) => handleTableClick(shape)}
-                                       />
-                                    );
-                                 case "rectangle":
-                                    return (
-                                       <RectangleTable
-                                          key={shape.id}
-                                          xPos={shape.x}
-                                          yPos={shape.y}
-                                          width={40}
-                                          height={40}
-                                          onDragEnd={(e) => handleDragEnd(shape.id, e)}
-                                       />
-                                    );
                                  case "custom":
                                     return (
                                        <CustomShape
                                           key={shape.id}
-                                          xPos={shape.x}
-                                          yPos={shape.y}
+                                          xPos={shape.xPosition}
+                                          yPos={shape.yPosition}
                                           width={50}
                                           height={50}
                                           onDragEnd={(e) => handleDragEnd(shape.id, e)}

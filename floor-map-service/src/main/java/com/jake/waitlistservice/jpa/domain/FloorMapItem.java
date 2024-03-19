@@ -19,6 +19,14 @@ public class FloorMapItem {
     private String name;
 
     @Column
+    private String tableType;
+
+    @Column
+    private Integer xPosition;
+
+    @Column Integer yPosition;
+
+    @Column
     private int minTableSize;
 
     @Column
