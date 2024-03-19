@@ -1,5 +1,6 @@
 package com.jake.waitlistservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.math.BigInteger;
@@ -12,7 +13,9 @@ public class FloorMapItemDTO {
 
     private String name;
     private String tableType;
+    @JsonProperty("xPosition")
     private Integer xPosition;
+    @JsonProperty("yPosition")
     private Integer yPosition;
     private Integer minPartySize;
     private Integer maxPartySize;
