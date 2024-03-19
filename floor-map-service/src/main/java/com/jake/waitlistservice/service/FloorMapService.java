@@ -70,7 +70,10 @@ public class FloorMapService {
     }
 
     public FloorMap save(FloorMapDTO floorMapDTO, long businessId) {
-        Optional<FloorMap> floorMapOptional = floorMapRepository.findById(floorMapDTO.getId());
+        Optional<FloorMap> floorMapOptional = Optional.empty();
+        if(floorMapDTO.getId() != null) {
+            floorMapOptional = floorMapRepository.findById(floorMapDTO.getId());
+        }
         FloorMap floorMap;
         if(floorMapOptional.isEmpty()) {
             log.info("No existing floor plan found");
