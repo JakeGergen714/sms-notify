@@ -27,10 +27,10 @@ public class FloorMapItem {
     @Column Integer yPosition;
 
     @Column
-    private int minTableSize;
+    private Integer minTableSize;
 
     @Column
-    private int maxTableSize;
+    private Integer maxTableSize;
 
     @Column
     private boolean isReservable;

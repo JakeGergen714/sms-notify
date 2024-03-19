@@ -10,9 +10,9 @@ import java.math.BigInteger;
 public class FloorMap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column
-    private long businessId;
+    private Long businessId;
     @Column
     private String name;
 }
