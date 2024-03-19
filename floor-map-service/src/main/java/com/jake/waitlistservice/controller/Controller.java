@@ -25,7 +25,7 @@ public class Controller {
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     // Replace with your allowed origin
     @GetMapping(value = "/floorMap")
-    public ResponseEntity<List<FloorMap>> getAllFloorMaps(Authentication authenticationToken) {
+    public ResponseEntity<List<FloorMapDTO>> getAllFloorMaps(Authentication authenticationToken) {
         log.info("GET /floorMap");
 
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
@@ -33,7 +33,7 @@ public class Controller {
         log.info(jwt.getClaims());
         long businessId =Long.valueOf(jwt.getClaimAsString("businessId"));
 
-        List<FloorMap> items = service.findAllForBusinessId(businessId);
+        List<FloorMapDTO> items = service.findAllForBusinessId(businessId);
         log.info("Found Items <{}>", items);
         return ResponseEntity.ok(items);
     }

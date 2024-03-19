@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +22,34 @@ public class FloorMapService {
     private final FloorMapItemRepository repo;
     private final FloorMapRepository floorMapRepository;
 
-    public List<FloorMap> findAllForBusinessId(long businessId) {
-        return floorMapRepository.findAllByBusinessId(businessId);
+    private FloorMapItemDTO toDto (FloorMapItem entity) {
+        FloorMapItemDTO dto = new FloorMapItemDTO();
+        dto.setId(entity.getId());
+        dto.setFloorMapId(entity.getFloorMapId());
+        dto.setName(entity.getName());
+        dto.setMaxPartySize(entity.getMaxTableSize());
+        dto.setMinPartySize(entity.getMinTableSize());
+        dto.setReservable(entity.isReservable());
+        return dto;
+    }
+
+    public List<FloorMapDTO> findAllForBusinessId(long businessId) {
+        List<FloorMap> floorMaps = floorMapRepository.findAllByBusinessId(businessId);
+        List<FloorMapDTO> floorMapDTOS = new ArrayList<>();
+        for (FloorMap floorMap : floorMaps) {
+            List<FloorMapItem> floorMapItems = findAllForMapId(floorMap.getId());
+
+
+            FloorMapDTO floorMapDTO = new FloorMapDTO();
+            floorMapDTO.setId(floorMap.getId());
+            floorMapDTO.setBusinessId(businessId);
+            floorMapDTO.setName(floorMap.getName());
+            floorMapDTO.setFloorMapItems(floorMapItems.stream().map(this::toDto).toList());
+            floorMapDTOS.add(floorMapDTO);
+        }
+
+        return floorMapDTOS;
+
     }
 
     public FloorMap save(FloorMapDTO floorMapDTO, long businessId) {
@@ -47,7 +74,7 @@ public class FloorMapService {
     }
 
 
-    public List<FloorMapItem> findAllForUser(long floorMapId) {
+    public List<FloorMapItem> findAllForMapId(long floorMapId) {
         return repo.findAllByFloorMapId(floorMapId);
     }
 
