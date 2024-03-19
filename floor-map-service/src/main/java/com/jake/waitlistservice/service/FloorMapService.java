@@ -106,6 +106,7 @@ public class FloorMapService {
             log.info("Generated name <{}>", name);
         }
         floorMapItem.setName(name);
+        floorMapItem.setTableType(floorMapItemDTO.getTableType());
         floorMapItem.setMinTableSize(floorMapItemDTO.getMinPartySize());
         floorMapItem.setMinTableSize(floorMapItemDTO.getMaxPartySize());
         floorMapItem.setReservable(floorMapItemDTO.isReservable());

@@ -23,7 +23,7 @@ const SeatMap = () => {
    const [currentTable, setCurrentTable] = useState(null);
    const [floorPlan, setFloorPlan] = useState(null);
    const [floorPlans, setFloorPlans] = useState([]);
-   const [shapes, setShapes] = useState([]);
+   const [tables, setTables] = useState([]);
    const [isHoveringOverEdit, setIsHoveringOverEdit] = useState(false);
    const [isEditMode, setIsEditMode] = useState(false);
    const layerRef = useRef(null);
