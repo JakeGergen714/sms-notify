@@ -123,6 +123,7 @@ const SeatMap = () => {
 
       // Construct the new shape object
       const newShape = { xPosition: x, yPosition: y, tableType: currentTableType, floorMapId: floorPlan.id };
+      console.log(newShape);
 
       axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", newShape).then(() => {
          loadFloorPlans();
