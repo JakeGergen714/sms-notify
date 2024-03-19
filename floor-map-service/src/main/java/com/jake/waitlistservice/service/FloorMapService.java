@@ -82,8 +82,6 @@ public class FloorMapService {
             floorMap.setBusinessId(businessId);
             log.info("Saved Floor Plan <{}>.", floorMap);
             FloorMap saved =  floorMapRepository.save(floorMap);
-
-            repo.saveAll(floorMapDTO.getFloorMapItems().stream().map(this::toEntity).toList());
         } else {
             FloorMap existing = floorMapOptional.get();
             log.info("Found existing Floor Plan <{}>.", existing);
