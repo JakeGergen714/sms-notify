@@ -254,24 +254,25 @@ const SeatMap = () => {
                         <Layer ref={layerRef}>
                            {generateGridLines()}
 
-                           {floorPlan.floorMapItems.map((shape) => {
-                              switch (shape.tableType) {
-                                 case "custom":
-                                    return (
-                                       <CustomShape
-                                          key={shape.id}
-                                          xPos={shape.xPosition}
-                                          yPos={shape.yPosition}
-                                          width={50}
-                                          height={50}
-                                          onDragEnd={(e) => handleDragEnd(shape.id, e)}
-                                          onClick={(e) => handleTableClick(shape)}
-                                       />
-                                    );
-                                 default:
-                                    return null;
-                              }
-                           })}
+                           {floorPlan.floorMapItems &&
+                              floorPlan.floorMapItems.map((shape) => {
+                                 switch (shape.tableType) {
+                                    case "custom":
+                                       return (
+                                          <CustomShape
+                                             key={shape.id}
+                                             xPos={shape.xPosition}
+                                             yPos={shape.yPosition}
+                                             width={50}
+                                             height={50}
+                                             onDragEnd={(e) => handleDragEnd(shape.id, e)}
+                                             onClick={(e) => handleTableClick(shape)}
+                                          />
+                                       );
+                                    default:
+                                       return null;
+                                 }
+                              })}
                         </Layer>
                      </Stage>
                   </div>
