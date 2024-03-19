@@ -125,8 +125,10 @@ const SeatMap = () => {
       const newShape = { xPosition: x, yPosition: y, tableType: currentTableType, floorMapId: floorPlan.id };
       console.log(newShape);
 
+      var currentFloorPlan = floorPlan;
       axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", newShape).then(() => {
          loadFloorPlans();
+         setFloorPlan(floorPlans[currentFloorPlan.id]);
          console.log("relod");
       });
    };
