@@ -42,6 +42,5 @@ jobs:
 
          - name: Build and push basic-cloud-gateway Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/basic-cloud-gateway:$GITHUB_SHA -t ghcr.io/jakegergen714/basic-cloud-gateway:latest ./basic-cloud-gateway
-              docker push ghcr.io/jakegergen714/basic-cloud-gateway:$GITHUB_SHA
+              docker build -t ghcr.io/jakegergen714/basic-cloud-gateway:latest ./basic-cloud-gateway
               docker push ghcr.io/jakegergen714/basic-cloud-gateway:latest

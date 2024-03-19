@@ -48,6 +48,5 @@ jobs:
 
          - name: Build and push Waitlist Docker image
            run: |
-              docker build -t ghcr.io/jakegergen714/floor-map-service:$GITHUB_SHA -t ghcr.io/jakegergen714/floor-map-service:latest ./floor-map-service
-              docker push ghcr.io/jakegergen714/floor-map-service:$GITHUB_SHA
+              docker build -t ghcr.io/jakegergen714/floor-map-service:latest ./floor-map-service
               docker push ghcr.io/jakegergen714/floor-map-service:latest
