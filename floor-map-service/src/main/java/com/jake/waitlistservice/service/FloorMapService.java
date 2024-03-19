@@ -27,6 +27,8 @@ public class FloorMapService {
         dto.setFloorMapId(entity.getFloorMapId());
         dto.setName(entity.getName());
         dto.setTableType(entity.getTableType());
+        dto.setXPosition(entity.getXPosition());
+        dto.setYPosition(entity.getYPosition());
         dto.setMaxPartySize(entity.getMaxTableSize());
         dto.setMinPartySize(entity.getMinTableSize());
         dto.setReservable(entity.isReservable());
@@ -111,6 +113,9 @@ public class FloorMapService {
         floorMapItem.setMinTableSize(floorMapItemDTO.getMinPartySize());
         floorMapItem.setMinTableSize(floorMapItemDTO.getMaxPartySize());
         floorMapItem.setReservable(floorMapItemDTO.isReservable());
+        floorMapItem.setXPosition(floorMapItemDTO.getXPosition());
+        floorMapItem.setYPosition(floorMapItemDTO.getYPosition());
+
         repo.save(floorMapItem);
     }
 
