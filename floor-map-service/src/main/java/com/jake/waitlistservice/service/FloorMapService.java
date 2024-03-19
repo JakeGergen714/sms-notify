@@ -26,6 +26,7 @@ public class FloorMapService {
         dto.setId(entity.getId());
         dto.setFloorMapId(entity.getFloorMapId());
         dto.setName(entity.getName());
+        dto.setTableType(entity.getTableType());
         dto.setMaxPartySize(entity.getMaxTableSize());
         dto.setMinPartySize(entity.getMinTableSize());
         dto.setReservable(entity.isReservable());
