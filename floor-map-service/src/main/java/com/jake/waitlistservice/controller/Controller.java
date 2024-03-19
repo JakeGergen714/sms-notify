@@ -72,6 +72,7 @@ public class Controller {
     // Replace with your allowed origin
     @PostMapping(value = "/floorMapItem")
     public ResponseEntity<HttpStatus> save(Authentication authenticationToken, @RequestBody FloorMapItemDTO floorMapItemDTO) {
+        log.info("POST /floorMapItem <{}>", floorMapItemDTO);
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
 
