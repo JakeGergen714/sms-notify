@@ -3,7 +3,6 @@ package com.jake.waitlistservice.controller;
 import com.jake.waitlistservice.dto.FloorMapDTO;
 import com.jake.waitlistservice.dto.FloorMapItemDTO;
 import com.jake.waitlistservice.jpa.domain.FloorMap;
-import com.jake.waitlistservice.jpa.domain.FloorMapItem;
 import com.jake.waitlistservice.service.FloorMapService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -77,7 +75,7 @@ public class Controller {
         String username = jwt.getSubject();
 
         log.info("Adding floor map item item for username <{}>", username);
-        service.add(floorMapItemDTO);
+        service.save(floorMapItemDTO);
 
         return ResponseEntity.ok().build();
     }

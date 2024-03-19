@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -97,14 +96,24 @@ public class FloorMapService {
         return repo.findAllByFloorMapId(floorMapId);
     }
 
-    public void add(FloorMapItemDTO floorMapItemDTO) {
+    public void save(FloorMapItemDTO floorMapItemDTO) {
         FloorMapItem floorMapItem = new FloorMapItem();
 
         floorMapItem.setFloorMapId(floorMapItemDTO.getFloorMapId());
-        floorMapItem.setName(floorMapItemDTO.getName());
+        String name = floorMapItemDTO.getName();
+        if(name == null) {
+            name = generateFloorMapItemName(floorMapItemDTO);
+            log.info("Generated name <{}>", name);
+        }
+        floorMapItem.setName(name);
         floorMapItem.setMinTableSize(floorMapItemDTO.getMinPartySize());
         floorMapItem.setMinTableSize(floorMapItemDTO.getMaxPartySize());
         floorMapItem.setReservable(floorMapItemDTO.isReservable());
         repo.save(floorMapItem);
+    }
+
+    private String generateFloorMapItemName(FloorMapItemDTO floorMapItemDTO) {
+        int count = repo.findAllByFloorMapId(floorMapItemDTO.getFloorMapId()).size();
+        return String.valueOf(count + 1);
     }
 }

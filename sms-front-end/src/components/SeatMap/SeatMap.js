@@ -122,14 +122,12 @@ const SeatMap = () => {
       }
 
       // Construct the new shape object
-      const newShape = { xPosition: x, yPosition: y, tableType: currentTableType, floorPlanId: floorPlan.id };
+      const newShape = { xPosition: x, yPosition: y, tableType: currentTableType, floorMapId: floorPlan.id };
 
       axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", newShape).then(() => {
          loadFloorPlans();
          console.log("relod");
       });
-
-   
    };
 
    const getCenterOfRectangleX = function (topLeftCornerX, width) {
