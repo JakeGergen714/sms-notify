@@ -152,9 +152,14 @@ const SeatMap = () => {
       setCurrentTable(table);
    };
 
+   const selectFloorPlan = (selectedFloorPlan) => {
+      console.log(selectedFloorPlan);
+      setFloorPlan(selectedFloorPlan);
+   };
+
    const generateDropdownItems = () => {
       return floorPlans.map((curFloorPlan) => (
-         <Dropdown.Item key={curFloorPlan.id} onClick={() => setFloorPlan(curFloorPlan)}>
+         <Dropdown.Item key={curFloorPlan.id} onClick={() => selectFloorPlan(curFloorPlan)}>
             {curFloorPlan.name}
          </Dropdown.Item>
       ));
