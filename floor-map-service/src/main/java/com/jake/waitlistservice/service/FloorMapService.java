@@ -48,10 +48,13 @@ public class FloorMapService {
     }
 
     public List<FloorMapDTO> findAllForBusinessId(long businessId) {
+        log.info("Searching for Floor Maps by businessId <{}>", businessId);
         List<FloorMap> floorMaps = floorMapRepository.findAllByBusinessId(businessId);
+        log.info("Found floor maps <{}>", floorMaps);
         List<FloorMapDTO> floorMapDTOS = new ArrayList<>();
         for (FloorMap floorMap : floorMaps) {
             List<FloorMapItem> floorMapItems = findAllForMapId(floorMap.getId());
+            log.info("Found Floor Map Items <{}> for Floor map Id <{}>", floorMapItems,  floorMap.getId());
             FloorMapDTO floorMapDTO = new FloorMapDTO();
             floorMapDTO.setId(floorMap.getId());
             floorMapDTO.setBusinessId(businessId);
