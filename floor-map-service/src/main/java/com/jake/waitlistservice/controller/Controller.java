@@ -89,7 +89,7 @@ public class Controller {
         String username = jwt.getSubject();
 
         log.info("Adding floor map item item for username <{}>", username);
-        service.save(floorMapItemDTO);
+        service.update(floorMapItemDTO);
 
         return ResponseEntity.ok().build();
     }
