@@ -79,23 +79,22 @@ const SeatMap = () => {
    const handleDragEnd = (id, event) => {
       console.log("drag");
       setFloorPlan((floorPlan) => {
-         console.log(floorPlan);
-         floorPlan.map((shape) => {
-            if (shape.id === id) {
-               if (shape.tableType === "circle") {
+         floorPlan.floorMapItems.map((table) => {
+            if (table.id === id) {
+               if (table.tableType === "circle") {
                   var x = calculateClosestIntersection(event.target.x());
                   var y = calculateClosestIntersection(event.target.y());
 
-                  return { ...shape, x, y }; // Preserve other shape properties
-               } else if (shape.tableType === "rectangle" || shape.tableType === "custom") {
+                  return { ...table, x, y }; // Preserve other table properties
+               } else if (table.tableType === "rectangle" || table.tableType === "custom") {
                   // Assuming the rectangle is 40x40 pixels
                   var x = calculateClosestIntersection(getCenterOfRectangleX(event.target.x(), 40)) - 20; // Adjust back to top-left
                   var y = calculateClosestIntersection(getCenterOfRectangleY(event.target.y(), 40)) - 20; // Adjust back to top-left
 
-                  return { ...shape, id: uuidv4(), x, y }; // Preserve other shape properties
+                  return { ...table, id: uuidv4(), x, y }; // Preserve other table properties
                }
             }
-            return shape;
+            return table;
          });
       });
 
@@ -125,7 +124,7 @@ const SeatMap = () => {
          y = getCenterOfRectangleY(y, 40) - 40; // Adjust assuming the rectangle is 40x40
       }
 
-      // Construct the new shape object
+      // Construct the new table object
       const newShape = { xPosition: x, yPosition: y, tableType: currentTableType, floorMapId: floorPlan.id };
 
       var currentFloorPlan = floorPlan;
