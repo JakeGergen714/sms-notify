@@ -128,7 +128,7 @@ const SeatMap = () => {
       var currentFloorPlan = floorPlan;
       axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", newShape).then(() => {
          loadFloorPlans();
-         const r = floorPlans.filter(floorPlan->floorPlan.id == currentFloorPlan.id);
+         const r = floorPlans.filter((floorPlan) => floorPlan.id == currentFloorPlan.id);
          console.log(r);
          setFloorPlan(r);
          console.log("relod");
