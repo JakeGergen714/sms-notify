@@ -128,7 +128,7 @@ public class FloorMapService {
             return;
         }
         FloorMapItem existingItem = existingItemOptional.get();
-
+        log.info("Found <{}>", existingItem);
         existingItem.setXPosition(floorMapItemDTO.getXPosition());
         existingItem.setYPosition(floorMapItemDTO.getYPosition());
         existingItem.setName(floorMapItemDTO.getName());
@@ -137,7 +137,7 @@ public class FloorMapService {
         existingItem.setMaxTableSize(floorMapItemDTO.getMaxPartySize());
         existingItem.setTableType(floorMapItemDTO.getTableType());
 
-        repo.save(existingItem);
+        log.info("Added <{}>", repo.save(existingItem));
     }
 
     private String generateFloorMapItemName(FloorMapItemDTO floorMapItemDTO) {
