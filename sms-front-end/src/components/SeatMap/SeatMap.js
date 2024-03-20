@@ -60,7 +60,6 @@ const SeatMap = () => {
       console.log(floorMapDto);
       return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto).then(() => {
          loadFloorPlans();
-         console.log("relod");
       });
    };
 
@@ -84,6 +83,14 @@ const SeatMap = () => {
                // Assuming the rectangle is 40x40 pixels
                var x = calculateClosestIntersection(getCenterOfRectangleX(event.target.x(), 40)) - 20; // Adjust back to top-left
                var y = calculateClosestIntersection(getCenterOfRectangleY(event.target.y(), 40)) - 20; // Adjust back to top-left
+
+               table.xPosition = x;
+               table.yPosition = y;
+
+               axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", table).then(() => {
+                  loadFloorPlans();
+               });
+
                return { ...table, xPosition: x, yPosition: y }; // Update positions and return the updated table
             }
             return table; // Return the table unchanged if it's not the one being dragged
