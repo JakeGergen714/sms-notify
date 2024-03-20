@@ -37,16 +37,10 @@ const SeatMap = () => {
       axios
          .get(process.env.REACT_APP_API_URL + "/floorMap")
          .then((res) => {
-            console.log(res.data);
-            console.log("Old: ", floorPlans);
             setFloorPlans(res.data); // Set state here after fetching
-            console.log("New: ", floorPlans);
-            console.log("Old: ", floorPlan);
-            console.log("New: ", floorPlans.filter((updatedFloorPlan) => updatedFloorPlan.id == floorPlan.id)[0]);
-
             if (floorPlan != null) {
                //If a floor plan is currently selected, reload it with the latest data
-               setFloorPlan(floorPlans.filter((updatedFloorPlan) => updatedFloorPlan.id == floorPlan.id)[0]);
+               setFloorPlan(res.data.filter((updatedFloorPlan) => updatedFloorPlan.id == floorPlan.id)[0]);
             }
          })
          .catch((err) => {
