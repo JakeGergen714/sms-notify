@@ -39,6 +39,10 @@ const SeatMap = () => {
          .then((res) => {
             console.log(res.data);
             setFloorPlans(res.data); // Set state here after fetching
+            if (floorPlan != null) {
+               //If a floor plan is currently selected, reload it with the latest data
+               setFloorPlan(floorPlans.filter((updatedFloorPlan) => updatedFloorPlan.id == floorPlan.id)[0]);
+            }
          })
          .catch((err) => {
             console.error(err);
@@ -123,14 +127,10 @@ const SeatMap = () => {
 
       // Construct the new shape object
       const newShape = { xPosition: x, yPosition: y, tableType: currentTableType, floorMapId: floorPlan.id };
-      console.log(newShape);
 
       var currentFloorPlan = floorPlan;
       axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", newShape).then(() => {
          loadFloorPlans();
-
-         setFloorPlan(floorPlans.filter((floorPlan) => floorPlan.id == currentFloorPlan.id)[0]);
-         console.log("relod");
       });
    };
 
