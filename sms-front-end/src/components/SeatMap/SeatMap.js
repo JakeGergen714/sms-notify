@@ -87,7 +87,7 @@ const SeatMap = () => {
                table.xPosition = x;
                table.yPosition = y;
 
-               axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", table).then(() => {
+               axios.put(process.env.REACT_APP_API_URL + "/floorMapItem", table).then(() => {
                   loadFloorPlans();
                });
 
