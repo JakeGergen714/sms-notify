@@ -78,25 +78,26 @@ const SeatMap = () => {
 
    const handleDragEnd = (id, event) => {
       console.log("drag");
-      setFloorPlan((tables) =>
-         tables.map((table) => {
-            if (table.id === id) {
-               if (table.tableType === "circle") {
+      setFloorPlan((floorPlan) => {
+         console.log(floorPlan);
+         floorPlan.map((shape) => {
+            if (shape.id === id) {
+               if (shape.tableType === "circle") {
                   var x = calculateClosestIntersection(event.target.x());
                   var y = calculateClosestIntersection(event.target.y());
 
-                  return { ...table, x, y }; // Preserve other shape properties
-               } else if (table.tableType === "rectangle" || table.tableType === "custom") {
+                  return { ...shape, x, y }; // Preserve other shape properties
+               } else if (shape.tableType === "rectangle" || shape.tableType === "custom") {
                   // Assuming the rectangle is 40x40 pixels
                   var x = calculateClosestIntersection(getCenterOfRectangleX(event.target.x(), 40)) - 20; // Adjust back to top-left
                   var y = calculateClosestIntersection(getCenterOfRectangleY(event.target.y(), 40)) - 20; // Adjust back to top-left
 
-                  return { ...table, x, y }; // Preserve other shape properties
+                  return { ...shape, id: uuidv4(), x, y }; // Preserve other shape properties
                }
             }
-            return table;
-         })
-      );
+            return shape;
+         });
+      });
 
       layerRef.current.draw();
    };
