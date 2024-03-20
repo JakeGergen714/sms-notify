@@ -87,6 +87,8 @@ const SeatMap = () => {
                table.xPosition = x;
                table.yPosition = y;
 
+               console.log("updating table", table);
+
                axios.put(process.env.REACT_APP_API_URL + "/floorMapItem", table).then(() => {
                   loadFloorPlans();
                });
@@ -129,7 +131,7 @@ const SeatMap = () => {
       // Construct the new table object
       const newShape = { xPosition: x, yPosition: y, tableType: currentTableType, floorMapId: floorPlan.id };
 
-      var currentFloorPlan = floorPlan;
+      console.log("adding new table", newShape);
       axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", newShape).then(() => {
          loadFloorPlans();
       });
