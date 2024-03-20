@@ -120,6 +120,26 @@ public class FloorMapService {
         repo.save(floorMapItem);
     }
 
+    public void update(FloorMapItemDTO floorMapItemDTO) {
+        Optional<FloorMapItem> existingItemOptional = repo.findById(floorMapItemDTO.getId());
+
+        if(existingItemOptional.isEmpty()) {
+            log.info("Update failed no existing Floor Map Item found with id <{}>", floorMapItemDTO.getId());
+            return;
+        }
+        FloorMapItem existingItem = existingItemOptional.get();
+
+        existingItem.setXPosition(floorMapItemDTO.getXPosition());
+        existingItem.setYPosition(floorMapItemDTO.getYPosition());
+        existingItem.setName(floorMapItemDTO.getName());
+        existingItem.setReservable(floorMapItemDTO.isReservable());
+        existingItem.setMinTableSize(floorMapItemDTO.getMinPartySize());
+        existingItem.setMaxTableSize(floorMapItemDTO.getMaxPartySize());
+        existingItem.setTableType(floorMapItemDTO.getTableType());
+
+        repo.save(existingItem);
+    }
+
     private String generateFloorMapItemName(FloorMapItemDTO floorMapItemDTO) {
         int count = repo.findAllByFloorMapId(floorMapItemDTO.getFloorMapId()).size();
         return String.valueOf(count + 1);

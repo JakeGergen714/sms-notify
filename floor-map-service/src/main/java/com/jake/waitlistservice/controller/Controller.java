@@ -79,4 +79,18 @@ public class Controller {
 
         return ResponseEntity.ok().build();
     }
+
+    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
+    // Replace with your allowed origin
+    @PutMapping(value = "/floorMapItem")
+    public ResponseEntity<HttpStatus> updateFloorPlanItem(Authentication authenticationToken, @RequestBody FloorMapItemDTO floorMapItemDTO) {
+        log.info("PUT /floorMapItem <{}>", floorMapItemDTO);
+        Jwt jwt = (Jwt) authenticationToken.getPrincipal();
+        String username = jwt.getSubject();
+
+        log.info("Adding floor map item item for username <{}>", username);
+        service.save(floorMapItemDTO);
+
+        return ResponseEntity.ok().build();
+    }
 }
