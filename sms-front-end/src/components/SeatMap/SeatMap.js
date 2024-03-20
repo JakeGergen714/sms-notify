@@ -81,17 +81,12 @@ const SeatMap = () => {
       setFloorPlan((floorPlan) => {
          floorPlan.floorMapItems.map((table) => {
             if (table.id === id) {
-               if (table.tableType === "circle") {
-                  var x = calculateClosestIntersection(event.target.x());
-                  var y = calculateClosestIntersection(event.target.y());
-
-                  return { ...table, x, y }; // Preserve other table properties
-               } else if (table.tableType === "rectangle" || table.tableType === "custom") {
+               if (table.tableType === "custom") {
                   // Assuming the rectangle is 40x40 pixels
                   var x = calculateClosestIntersection(getCenterOfRectangleX(event.target.x(), 40)) - 20; // Adjust back to top-left
                   var y = calculateClosestIntersection(getCenterOfRectangleY(event.target.y(), 40)) - 20; // Adjust back to top-left
 
-                  return { ...table, id: uuidv4(), x, y }; // Preserve other table properties
+                  return { ...table, x, y }; // Preserve other table properties
                }
             }
             return table;
