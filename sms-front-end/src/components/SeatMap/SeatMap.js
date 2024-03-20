@@ -77,23 +77,23 @@ const SeatMap = () => {
    };
 
    const handleDragEnd = (id, event) => {
-      console.log("drag");
-      setFloorPlan((floorPlan) => {
-         floorPlan.floorMapItems.map((table) => {
-            if (table.id === id) {
-               if (table.tableType === "custom") {
-                  // Assuming the rectangle is 40x40 pixels
-                  var x = calculateClosestIntersection(getCenterOfRectangleX(event.target.x(), 40)) - 20; // Adjust back to top-left
-                  var y = calculateClosestIntersection(getCenterOfRectangleY(event.target.y(), 40)) - 20; // Adjust back to top-left
-
-                  return { ...table, x, y }; // Preserve other table properties
-               }
+      setFloorPlan((currentFloorPlan) => {
+         // Create a deep copy of the floorMapItems to ensure immutability
+         const updatedFloorMapItems = currentFloorPlan.floorMapItems.map((table) => {
+            if (table.id === id && table.tableType === "custom") {
+               // Assuming the rectangle is 40x40 pixels
+               var x = calculateClosestIntersection(getCenterOfRectangleX(event.target.x(), 40)) - 20; // Adjust back to top-left
+               var y = calculateClosestIntersection(getCenterOfRectangleY(event.target.y(), 40)) - 20; // Adjust back to top-left
+               return { ...table, xPosition: x, yPosition: y }; // Update positions and return the updated table
             }
-            return table;
+            return table; // Return the table unchanged if it's not the one being dragged
          });
+
+         // Return a new floorPlan object with the updated floorMapItems
+         return { ...currentFloorPlan, floorMapItems: updatedFloorMapItems };
       });
 
-      layerRef.current.draw();
+      layerRef.current.draw(); // Redraw the layer to reflect changes
    };
 
    const handleDragEndToolBox = (event) => {
