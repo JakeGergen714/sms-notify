@@ -54,6 +54,7 @@ const SeatMap = () => {
             }
          })
          .catch((err) => {
+            console.log("load floor plans failed");
             console.error(err);
             setFloorPlans([]); // Set to an empty array in case of error
          });
@@ -87,9 +88,15 @@ const SeatMap = () => {
          name: name,
       };
       console.log(floorMapDto);
-      return axios.post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto).then(() => {
-         loadFloorPlans();
-      });
+      return axios
+         .post(process.env.REACT_APP_API_URL + "/floorMap", floorMapDto)
+         .then(() => {
+            loadFloorPlans();
+         })
+         .catch((err) => {
+            console.log("err");
+            console.log(err);
+         });
    };
 
    const handleDragStartToolbox = (event, shapeType) => {
