@@ -41,7 +41,7 @@ const Home = (content) => {
                onClick={() => {
                   setActivePage(2);
                }}
-               isActive={activePage == 1}
+               isActive={activePage == 2}
                text='Reservations'
                icon={PiMapTrifold}
                activeIcon={PiMapTrifoldBold}

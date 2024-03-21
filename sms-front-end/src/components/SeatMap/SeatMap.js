@@ -9,8 +9,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import { MdOutlineModeEdit, MdModeEdit } from "react-icons/md";
 
 import InputGroup from "react-bootstrap/InputGroup";
-import { Layer, Line, Stage } from "react-konva";
-import { v4 as uuidv4 } from "uuid";
+import { Layer, Line, Stage, Rect } from "react-konva";
 import CircleTable from "../Tables/Circle/CircleTable";
 import CustomShape from "../Tables/CustomShape/CustomShape";
 import RectangleTable from "../Tables/Rectangle/RectangleTable";
@@ -23,7 +22,11 @@ const SeatMap = () => {
    const [currentTable, setCurrentTable] = useState(null);
    const [floorPlan, setFloorPlan] = useState(null);
    const [floorPlans, setFloorPlans] = useState([]);
-   const [shapes, setShapes] = useState([]);
+   const [selectionRect, setSelectionRect] = useState({ isVisible: false, startX: 0, startY: 0, width: 0, height: 0 });
+   const [isSelecting, setIsSelecting] = useState(false);
+   const [selectedTables, setSelectedTables] = useState([]);
+   const [boundaryBox, setBoundaryBox] = useState({ isVisible: false, x: 0, y: 0, width: 0, height: 0 });
+
    const [isHoveringOverEdit, setIsHoveringOverEdit] = useState(false);
    const [isEditMode, setIsEditMode] = useState(false);
    const layerRef = useRef(null);
@@ -52,6 +55,25 @@ const SeatMap = () => {
    useEffect(() => {
       loadFloorPlans();
    }, []); // Empty dependency array means this effect runs once after initial render
+
+   useEffect(() => {
+      console.log("Selected tables changed");
+      console.log(floorPlan, selectedTables);
+
+      if (floorPlan && selectedTables) {
+         // Calculate boundary box for selected tables
+         if (selectedTables.length > 0) {
+            const minX = Math.min(...selectedTables.map((table) => table.xPosition));
+            const minY = Math.min(...selectedTables.map((table) => table.yPosition));
+            const maxX = Math.max(...selectedTables.map((table) => table.xPosition + 40)); // Assuming tables have a width property
+            const maxY = Math.max(...selectedTables.map((table) => table.yPosition + 40)); // Assuming tables have a height property
+
+            // Update boundary box state here (you need to add state for this)
+            console.log({ x: minX, y: minY, width: maxX - minX, height: maxY - minY, isVisible: true });
+            setBoundaryBox({ x: minX, y: minY, width: maxX - minX, height: maxY - minY, isVisible: true });
+         }
+      }
+   }, [selectedTables]);
 
    const addFloorPlan = (name) => {
       var floorMapDto = {
@@ -195,6 +217,47 @@ const SeatMap = () => {
       }
    };
 
+   const handleMouseDown = (e) => {
+      const stage = e.target.getStage();
+      const pointerPos = stage.getPointerPosition();
+      setSelectionRect({
+         ...selectionRect,
+         isVisible: true,
+         startX: pointerPos.x,
+         startY: pointerPos.y,
+         width: 0,
+         height: 0,
+      });
+      setIsSelecting(true);
+   };
+
+   const handleMouseMove = (e) => {
+      if (!isSelecting) return;
+      const stage = e.target.getStage();
+      const pointerPos = stage.getPointerPosition();
+      const width = pointerPos.x - selectionRect.startX;
+      const height = pointerPos.y - selectionRect.startY;
+      setSelectionRect({ ...selectionRect, width, height });
+   };
+
+   const handleMouseUp = () => {
+      setIsSelecting(false);
+      // Adjust start and end points based on the drag direction
+      const startX = selectionRect.width > 0 ? selectionRect.startX : selectionRect.startX + selectionRect.width;
+      const endX = selectionRect.width > 0 ? selectionRect.startX + selectionRect.width : selectionRect.startX;
+      const startY = selectionRect.height > 0 ? selectionRect.startY : selectionRect.startY + selectionRect.height;
+      const endY = selectionRect.height > 0 ? selectionRect.startY + selectionRect.height : selectionRect.startY;
+
+      const tablesWithinSelection = floorPlan.floorMapItems.filter((table) => {
+         // Now the logic checks the table position against the corrected start and end points
+         return table.xPosition >= startX && table.xPosition <= endX && table.yPosition >= startY && table.yPosition <= endY;
+      });
+
+      console.log("Selected tables", tablesWithinSelection);
+      setSelectedTables(tablesWithinSelection);
+      setSelectionRect({ ...selectionRect, isVisible: false }); // Hide selection rect
+   };
+
    return (
       <div className='seat-map-content'>
          <div className='seat-map-editor-container'>
@@ -238,7 +301,6 @@ const SeatMap = () => {
                   </Dropdown.Menu>
                </Dropdown>
             </div>
-
             <div className='seat-map-editor'>
                <div id='table-editor-panel' className='table-type-selector'>
                   <h1>Tables</h1>
@@ -254,7 +316,14 @@ const SeatMap = () => {
                </div>
                <div id='table-editor-panel' className='seat-map-container'>
                   <div className='seat-map-grid'>
-                     <Stage width={stageWidth} height={stageHeight} ref={stageRef} onDragOver={allowDrop}>
+                     <Stage
+                        width={stageWidth}
+                        height={stageHeight}
+                        ref={stageRef}
+                        onDragOver={allowDrop}
+                        onMouseDown={handleMouseDown}
+                        onMouseMove={handleMouseMove}
+                        onMouseUp={handleMouseUp}>
                         <Layer ref={layerRef}>
                            {generateGridLines()}
 
@@ -278,6 +347,28 @@ const SeatMap = () => {
                                        return null;
                                  }
                               })}
+                           {selectionRect.isVisible && (
+                              <Rect
+                                 x={selectionRect.startX}
+                                 y={selectionRect.startY}
+                                 width={selectionRect.width}
+                                 height={selectionRect.height}
+                                 fill='rgba(0,0,255,0.5)'
+                                 stroke='black'
+                                 strokeWidth={1}
+                              />
+                           )}
+                           {boundaryBox.isVisible && (
+                              <Rect
+                                 x={boundaryBox.x}
+                                 y={boundaryBox.y}
+                                 width={boundaryBox.width}
+                                 height={boundaryBox.height}
+                                 stroke='red'
+                                 strokeWidth={2}
+                                 dash={[4, 4]}
+                              />
+                           )}
                         </Layer>
                      </Stage>
                   </div>

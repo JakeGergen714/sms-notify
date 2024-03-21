@@ -14,8 +14,8 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 
 @Log4j2
-//@Component
-//@Order(-2) // The order is important to ensure this handler is invoked before the default one
+@Component
+@Order(-2) // The order is important to ensure this handler is invoked before the default one
 public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 
     @Override
