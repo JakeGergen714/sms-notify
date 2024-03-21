@@ -13,6 +13,9 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
+/**
+ * This web exception handler redirects back to the login page when refresh token is invalid.
+ */
 @Log4j2
 @Component
 @Order(-2) // The order is important to ensure this handler is invoked before the default one

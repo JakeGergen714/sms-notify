@@ -36,6 +36,13 @@ const SeatMap = () => {
    const stageWidth = window.innerWidth;
    const stageHeight = window.innerHeight;
 
+   const resetStates = () => {
+      setSelectionRect({ isVisible: false, startX: 0, startY: 0, width: 0, height: 0 });
+      setSelectedTables([]);
+      setIsSelecting(false);
+      setBoundaryBox({ isVisible: false, x: 0, y: 0, width: 0, height: 0 });
+   };
+
    const loadFloorPlans = () => {
       axios
          .get(process.env.REACT_APP_API_URL + "/floorMap")
@@ -63,10 +70,10 @@ const SeatMap = () => {
       if (floorPlan && selectedTables) {
          // Calculate boundary box for selected tables
          if (selectedTables.length > 0) {
-            const minX = Math.min(...selectedTables.map((table) => table.xPosition));
-            const minY = Math.min(...selectedTables.map((table) => table.yPosition));
-            const maxX = Math.max(...selectedTables.map((table) => table.xPosition + 40)); // Assuming tables have a width property
-            const maxY = Math.max(...selectedTables.map((table) => table.yPosition + 40)); // Assuming tables have a height property
+            const minX = Math.min(...selectedTables.map((table) => table.xPosition - 10));
+            const minY = Math.min(...selectedTables.map((table) => table.yPosition - 10));
+            const maxX = Math.max(...selectedTables.map((table) => table.xPosition + 60)); // Assuming tables have a width property
+            const maxY = Math.max(...selectedTables.map((table) => table.yPosition + 60)); // Assuming tables have a height property
 
             // Update boundary box state here (you need to add state for this)
             console.log({ x: minX, y: minY, width: maxX - minX, height: maxY - minY, isVisible: true });
@@ -181,11 +188,13 @@ const SeatMap = () => {
    const handleTableClick = (table) => {
       console.log(table);
       setCurrentTable(table);
+      resetStates();
    };
 
    const selectFloorPlan = (selectedFloorPlan) => {
       console.log(selectedFloorPlan);
       setFloorPlan(selectedFloorPlan);
+      resetStates();
    };
 
    const generateDropdownItems = () => {
@@ -198,6 +207,7 @@ const SeatMap = () => {
 
    const handleEditClick = () => {
       setIsEditMode(true);
+      resetStates();
    };
 
    const handleHeaderChange = (e) => {
@@ -220,6 +230,7 @@ const SeatMap = () => {
    const handleMouseDown = (e) => {
       const stage = e.target.getStage();
       const pointerPos = stage.getPointerPosition();
+      resetStates();
       setSelectionRect({
          ...selectionRect,
          isVisible: true,
@@ -353,7 +364,7 @@ const SeatMap = () => {
                                  y={selectionRect.startY}
                                  width={selectionRect.width}
                                  height={selectionRect.height}
-                                 fill='rgba(0,0,255,0.5)'
+                                 fill='rgba(0,0,255,0.1)'
                                  stroke='black'
                                  strokeWidth={1}
                               />
@@ -364,9 +375,9 @@ const SeatMap = () => {
                                  y={boundaryBox.y}
                                  width={boundaryBox.width}
                                  height={boundaryBox.height}
-                                 stroke='red'
+                                 stroke='blue'
+                                 fill='rgba(0,0,255,0.1)'
                                  strokeWidth={2}
-                                 dash={[4, 4]}
                               />
                            )}
                         </Layer>
