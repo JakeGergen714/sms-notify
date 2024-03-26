@@ -3,6 +3,7 @@ package com.jake.waitlistservice.controller;
 import com.jake.waitlistservice.dto.FloorMapDTO;
 import com.jake.waitlistservice.dto.FloorMapItemDTO;
 import com.jake.waitlistservice.jpa.domain.FloorMap;
+import com.jake.waitlistservice.jpa.domain.FloorMapItem;
 import com.jake.waitlistservice.service.FloorMapService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -69,15 +70,13 @@ public class Controller {
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     // Replace with your allowed origin
     @PostMapping(value = "/floorMapItem")
-    public ResponseEntity<HttpStatus> save(Authentication authenticationToken, @RequestBody FloorMapItemDTO floorMapItemDTO) {
+    public FloorMapItem save(Authentication authenticationToken, @RequestBody FloorMapItemDTO floorMapItemDTO) {
         log.info("POST /floorMapItem <{}>", floorMapItemDTO);
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
 
         log.info("Adding floor map item item for username <{}>", username);
-        service.save(floorMapItemDTO);
-
-        return ResponseEntity.ok().build();
+        return service.save(floorMapItemDTO);
     }
 
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")

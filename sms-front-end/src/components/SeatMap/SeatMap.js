@@ -419,9 +419,11 @@ const SeatMap = () => {
                         var copies = [];
                         selectedTables.map((table) => {
                            var copy = { ...table, id: null };
-                           copies.push(copy);
-                           axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", copy).then(() => {
+
+                           axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", copy).then((res) => {
                               loadFloorPlans();
+                              copies.push(res.date);
+                              setSelectedTables(copies);
                            });
                         });
                         var updatedFloorPlan = { ...floorPlan };

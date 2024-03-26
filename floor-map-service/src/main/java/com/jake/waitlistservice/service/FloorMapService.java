@@ -100,7 +100,7 @@ public class FloorMapService {
         return repo.findAllByFloorMapId(floorMapId);
     }
 
-    public void save(FloorMapItemDTO floorMapItemDTO) {
+    public FloorMapItem save(FloorMapItemDTO floorMapItemDTO) {
         FloorMapItem floorMapItem = new FloorMapItem();
 
         floorMapItem.setFloorMapId(floorMapItemDTO.getFloorMapId());
@@ -117,7 +117,7 @@ public class FloorMapService {
         floorMapItem.setXPosition(floorMapItemDTO.getXPosition());
         floorMapItem.setYPosition(floorMapItemDTO.getYPosition());
 
-        repo.save(floorMapItem);
+        return repo.save(floorMapItem);
     }
 
     public void update(FloorMapItemDTO floorMapItemDTO) {
