@@ -16,6 +16,7 @@ import RectangleTable from "../Tables/Rectangle/RectangleTable";
 import axios from "axios";
 
 import "./SeatMap.css";
+import { emphasize } from "@mui/material";
 
 const SeatMap = () => {
    const [currentTableType, setCurrentTableType] = useState("circle"); // Default to circle
@@ -26,7 +27,6 @@ const SeatMap = () => {
    const [isSelecting, setIsSelecting] = useState(false);
    const [selectedTables, setSelectedTables] = useState([]);
    const [boundaryBox, setBoundaryBox] = useState({ isVisible: false, x: 0, y: 0, width: 0, height: 0 });
-
    const [isHoveringOverEdit, setIsHoveringOverEdit] = useState(false);
    const [isEditMode, setIsEditMode] = useState(false);
    const layerRef = useRef(null);
@@ -36,11 +36,13 @@ const SeatMap = () => {
    const stageWidth = window.innerWidth;
    const stageHeight = window.innerHeight;
 
-   const resetStates = () => {
+   const resetAllEditStates = () => {
       setSelectionRect({ isVisible: false, startX: 0, startY: 0, width: 0, height: 0 });
-      setSelectedTables([]);
       setIsSelecting(false);
+      setSelectedTables([]);
       setBoundaryBox({ isVisible: false, x: 0, y: 0, width: 0, height: 0 });
+      setIsHoveringOverEdit(false);
+      setIsEditMode(false);
    };
 
    const loadFloorPlans = () => {
@@ -66,22 +68,27 @@ const SeatMap = () => {
 
    useEffect(() => {
       console.log("Selected tables changed");
-      console.log(floorPlan, selectedTables);
+      console.log(selectedTables);
 
       if (floorPlan && selectedTables) {
          // Calculate boundary box for selected tables
          if (selectedTables.length > 0) {
-            const minX = Math.min(...selectedTables.map((table) => table.xPosition - 10));
-            const minY = Math.min(...selectedTables.map((table) => table.yPosition - 10));
-            const maxX = Math.max(...selectedTables.map((table) => table.xPosition + 60)); // Assuming tables have a width property
-            const maxY = Math.max(...selectedTables.map((table) => table.yPosition + 60)); // Assuming tables have a height property
-
-            // Update boundary box state here (you need to add state for this)
-            console.log({ x: minX, y: minY, width: maxX - minX, height: maxY - minY, isVisible: true });
-            setBoundaryBox({ x: minX, y: minY, width: maxX - minX, height: maxY - minY, isVisible: true });
+            drawBoundryBox(selectedTables);
          }
       }
    }, [selectedTables]);
+
+   const drawBoundryBox = (tablesWithinSelection) => {
+      console.log("drawing new boundry box");
+      const minX = Math.min(...tablesWithinSelection.map((table) => table.xPosition - 10));
+      const minY = Math.min(...tablesWithinSelection.map((table) => table.yPosition - 10));
+      const maxX = Math.max(...tablesWithinSelection.map((table) => table.xPosition + 60)); // Assuming tables have a width property
+      const maxY = Math.max(...tablesWithinSelection.map((table) => table.yPosition + 60)); // Assuming tables have a height property
+
+      // Update boundary box state here (you need to add state for this)
+      console.log({ x: minX, y: minY, width: maxX - minX, height: maxY - minY, isVisible: true });
+      setBoundaryBox({ x: minX, y: minY, width: maxX - minX, height: maxY - minY, isVisible: true });
+   };
 
    const addFloorPlan = (name) => {
       var floorMapDto = {
@@ -195,13 +202,12 @@ const SeatMap = () => {
    const handleTableClick = (table) => {
       console.log(table);
       setCurrentTable(table);
-      resetStates();
    };
 
    const selectFloorPlan = (selectedFloorPlan) => {
       console.log(selectedFloorPlan);
       setFloorPlan(selectedFloorPlan);
-      resetStates();
+      resetAllEditStates();
    };
 
    const generateDropdownItems = () => {
@@ -214,7 +220,6 @@ const SeatMap = () => {
 
    const handleEditClick = () => {
       setIsEditMode(true);
-      resetStates();
    };
 
    const handleHeaderChange = (e) => {
@@ -235,9 +240,33 @@ const SeatMap = () => {
    };
 
    const handleMouseDown = (e) => {
+      console.log("handleMouseDown");
       const stage = e.target.getStage();
       const pointerPos = stage.getPointerPosition();
-      resetStates();
+      console.log(e);
+      console.log(boundaryBox);
+
+      console.log(pointerPos);
+      if (boundaryBox.isVisible) {
+         if (
+            isXYWithinBoundry(
+               pointerPos.x,
+               pointerPos.y,
+               boundaryBox.x,
+               boundaryBox.width,
+               boundaryBox.y,
+               boundaryBox.height
+            )
+         ) {
+            console.log("click in boundry box");
+            return;
+         } else {
+            boundaryBox.isVisible = false;
+            boundaryBox.x = -100;
+            boundaryBox.y = -100;
+         }
+      }
+
       setSelectionRect({
          ...selectionRect,
          isVisible: true,
@@ -247,6 +276,10 @@ const SeatMap = () => {
          height: 0,
       });
       setIsSelecting(true);
+   };
+
+   const isXYWithinBoundry = (x, y, boundryX, boundryWidth, boundryY, boundryHeight) => {
+      return x > boundryX && x < boundryX + boundryWidth && y > boundryY && y < boundryY + boundryHeight;
    };
 
    const handleMouseMove = (e) => {
@@ -259,21 +292,82 @@ const SeatMap = () => {
    };
 
    const handleMouseUp = () => {
+      console.log("handleMouseUp");
       setIsSelecting(false);
       // Adjust start and end points based on the drag direction
-      const startX = selectionRect.width > 0 ? selectionRect.startX : selectionRect.startX + selectionRect.width;
-      const endX = selectionRect.width > 0 ? selectionRect.startX + selectionRect.width : selectionRect.startX;
-      const startY = selectionRect.height > 0 ? selectionRect.startY : selectionRect.startY + selectionRect.height;
-      const endY = selectionRect.height > 0 ? selectionRect.startY + selectionRect.height : selectionRect.startY;
+      if (boundaryBox.isVisible == false) {
+         const startX = selectionRect.width > 0 ? selectionRect.startX : selectionRect.startX + selectionRect.width;
+         const endX = selectionRect.width > 0 ? selectionRect.startX + selectionRect.width : selectionRect.startX;
+         const startY = selectionRect.height > 0 ? selectionRect.startY : selectionRect.startY + selectionRect.height;
+         const endY = selectionRect.height > 0 ? selectionRect.startY + selectionRect.height : selectionRect.startY;
 
-      const tablesWithinSelection = floorPlan.floorMapItems.filter((table) => {
-         // Now the logic checks the table position against the corrected start and end points
-         return table.xPosition >= startX && table.xPosition <= endX && table.yPosition >= startY && table.yPosition <= endY;
+         const tablesWithinSelection = floorPlan.floorMapItems.filter((table) => {
+            // Now the logic checks the table position against the corrected start and end points
+            return (
+               table.xPosition >= startX && table.xPosition <= endX && table.yPosition >= startY && table.yPosition <= endY
+            );
+         });
+
+         console.log("Selected tables", tablesWithinSelection);
+         setSelectedTables(tablesWithinSelection);
+         setSelectionRect({ ...selectionRect, isVisible: false }); // Hide selection rect
+      }
+   };
+
+   const onBoundryBoxMove = (e) => {
+      console.log("Boundry box dragging ", selectedTables);
+      const delta = {
+         x: e.target.x() - boundaryBox.x,
+         y: e.target.y() - boundaryBox.y,
+      };
+
+      // Create a copy of the floorPlan object
+      const updatedFloorPlan = { ...floorPlan };
+      const updatedSelectedTables = selectedTables.map((table) => {
+         return {
+            ...table,
+            xPosition: table.xPosition + delta.x,
+            yPosition: table.yPosition + delta.y,
+         };
+      });
+      setSelectedTables(updatedSelectedTables);
+
+      // Update the positions of the selected tables in the floorPlan object
+      updatedFloorPlan.floorMapItems = updatedFloorPlan.floorMapItems.map((table) => {
+         if (selectedTables.some((selectedTable) => selectedTable.id === table.id)) {
+            return {
+               ...table,
+               xPosition: table.xPosition + delta.x,
+               yPosition: table.yPosition + delta.y,
+            };
+         }
+         return table;
       });
 
-      console.log("Selected tables", tablesWithinSelection);
-      setSelectedTables(tablesWithinSelection);
-      setSelectionRect({ ...selectionRect, isVisible: false }); // Hide selection rect
+      // Update the floorPlan state with the updated object
+      setFloorPlan(updatedFloorPlan);
+
+      console.log("new boundry box", boundaryBox);
+   };
+
+   const onBoundryBoxDragEnd = (e) => {
+      console.log("boundry box drag end", selectedTables);
+      //snap the tables into place
+      const updatedSelectedTables = selectedTables.map((table) => {
+         return {
+            ...table,
+            xPosition: calculateClosestIntersection(table.xPosition),
+            yPosition: calculateClosestIntersection(table.yPosition),
+         };
+      });
+      setSelectedTables(updatedSelectedTables);
+      drawBoundryBox(updatedSelectedTables);
+
+      updatedSelectedTables.forEach((selectedTable) => {
+         axios.put(process.env.REACT_APP_API_URL + "/floorMapItem", selectedTable).then(() => {
+            loadFloorPlans();
+         });
+      });
    };
 
    return (
@@ -318,6 +412,29 @@ const SeatMap = () => {
                      </Dropdown.Item>
                   </Dropdown.Menu>
                </Dropdown>
+               <div>
+                  <button
+                     onClick={(e) => {
+                        console.log("click");
+                        var copies = [];
+                        selectedTables.map((table) => {
+                           var copy = { ...table, id: null };
+                           copies.push(copy);
+                           axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", copy).then(() => {
+                              loadFloorPlans();
+                           });
+                        });
+                        var updatedFloorPlan = { ...floorPlan };
+                        console.log("copies", copies);
+                        console.log(updatedFloorPlan.floorMapItems);
+                        updatedFloorPlan.floorMapItems.push(copies);
+                        console.log(updatedFloorPlan.floorMapItems);
+
+                        setSelectedTables(copies);
+                     }}>
+                     duplicate
+                  </button>
+               </div>
             </div>
             <div className='seat-map-editor'>
                <div id='table-editor-panel' className='table-type-selector'>
@@ -339,6 +456,7 @@ const SeatMap = () => {
                         height={stageHeight}
                         ref={stageRef}
                         onDragOver={allowDrop}
+                        onClick={() => console.log("stage click")}
                         onMouseDown={handleMouseDown}
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}>
@@ -385,6 +503,24 @@ const SeatMap = () => {
                                  stroke='blue'
                                  fill='rgba(0,0,255,0.1)'
                                  strokeWidth={2}
+                                 draggable
+                                 onClick={(e) => {
+                                    console.log("on click");
+                                    console.log(e);
+                                 }}
+                                 onMouseDown={(e) => {
+                                    console.log("on mouse down");
+                                 }}
+                                 onMouseUp={(e) => {
+                                    console.log("on mouse down");
+                                 }}
+                                 onDragStart={(e) => {
+                                    console.log("drag start");
+                                 }}
+                                 onDragMove={(e) => onBoundryBoxMove(e)}
+                                 onDragEnd={(e) => {
+                                    onBoundryBoxDragEnd(e);
+                                 }}
                               />
                            )}
                         </Layer>
