@@ -12,6 +12,7 @@ import { PiMapTrifold, PiMapTrifoldBold } from "react-icons/pi";
 import "./Home.css";
 import SideBarItem from "../SideBar/SiderBarItem";
 import SeatMap from "../SeatMap/SeatMap";
+import ManageService from "../ManageService/ManageService";
 
 const Home = (content) => {
    const [activePage, setActivePage] = useState(0);
@@ -49,7 +50,7 @@ const Home = (content) => {
          </div>
          <div className='main-content'>
             <Header></Header>
-            {activePage === 0 && <WaitList></WaitList>}
+            {activePage === 0 && <ManageService></ManageService>}
             {activePage === 1 && <Reservations />}
             {activePage === 2 && <SeatMap />}
          </div>

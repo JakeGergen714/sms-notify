@@ -1,0 +1,2 @@
+echo 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 | docker login ghcr.io -u JakeGergen714 --password-stdin
+Login Succeeded
