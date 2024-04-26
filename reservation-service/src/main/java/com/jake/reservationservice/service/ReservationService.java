@@ -54,6 +54,8 @@ public class ReservationService {
                     //1:00, 1:30, 2:00, 2:30, 3:00, 3:30, 4:00, 4:30, 5:00, 5:30 <--- time slots
                     //3:00 <-- existing reservation
                     //[ anytime+{reservation time length} <= 3 ]----- [  3pm + {reservation time length}  ] ==== valid unreserved time slots
+                    log.info("Found existing reservation for today <{}>", reservation);
+                    log.debug("before filter tableTimeSlots <{}>", tableTimeSlots);
                     tableTimeSlots = tableTimeSlots.stream().filter(timeSlot -> {
                         if (timeSlot.isBefore(reservation.getReservationTime().toLocalTime())) {
                             return timeSlot.plusHours(2).isBefore(reservation.getReservationTime().toLocalTime()) || timeSlot.plusHours(2).equals(reservation.getReservationTime().toLocalTime());
@@ -61,6 +63,7 @@ public class ReservationService {
                             return timeSlot.isAfter(reservation.getReservationTime().toLocalTime().plusHours(2)) || timeSlot.equals(reservation.getReservationTime().toLocalTime().plusHours(2));
                         }
                     }).toList();
+                    log.debug("after filter tableTimeSlots <{}>", tableTimeSlots);
                 }
             }
             availableReservationTimeSlots.addAll(tableTimeSlots);
