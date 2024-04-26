@@ -11,8 +11,10 @@ const Reservations = () => {
    const fetchData = () => {
       return axios
          .get(process.env.REACT_APP_API_URL + "/available", {
-            reservationDay: "2024-04-26", // Ensure this is formatted as a date string if necessary
-            partySize: 2,
+            params: {
+               reservationDay: "2024-04-26", // Ensure this is formatted as a date string if necessary
+               partySize: 2,
+            },
          })
          .then((res) => {
             console.log(res.data);
