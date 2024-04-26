@@ -1,6 +1,8 @@
 /** @format */
 
 import React from "react";
+import axios from "axios";
+
 import "./Reservations.css";
 
 const Reservations = () => {
@@ -8,8 +10,8 @@ const Reservations = () => {
 
    const fetchData = () => {
       const params = new URLSearchParams({
-         "2024-04-26": any, // Ensure this is formatted as a date string if necessary
-         2: any,
+         reservationDay: "2024-04-26", // Ensure this is formatted as a date string if necessary
+         partySize: 2,
       }).toString();
 
       return axios
