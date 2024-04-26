@@ -1,6 +1,6 @@
 package com.jake.reservationservice.controller;
 
-import com.jake.reservationservice.dto.AvailableReservationDTO;
+import com.jake.reservationservice.dto.AvailableReservationsDTO;
 import com.jake.reservationservice.dto.ReservationDTO;
 import com.jake.reservationservice.jpa.domain.Reservation;
 import com.jake.reservationservice.service.ReservationService;
@@ -12,7 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @Log4j2
@@ -35,13 +37,13 @@ public class Controller {
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     // Replace with your allowed origin
     @GetMapping(value = "/available")
-    public ResponseEntity<List<AvailableReservationDTO>> getAllAvailable(Authentication authenticationToken) {
+    public ResponseEntity<Set<LocalDateTime>> getAllAvailable(Authentication authenticationToken, AvailableReservationsDTO availableReservationsDTO) {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         log.info(jwt.getClaims());
 
-        List<Reservation> reservations = service.findAllByBusinessId(getBusinessId(jwt));
-        log.info("Found Reservations <{}>", reservations);
-        return null;
+        Set<LocalDateTime> reservationsTimes = service.findAllAvailableReservationsForDate(getBusinessId(jwt), availableReservationsDTO.getReservationDay(), availableReservationsDTO.getPartySize());
+        log.info("Found Available Reservations Times <{}>", reservationsTimes);
+        return ResponseEntity.ok(reservationsTimes);
     }
 
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
