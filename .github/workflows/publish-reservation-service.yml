@@ -1,6 +1,6 @@
 # @format
 
-name: Maven Package and Docker Build Waitlist
+name: Maven Package and Docker Build Reservation
 
 on:
    push:
@@ -29,11 +29,11 @@ jobs:
               server-id: github
               settings-path: ${{ github.workspace }}
 
-         - name: Build with Wait List
+         - name: Build with Reservation Service
            working-directory: ./reservation-service/
            run: mvn -B package --file pom.xml
 
-         - name: Publish Waitlist Service
+         - name: Publish Reservation Service
            env:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
            working-directory: ./reservation-service/
@@ -46,7 +46,7 @@ jobs:
               username: ${{ github.actor }}
               password: ${{ secrets.ACCESS_TOKEN }}
 
-         - name: Build and push Waitlist Docker image
+         - name: Build and push Reservation Docker image
            run: |
               docker build -t ghcr.io/jakegergen714/reservation:latest ./reservation-service
               docker push ghcr.io/jakegergen714/reservation:latest
