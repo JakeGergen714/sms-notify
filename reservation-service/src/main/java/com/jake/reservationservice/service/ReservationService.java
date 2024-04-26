@@ -66,7 +66,7 @@ public class ReservationService {
             availableReservationTimeSlots.addAll(tableTimeSlots);
         }
 
-        return availableReservationTimeSlots.stream().sorted().collect(Collectors.toSet());
+        return availableReservationTimeSlots.stream().sorted().collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     private List<LocalTime> createReservationTimeSlots(LocalTime serviceStartTime, LocalTime serviceEndTime, Duration timeSlotGap) {
