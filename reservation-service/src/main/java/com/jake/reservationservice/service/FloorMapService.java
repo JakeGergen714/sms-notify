@@ -6,11 +6,13 @@ import com.jake.reservationservice.jpa.domain.FloorMapItem;
 import com.jake.reservationservice.jpa.repository.FloorMapItemRepository;
 import com.jake.reservationservice.jpa.repository.FloorMapRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 @RequiredArgsConstructor
 public class FloorMapService {
     private final FloorMapItemRepository floorMapItemRepo;
