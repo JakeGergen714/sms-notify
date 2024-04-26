@@ -23,11 +23,12 @@ spring:
             - TokenRelay=
 
         - id: reservation-service
-            uri: ${RESERVATION_SERVICE_URL}
-            predicates:
-              - Path=/reservation,/available
-            filters:
-              - TokenRelay=
+          uri: ${RESERVATION_SERVICE_URL}
+          predicates:
+            - Path=/reservation,/available
+          filters:
+            - TokenRelay=
+            - RewritePath=/?(?<segment>.*), /$\{segment}
 
         - id: floor-plan-service
           uri: ${FLOOR_PLAN_SERVICE_URL}
