@@ -3,7 +3,7 @@ package com.jake.reservationservice.jpa.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @Entity(name = "floor_map")
@@ -16,7 +16,7 @@ public class FloorMap {
     @Column
     private String name;
     @Column
-    private LocalDateTime serviceTimeStart;
+    private LocalTime serviceTimeStart;
     @Column
-    private LocalDateTime serviceTimeEnd;
+    private LocalTime serviceTimeEnd;
 }

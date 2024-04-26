@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
@@ -37,11 +37,11 @@ public class Controller {
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     // Replace with your allowed origin
     @GetMapping(value = "/available")
-    public ResponseEntity<Set<LocalDateTime>> getAllAvailable(Authentication authenticationToken, AvailableReservationsDTO availableReservationsDTO) {
+    public ResponseEntity<Set<LocalTime>> getAllAvailable(Authentication authenticationToken, AvailableReservationsDTO availableReservationsDTO) {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         log.info(jwt.getClaims());
 
-        Set<LocalDateTime> reservationsTimes = service.findAllAvailableReservationsForDate(getBusinessId(jwt), availableReservationsDTO.getReservationDay(), availableReservationsDTO.getPartySize());
+        Set<LocalTime> reservationsTimes = service.findAllAvailableReservationsForDate(getBusinessId(jwt), availableReservationsDTO.getReservationDay(), availableReservationsDTO.getPartySize());
         log.info("Found Available Reservations Times <{}>", reservationsTimes);
         return ResponseEntity.ok(reservationsTimes);
     }

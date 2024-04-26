@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -25,9 +26,9 @@ public class ReservationService {
         return repo.findAllByBusinessId(businessId, Sort.by(Sort.Direction.ASC, "reservationTime"));
     }
 
-    public Set<LocalDateTime> findAllAvailableReservationsForDate(long businessId, LocalDate requestedReservationDate, int partySize) {
+    public Set<LocalTime> findAllAvailableReservationsForDate(long businessId, LocalDate requestedReservationDate, int partySize) {
 
-        LocalDateTime serviceTime = LocalDateTime.now();
+        LocalTime serviceTime = LocalTime.of(9, 30);
 
         FloorMap activeFloorMapForTime = floorMapService.getActiveFloorMapForTime(businessId, serviceTime);
         List<FloorMapItem> tables = floorMapService.findAllForMapId(activeFloorMapForTime.getId()).stream().filter(table -> table.getMinTableSize() <= partySize && table.getMaxTableSize() >= partySize).toList();
@@ -39,20 +40,21 @@ public class ReservationService {
         //but if X was unreserved 10 reservations time should be returned.
         // so for each table calculate all available reservation times
 
-        Set<LocalDateTime> availableReservationTimeSlots = new HashSet<>();
+        Set<LocalTime> availableReservationTimeSlots = new HashSet<>();
         for (FloorMapItem item : tables) {
             //find all reservations for table for this date.
-            List<LocalDateTime> tableTimeSlots = createReservationTimeSlots(activeFloorMapForTime.getServiceTimeStart(), activeFloorMapForTime.getServiceTimeEnd(), Duration.ofMinutes(30));
+            List<LocalTime> tableTimeSlots = createReservationTimeSlots(activeFloorMapForTime.getServiceTimeStart(), activeFloorMapForTime.getServiceTimeEnd(), Duration.ofMinutes(30));
             for (Reservation reservation : allTodaysReservations) {
                 if (reservation.getId() == item.getId()) {
+
                     //1:00, 1:30, 2:00, 2:30, 3:00, 3:30, 4:00, 4:30, 5:00, 5:30 <--- time slots
                     //3:00 <-- existing reservation
                     //[ anytime+{reservation time length} <= 3 ]----- [  3pm + {reservation time length}  ] ==== valid unreserved time slots
                     tableTimeSlots.stream().filter(timeSlot -> {
-                        if (timeSlot.isBefore(reservation.getReservationTime())) {
-                            return timeSlot.plusHours(2).isBefore(reservation.getReservationTime()) || timeSlot.plusHours(2).isEqual(reservation.getReservationTime());
+                        if (timeSlot.isBefore(reservation.getReservationTime().toLocalTime())) {
+                            return timeSlot.plusHours(2).isBefore(reservation.getReservationTime().toLocalTime()) || timeSlot.plusHours(2).equals(reservation.getReservationTime().toLocalTime());
                         } else {
-                            return timeSlot.isAfter(reservation.getReservationTime().plusHours(2)) || timeSlot.isEqual(reservation.getReservationTime().plusHours(2));
+                            return timeSlot.isAfter(reservation.getReservationTime().toLocalTime().plusHours(2)) || timeSlot.equals(reservation.getReservationTime().toLocalTime().plusHours(2));
                         }
                     });
                 }
@@ -64,9 +66,9 @@ public class ReservationService {
         return availableReservationTimeSlots;
     }
 
-    private List<LocalDateTime> createReservationTimeSlots(LocalDateTime serviceStartTime, LocalDateTime serviceEndTime, Duration timeSlotGap) {
-        List<LocalDateTime> timeSlots = new ArrayList<>();
-        LocalDateTime previous = serviceStartTime;
+    private List<LocalTime> createReservationTimeSlots(LocalTime serviceStartTime, LocalTime serviceEndTime, Duration timeSlotGap) {
+        List<LocalTime> timeSlots = new ArrayList<>();
+        LocalTime previous = serviceStartTime;
         while (previous.isBefore(serviceEndTime)) {
             timeSlots.add(previous);
             previous.plus(timeSlotGap);

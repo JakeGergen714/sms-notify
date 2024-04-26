@@ -8,7 +8,7 @@ import com.jake.reservationservice.jpa.repository.FloorMapRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class FloorMapService {
         return floorMapItemRepo.findAllByFloorMapId(floorMapId);
     }
 
-    public FloorMap getActiveFloorMapForTime(long businessId, LocalDateTime activeAtTime) {
+    public FloorMap getActiveFloorMapForTime(long businessId, LocalTime activeAtTime) {
         List<FloorMap> floorMaps = floorMapRepository.findAllByBusinessId(businessId);
 
         Optional<FloorMap> activeFloorMap = floorMaps.stream().filter(floorMap -> floorMap.getServiceTimeStart().isBefore(activeAtTime) && floorMap.getServiceTimeEnd().isAfter(activeAtTime)).findFirst();
