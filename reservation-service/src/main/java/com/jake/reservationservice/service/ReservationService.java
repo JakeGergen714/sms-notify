@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -64,9 +65,8 @@ public class ReservationService {
             }
             availableReservationTimeSlots.addAll(tableTimeSlots);
         }
-        log.info("Available Reservations <{}>", availableReservationTimeSlots);
 
-        return availableReservationTimeSlots;
+        return availableReservationTimeSlots.stream().sorted().collect(Collectors.toSet());
     }
 
     private List<LocalTime> createReservationTimeSlots(LocalTime serviceStartTime, LocalTime serviceEndTime, Duration timeSlotGap) {
