@@ -8,6 +8,19 @@ import "./Reservations.css";
 const Reservations = () => {
    axios.defaults.withCredentials = true;
 
+   const fetchData2 = () => {
+      return axios
+         .get(process.env.REACT_APP_API_URL + "/reservation")
+         .then((res) => {
+            console.log(res.data);
+            return res.data;
+         })
+         .catch((err) => {
+            console.error(err);
+            return [];
+         });
+   };
+
    const fetchData = () => {
       return axios
          .get(process.env.REACT_APP_API_URL + "/available", {
@@ -27,6 +40,7 @@ const Reservations = () => {
    };
 
    fetchData();
+   fetchData2();
 
    return (
       <div id='reservations-container'>
