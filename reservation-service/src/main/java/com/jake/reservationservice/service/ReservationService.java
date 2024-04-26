@@ -74,7 +74,7 @@ public class ReservationService {
         LocalTime previous = serviceStartTime;
         while (previous.isBefore(serviceEndTime)) {
             timeSlots.add(previous);
-            previous.plus(timeSlotGap);
+            previous = previous.plus(timeSlotGap);
         }
         timeSlots.add(serviceEndTime);
         return timeSlots;
