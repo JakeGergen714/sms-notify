@@ -93,6 +93,8 @@ const SeatMap = () => {
    const addFloorPlan = (name) => {
       var floorMapDto = {
          name: name,
+         serviceTimeStart: "09:00",
+         serviceTimeEnd: "21:00",
       };
       console.log(floorMapDto);
       return axios
