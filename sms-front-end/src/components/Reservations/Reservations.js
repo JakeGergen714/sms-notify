@@ -4,6 +4,26 @@ import React from "react";
 import "./Reservations.css";
 
 const Reservations = () => {
+   axios.defaults.withCredentials = true;
+
+   const fetchData = () => {
+      const params = new URLSearchParams({
+         "2024-04-26": any, // Ensure this is formatted as a date string if necessary
+         2: any,
+      }).toString();
+
+      return axios
+         .get(process.env.REACT_APP_API_URL + "/available?${params}")
+         .then((res) => {
+            console.log(res.data);
+            return res.data;
+         })
+         .catch((err) => {
+            console.error(err);
+            return [];
+         });
+   };
+
    return (
       <div id='reservations-container'>
          <div className='header'>
