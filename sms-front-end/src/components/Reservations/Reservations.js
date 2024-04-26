@@ -26,6 +26,8 @@ const Reservations = () => {
          });
    };
 
+   fetchData();
+
    return (
       <div id='reservations-container'>
          <div className='header'>
