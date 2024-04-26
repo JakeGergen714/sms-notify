@@ -37,7 +37,7 @@ public class Controller {
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     // Replace with your allowed origin
     @GetMapping(value = "/available")
-    public ResponseEntity<Set<LocalDateTime>> getAllAvailable(Authentication authenticationToken, @RequestParam AvailableReservationsDTO availableReservationsDTO) {
+    public ResponseEntity<Set<LocalDateTime>> getAllAvailable(Authentication authenticationToken, AvailableReservationsDTO availableReservationsDTO) {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         log.info(jwt.getClaims());
 
