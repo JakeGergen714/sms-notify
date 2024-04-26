@@ -80,12 +80,17 @@ public class FloorMapService {
             floorMap = new FloorMap();
             floorMap.setName(floorMapDTO.getName());
             floorMap.setBusinessId(businessId);
+            floorMap.setServiceTimeStart(floorMapDTO.getServiceTimeStart());
+            floorMap.setServiceTimeEnd(floorMapDTO.getServiceTimeEnd());
+
             log.info("Saved Floor Plan <{}>.", floorMap);
             FloorMap saved =  floorMapRepository.save(floorMap);
         } else {
             FloorMap existing = floorMapOptional.get();
             log.info("Found existing Floor Plan <{}>.", existing);
             existing.setName(floorMapDTO.getName());
+            existing.setServiceTimeStart(floorMapDTO.getServiceTimeStart());
+            existing.setServiceTimeEnd(floorMapDTO.getServiceTimeEnd());
             log.info("Edited existing Floor Plan <{}>.", existing);
             floorMap = floorMapRepository.save(existing);
             log.info("Saved Floor Plan <{}>.", existing);

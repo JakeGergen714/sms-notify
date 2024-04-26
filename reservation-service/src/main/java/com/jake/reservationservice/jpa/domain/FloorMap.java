@@ -1,9 +1,8 @@
-package com.jake.waitlistservice.jpa.domain;
+package com.jake.reservationservice.jpa.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Data

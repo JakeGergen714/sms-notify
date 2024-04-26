@@ -34,10 +34,9 @@
    background-color: rgb(255, 255, 255, 0.02);
    color: var(--light-text);
    display: grid;
-   grid-template-columns: auto 2fr 1fr; /* Adjusted for equal width side columns */
+   grid-template-columns: 1fr 3fr 1fr; /* Adjusted for equal width side columns */
    gap: 40px; /* Use gap for spacing between grid items */
    align-items: start;
-   padding: 20px; /* Consistent padding around the grid */
 }
 
 .table-type-selector {
@@ -84,6 +83,60 @@
    border-radius: 6px;
    overflow: hidden;
    height: 75%;
+}
+
+.waitlist-card {
+   border: 2px solid rgba(255, 255, 255, 0.1);
+   background-color: rgba(255, 255, 255, 0.1);
+   border-radius: 6px;
+}
+
+.waitlist-card-header-row {
+   display: flex; /* Enables flexbox */
+   justify-content: left; /* Centers horizontally */
+   font-size: x-large;
+   font-weight: 400;
+   width: 100%; /* Ensures the div takes full available width */
+   padding-bottom: 5%;
+}
+
+.waitlist-card-info-row {
+   display: grid;
+   grid-template-columns: 2fr 3fr 6fr; /* Adjusted for equal width side columns */
+   align-items: center;
+   margin-bottom: 10px; /* Space between the header and the button row */
+}
+
+.waitlist-card-notify-guest {
+   align-items: center;
+   width: 90%; /* Stretch the button to fill its container */
+}
+
+.reservation-card {
+   border: 2px solid rgba(255, 255, 255, 0.1);
+   background-color: rgba(255, 255, 255, 0.1);
+   border-radius: 6px;
+}
+
+.reservation-card-header-row {
+   display: flex; /* Enables flexbox */
+   justify-content: left; /* Centers horizontally */
+   font-size: x-large;
+   font-weight: 400;
+   width: 100%; /* Ensures the div takes full available width */
+   padding-bottom: 5%;
+}
+
+.reservation-card-info-row {
+   display: grid;
+   grid-template-columns: 2fr 3fr 6fr; /* Adjusted for equal width side columns */
+   align-items: center;
+   margin-bottom: 10px; /* Space between the header and the button row */
+}
+
+.reservation-card-notify-guest {
+   align-items: center;
+   width: 90%; /* Stretch the button to fill its container */
 }
 
 .seat-map-grid {

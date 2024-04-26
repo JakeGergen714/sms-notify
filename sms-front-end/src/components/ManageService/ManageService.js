@@ -7,6 +7,12 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { IoMdAddCircle } from "react-icons/io";
 import { MdOutlineModeEdit, MdModeEdit } from "react-icons/md";
+import { GoClockFill } from "react-icons/go";
+
+import { IoMdStopwatch } from "react-icons/io";
+
+import { AiFillNotification } from "react-icons/ai";
+import { GrGroup } from "react-icons/gr";
 
 import InputGroup from "react-bootstrap/InputGroup";
 import { Layer, Line, Stage, Rect } from "react-konva";
@@ -78,6 +84,31 @@ const ManageService = () => {
                </Dropdown>
             </div>
             <div className='seat-map-editor'>
+               <div className='waitlist-container'>
+                  <h1>The Wait List</h1>
+                  <div className='waitlist-card'>
+                     <div className='waitlist-card-header-row'>
+                        <div className='waitlist-card-party-name'>Pepper</div>
+                     </div>
+
+                     <div className='waitlist-card-info-row'>
+                        <div className='waitlist-party-size'>
+                           <GrGroup />2
+                        </div>
+                        <div className='waitlist-card-wait-time'>
+                           <IoMdStopwatch /> 15 min
+                        </div>
+                        <div className='waitlist-card-notification-row'>
+                           <button
+                              className='waitlist-card-notify-guest btn btn-primary'
+                              onClick={() => alert("Notify via text!")}>
+                              <AiFillNotification />
+                           </button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
                <div id='table-editor-panel' className='seat-map-container'>
                   <div className='seat-map-grid'>
                      <Stage
@@ -109,6 +140,23 @@ const ManageService = () => {
                               })}
                         </Layer>
                      </Stage>
+                  </div>
+               </div>
+               <div className='reservation-container'>
+                  <h1>The Reservations</h1>
+                  <div className='reservation-card'>
+                     <div className='reservation-card-header-row'>
+                        <div className='reservation-card-party-name'>Pepper</div>
+                     </div>
+
+                     <div className='reservation-card-info-row'>
+                        <div className='reservation-party-size'>
+                           <GrGroup />2
+                        </div>
+                        <div className='reservation-card-wait-time'>
+                           <GoClockFill /> 5:00 pm
+                        </div>
+                     </div>
                   </div>
                </div>
             </div>
