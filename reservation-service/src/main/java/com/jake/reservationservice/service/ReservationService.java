@@ -50,7 +50,7 @@ public class ReservationService {
             //find all reservations for table for this date.
             List<LocalTime> tableTimeSlots = createReservationTimeSlots(activeFloorMapForTime.getServiceTimeStart(), activeFloorMapForTime.getServiceTimeEnd(), Duration.ofMinutes(30));
             for (Reservation reservation : allTodaysReservations) {
-                if (reservation.getId() == item.getId()) {
+                if (reservation.getTableId() == item.getId()) {
                     //1:00, 1:30, 2:00, 2:30, 3:00, 3:30, 4:00, 4:30, 5:00, 5:30 <--- time slots
                     //3:00 <-- existing reservation
                     //[ anytime+{reservation time length} <= 3 ]----- [  3pm + {reservation time length}  ] ==== valid unreserved time slots
