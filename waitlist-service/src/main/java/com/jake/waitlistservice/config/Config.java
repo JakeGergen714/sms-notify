@@ -19,6 +19,7 @@ public class Config implements WebMvcConfigurer {
             }
         };
     }
+    
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
