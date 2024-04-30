@@ -6,7 +6,7 @@ on:
    push:
       paths:
          - "waitlist-service/**"
-         - ".github/publish-waitlist.yml"
+         - ".github/workflows/publish-waitlist.yml"
    pull_request:
       paths:
          - "waitlist-service/**"

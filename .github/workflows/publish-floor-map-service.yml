@@ -6,7 +6,7 @@ on:
    push:
       paths:
          - "floor-map-service/**"
-         - ".github/publish-floor-map-service.yml"
+         - ".github/workflows/publish-floor-map-service.yml"
    pull_request:
       paths:
          - "floor-map-service/**"
