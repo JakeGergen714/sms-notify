@@ -6,7 +6,7 @@ on:
    push:
       paths:
          - "reservation-service/**"
-         - ".github/workflows/publish-reservation.yml"
+         - ".github/workflows/publish-reservation-service.yml"
    pull_request:
       paths:
          - "reservation-service/**"
