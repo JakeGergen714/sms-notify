@@ -1,10 +1,10 @@
 package com.jake.reservationservice.service;
 
+import com.jake.datacorelib.floormap.jpa.FloorMap;
+import com.jake.datacorelib.floormap.jpa.FloorMapItem;
+import com.jake.datacorelib.floormap.jpa.FloorMapItemRepository;
+import com.jake.datacorelib.floormap.jpa.FloorMapRepository;
 import com.jake.reservationservice.exception.FloorMapNotFoundException;
-import com.jake.reservationservice.jpa.domain.FloorMap;
-import com.jake.reservationservice.jpa.domain.FloorMapItem;
-import com.jake.reservationservice.jpa.repository.FloorMapItemRepository;
-import com.jake.reservationservice.jpa.repository.FloorMapRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
 package com.jake.waitlistservice.service;
 
-import com.jake.waitlistservice.dto.WaitListItemDTO;
-import com.jake.waitlistservice.jpa.domain.WaitListItem;
-import com.jake.waitlistservice.jpa.repository.WaitListItemRepository;
+import com.jake.datacorelib.waitlist.dto.WaitListItemDTO;
+import com.jake.datacorelib.waitlist.jpa.WaitListItem;
+import com.jake.datacorelib.waitlist.jpa.WaitListItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;

@@ -1,11 +1,11 @@
 package com.jake.waitlistservice.service;
 
-import com.jake.waitlistservice.dto.FloorMapDTO;
-import com.jake.waitlistservice.dto.FloorMapItemDTO;
-import com.jake.waitlistservice.jpa.domain.FloorMap;
-import com.jake.waitlistservice.jpa.domain.FloorMapItem;
-import com.jake.waitlistservice.jpa.repository.FloorMapItemRepository;
-import com.jake.waitlistservice.jpa.repository.FloorMapRepository;
+import com.jake.datacorelib.floormap.dto.FloorMapDTO;
+import com.jake.datacorelib.floormap.dto.FloorMapItemDTO;
+import com.jake.datacorelib.floormap.jpa.FloorMap;
+import com.jake.datacorelib.floormap.jpa.FloorMapItem;
+import com.jake.datacorelib.floormap.jpa.FloorMapItemRepository;
+import com.jake.datacorelib.floormap.jpa.FloorMapRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;

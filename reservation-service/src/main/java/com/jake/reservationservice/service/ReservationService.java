@@ -1,11 +1,11 @@
 package com.jake.reservationservice.service;
 
-import com.jake.reservationservice.dto.ReservationDTO;
+import com.jake.datacorelib.floormap.jpa.FloorMap;
+import com.jake.datacorelib.floormap.jpa.FloorMapItem;
+import com.jake.datacorelib.reservation.dto.ReservationDTO;
+import com.jake.datacorelib.reservation.jpa.Reservation;
+import com.jake.datacorelib.reservation.jpa.ReservationRepository;
 import com.jake.reservationservice.exception.TableReservedException;
-import com.jake.reservationservice.jpa.domain.FloorMap;
-import com.jake.reservationservice.jpa.domain.FloorMapItem;
-import com.jake.reservationservice.jpa.domain.Reservation;
-import com.jake.reservationservice.jpa.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
