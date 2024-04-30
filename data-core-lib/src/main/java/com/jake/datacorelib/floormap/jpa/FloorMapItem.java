@@ -22,7 +22,8 @@ public class FloorMapItem {
     @Column
     private Integer xPosition;
 
-    @Column Integer yPosition;
+    @Column
+    Integer yPosition;
 
     @Column
     private Integer minTableSize;

@@ -1,6 +1,5 @@
 package com.jake.datacorelib.floormap.jpa;
 
-import com.jake.datacorelib.jpa.domain.FloorMapItem;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
