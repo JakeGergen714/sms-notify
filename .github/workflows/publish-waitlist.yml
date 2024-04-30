@@ -30,6 +30,8 @@ jobs:
               settings-path: ${{ github.workspace }}
 
          - name: Build with Wait List
+           env:
+              GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
            working-directory: ./waitlist-service/
            run: mvn -B package --file pom.xml
 
