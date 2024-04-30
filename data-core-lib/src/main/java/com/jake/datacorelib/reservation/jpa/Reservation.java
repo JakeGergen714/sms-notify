@@ -1,4 +1,4 @@
-package com.jake.reservationservice.jpa.domain;
+package com.jake.datacorelib.reservation.jpa;
 
 import jakarta.persistence.*;
 import lombok.Data;

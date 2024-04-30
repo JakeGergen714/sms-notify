@@ -93,8 +93,30 @@ public class ReservationService {
         reservation.setTableId(reservationDTO.getTableId());
         reservation.setPartyName(reservationDTO.getPartyName());
         reservation.setPartySize(reservationDTO.getPartySize());
+        reservation.setReservationTime(reservationDTO.getReservationTime());
         reservation.setNotes(reservationDTO.getNotes());
+        reservation.setCompletedIndicator(false);
         repo.save(reservation);
+    }
+
+    public void edit(ReservationDTO reservationDTO) {
+        Optional<Reservation> optionalReservation = repo.findById(reservationDTO.getId());
+        Reservation existingReservation = optionalReservation.orElseThrow();
+
+        if (!existingReservation.getReservationTime().isEqual(reservationDTO.getReservationTime())) {
+            if (!isTableFreeAtTime(reservationDTO.getTableId(), reservationDTO.getReservationTime())) {
+                throw new TableReservedException(String.format("Table <%s> is not free at <%s>", reservationDTO.getTableId(), reservationDTO.getReservationTime()));
+            }
+        }
+
+        existingReservation.setTableId(reservationDTO.getTableId());
+        existingReservation.setPartyName(reservationDTO.getPartyName());
+        existingReservation.setPartySize(reservationDTO.getPartySize());
+        existingReservation.setReservationTime(reservationDTO.getReservationTime());
+        existingReservation.setNotes(reservationDTO.getNotes());
+        existingReservation.setCompletedIndicator(reservationDTO.isCompletedIndicator());
+
+        repo.save(existingReservation);
     }
 
 

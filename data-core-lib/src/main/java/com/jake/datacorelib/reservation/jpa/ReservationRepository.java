@@ -1,6 +1,5 @@
-package com.jake.reservationservice.jpa.repository;
+package com.jake.datacorelib.reservation.jpa;
 
-import com.jake.reservationservice.jpa.domain.Reservation;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -58,6 +58,18 @@ public class Controller {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
+    // Replace with your allowed origin
+    @PutMapping(value = "/reservation")
+    public ResponseEntity<HttpStatus> edit(Authentication authenticationToken, @RequestBody ReservationDTO reservationDTO) {
+        Jwt jwt = (Jwt) authenticationToken.getPrincipal();
+
+        log.info("Editing reservation for business ID <{}>", getBusinessId(jwt));
+        service.edit(reservationDTO);
+
+        return ResponseEntity.ok().build();
+    }
+
     private long getBusinessId(Jwt jwt) {
         return Long.valueOf(jwt.getClaimAsString("businessId"));
     }

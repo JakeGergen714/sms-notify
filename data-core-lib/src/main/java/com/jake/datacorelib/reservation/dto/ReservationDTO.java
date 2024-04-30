@@ -1,4 +1,4 @@
-package com.jake.reservationservice.dto;
+package com.jake.datacorelib.reservation.dto;
 
 import lombok.Data;
 

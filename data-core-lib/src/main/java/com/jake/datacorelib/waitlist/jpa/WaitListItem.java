@@ -1,4 +1,4 @@
-package com.jake.reservationservice.jpa.domain;
+package com.jake.datacorelib.waitlist.jpa;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,20 +8,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Entity(name = "reservation")
-public class Reservation {
+@Entity(name = "wait_list")
+public class WaitListItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
-    private long businessId;
+    private String businessId;
 
     @Column
-    private long tableId;
-
-    @Column
-    private String partyName;
+    private String customerName;
 
     @Column
     private int partySize;
@@ -29,10 +26,13 @@ public class Reservation {
     @Column
     private List<String> notes;
 
-    @CreationTimestamp
     @Column
-    private LocalDateTime reservationTime;
+    private Integer quotedTimeMinutes;
 
     @Column
-    private boolean completedIndicator;
+    private Integer waitTimeMinutes;
+
+    @CreationTimestamp
+    @Column
+    private LocalDateTime checkInTime;
 }
