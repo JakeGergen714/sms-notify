@@ -41,7 +41,6 @@ public class Controller {
 
         log.info("Adding waitlist item for username <{}>", username);
         service.add(waitListItemDTO, username);
-
         return ResponseEntity.ok().build();
     }
 }
