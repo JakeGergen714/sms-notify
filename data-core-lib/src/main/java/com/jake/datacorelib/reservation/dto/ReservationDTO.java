@@ -9,7 +9,7 @@ import java.util.List;
 public class ReservationDTO {
     private long id;
     private long businessId;
-    private long tableId;
+    private long guestId;
     private String partyName;
     private int partySize;
     private List<String> notes;

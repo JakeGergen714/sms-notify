@@ -18,7 +18,7 @@ public class Reservation {
     private long businessId;
 
     @Column
-    private long tableId;
+    private long guestId;
 
     @Column
     private String partyName;

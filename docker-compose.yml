@@ -71,6 +71,24 @@ services:
     ports:
       - "8081:8081"
 
+  restaurant-service:
+    image: 'ghcr.io/jakegergen714/restaurant_service:latest'
+    build:
+      context: .
+    container_name: restaurant_service
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - ISSUER_URI=http://192.168.1.241:9000
+      - LOG_LEVEL=DEBUG
+      - PORT=8083
+    ports:
+      - "8083:8083"
+
   floor-map-service:
     image: 'ghcr.io/jakegergen714/floor-map-service:latest'
     build:

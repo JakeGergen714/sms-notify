@@ -1,4 +1,4 @@
-package com.jake.waitlistservice.config;
+package com.jake.guestservice.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

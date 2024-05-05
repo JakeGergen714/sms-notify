@@ -5,7 +5,7 @@ import com.jake.datacorelib.floormap.jpa.FloorMapItem;
 import com.jake.datacorelib.reservation.dto.ReservationDTO;
 import com.jake.datacorelib.reservation.jpa.Reservation;
 import com.jake.datacorelib.reservation.jpa.ReservationRepository;
-import com.jake.reservationservice.exception.TableReservedException;
+import com.jake.reservationservice.exception.NoAvailableReservationsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
@@ -13,10 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
@@ -29,9 +27,21 @@ public class ReservationService {
         return repo.findAllByBusinessId(businessId, Sort.by(Sort.Direction.ASC, "reservationTime"));
     }
 
+    //methods
+    // 1. isReservationAvailableForTime(businessId, LocalTime reservationTime, int partySize)
+    // 2. getAllAvailableReservationsTimesForDate(businessId, LocalDateTime, int partySize)
+
+    // todo Floor plans need to have also, days of the week they are active, MON-FRI, or only
+    // SAT-SUN
+    // ... etc...
     public Set<LocalTime> findAllAvailableReservationsForDate(long businessId, LocalDate requestedReservationDate, int partySize) {
 
-        LocalTime serviceTime = LocalTime.of(9, 30);
+        //1. Retrieve all of the services
+        //2. Retrieve the floor plan for that service
+
+
+        LocalTime serviceStartTime = LocalTime.of(9, 30);
+        LocalTime serviceEndTime = LocalTime.of(21, 30);
 
         FloorMap activeFloorMapForTime = floorMapService.getActiveFloorMapForTime(businessId, serviceTime);
         log.info("Found active floor map <{}>", activeFloorMapForTime);
@@ -39,41 +49,65 @@ public class ReservationService {
         log.info("Found tables <{}>", tables);
         List<Reservation> allTodaysReservations = repo.findAllByBusinessId(businessId, Sort.unsorted()).stream().filter(reservation -> reservation.getReservationTime().toLocalDate().equals(requestedReservationDate)).toList();
         log.info("Found reservations <{}>", allTodaysReservations);
-        //Current Reservations and their assigned table
-        // Lets assume reservation blocks are 2 hours and long and the starting reservation time is in increments of 30 min. i.e 5:00, 5:30, 6:00 etc...
-        //So for a given table, X, assuming service is from 5pm - 10pm, has 10 available reservation times. and a max for 2 available reservations. 5-7, 7-9
-        //but if X was unreserved 10 reservations time should be returned.
-        // so for each table calculate all available reservation times
 
-        Set<LocalTime> availableReservationTimeSlots = new HashSet<>();
-        for (FloorMapItem item : tables) {
-            //find all reservations for table for this date.
-            List<LocalTime> tableTimeSlots = createReservationTimeSlots(activeFloorMapForTime.getServiceTimeStart(), activeFloorMapForTime.getServiceTimeEnd(), Duration.ofMinutes(30));
-            for (Reservation reservation : allTodaysReservations) {
-                if (reservation.getTableId() == item.getId()) {
-                    //1:00, 1:30, 2:00, 2:30, 3:00, 3:30, 4:00, 4:30, 5:00, 5:30 <--- time slots
-                    //3:00 <-- existing reservation
-                    //[ anytime+{reservation time length} <= 3 ]----- [  3pm + {reservation time length}  ] ==== valid unreserved time slots
-                    log.info("Found existing reservation for today <{}>", reservation);
-                    log.debug("before filter tableTimeSlots <{}>", tableTimeSlots);
-                    tableTimeSlots = tableTimeSlots.stream().filter(timeSlot -> {
-                        if (timeSlot.isBefore(reservation.getReservationTime().toLocalTime())) {
-                            return timeSlot.plusHours(2).isBefore(reservation.getReservationTime().toLocalTime()) || timeSlot.plusHours(2).equals(reservation.getReservationTime().toLocalTime());
-                        } else {
-                            return timeSlot.isAfter(reservation.getReservationTime().toLocalTime().plusHours(2)) || timeSlot.equals(reservation.getReservationTime().toLocalTime().plusHours(2));
-                        }
-                    }).toList();
-                    log.debug("after filter tableTimeSlots <{}>", tableTimeSlots);
+        Set<LocalTime> timeSlots = createReservationTimeSlots(serviceStartTime, serviceEndTime, Duration.ofMinutes(30));
+        tables.sort(Comparator.comparingInt(FloorMapItem::getMaxTableSize));
+
+        Set<LocalTime> availableTimeSlots = new HashSet<>();
+        for (LocalTime timeSlot : timeSlots) {
+            List<Reservation> potentialConflicts = allTodaysReservations.stream().filter(reservation ->
+                    !isTimeSlotAvailableGivenExistingReservationTime(timeSlot, reservation.getReservationTime().toLocalTime())).toList();
+
+            potentialConflicts.sort(Comparator.comparingInt(Reservation::getPartySize));
+            Map<FloorMapItem, Reservation> tableToReservationMapping = new HashMap<>();
+
+            for (Reservation potentialConflict : potentialConflicts) {
+                for (FloorMapItem floorMapItem : tables) {
+                    if (tableToReservationMapping.containsKey(floorMapItem)) {
+                        //table is already reserved
+                        continue;
+                    }
+                    if (potentialConflict.getPartySize() <= floorMapItem.getMaxTableSize() && potentialConflict.getPartySize() >= floorMapItem.getMinTableSize()) {
+                        //reserve table
+                        tableToReservationMapping.put(floorMapItem, potentialConflict);
+                        break;
+                    }
                 }
             }
-            availableReservationTimeSlots.addAll(tableTimeSlots);
-        }
 
-        return availableReservationTimeSlots.stream().sorted().collect(Collectors.toCollection(LinkedHashSet::new));
+            for (FloorMapItem floorMapItem : tables) {
+                if (tableToReservationMapping.containsKey(floorMapItem)) {
+                    continue;
+                } else {
+                    if (partySize <= floorMapItem.getMaxTableSize() && partySize >= floorMapItem.getMinTableSize()) {
+                        availableTimeSlots.add(timeSlot);
+                        break;
+                    }
+                }
+            }
+        }
+        return availableTimeSlots;
     }
 
-    private List<LocalTime> createReservationTimeSlots(LocalTime serviceStartTime, LocalTime serviceEndTime, Duration timeSlotGap) {
-        List<LocalTime> timeSlots = new ArrayList<>();
+    private boolean isTimeSlotAvailableGivenAllExistingReservationTimes(LocalTime timeSlot, List<LocalTime> existingReservationTimes, Duration reservationDuration) {
+        for (LocalTime existingReservationTime : existingReservationTimes) {
+            if (!isTimeSlotAvailableGivenExistingReservationTime(timeSlot, existingReservationTime, reservationDuration)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isTimeSlotAvailableGivenExistingReservationTime(LocalTime potentialTimeSlot, LocalTime existingReservationTime, Duration reservationDuration) {
+        if (potentialTimeSlot.isBefore(existingReservationTime)) {
+            return potentialTimeSlot.plus(reservationDuration).isBefore(existingReservationTime) || potentialTimeSlot.plus(reservationDuration).equals(existingReservationTime);
+        } else {
+            return potentialTimeSlot.isAfter(existingReservationTime.plus(reservationDuration)) || potentialTimeSlot.equals(existingReservationTime.plus(reservationDuration));
+        }
+    }
+
+    private Set<LocalTime> createReservationTimeSlots(LocalTime serviceStartTime, LocalTime serviceEndTime, Duration timeSlotGap) {
+        Set<LocalTime> timeSlots = new HashSet<>();
         LocalTime previous = serviceStartTime;
         while (previous.isBefore(serviceEndTime)) {
             timeSlots.add(previous);
@@ -83,14 +117,18 @@ public class ReservationService {
         return timeSlots;
     }
 
-    public void add(ReservationDTO reservationDTO, long businessId) {
-        if (!isTableFreeAtTime(reservationDTO.getTableId(), reservationDTO.getReservationTime())) {
-            throw new TableReservedException(String.format("Table <%s> is not free at <%s>", reservationDTO.getTableId(), reservationDTO.getReservationTime()));
+    public void add(ReservationDTO reservationDTO) {
+        LocalTime requestedReservationTime = reservationDTO.getReservationTime().toLocalTime();
+        LocalDate requestedReservationDate = reservationDTO.getReservationTime().toLocalDate();
+
+        Set<LocalTime> allAvailableReservationTimes = findAllAvailableReservationsForDate(reservationDTO.getBusinessId(), requestedReservationDate, reservationDTO.getPartySize());
+        if (!allAvailableReservationTimes.contains(requestedReservationTime)) {
+            throw new NoAvailableReservationsException(String.format("Requested reservation date time <{}> is not available.", reservationDTO.getReservationTime()));
         }
 
         Reservation reservation = new Reservation();
-        reservation.setBusinessId(businessId);
-        reservation.setTableId(reservationDTO.getTableId());
+        reservation.setBusinessId(reservationDTO.getBusinessId());
+        reservation.setGuestId(reservation.getGuestId());
         reservation.setPartyName(reservationDTO.getPartyName());
         reservation.setPartySize(reservationDTO.getPartySize());
         reservation.setReservationTime(reservationDTO.getReservationTime());
@@ -103,39 +141,22 @@ public class ReservationService {
         Optional<Reservation> optionalReservation = repo.findById(reservationDTO.getId());
         Reservation existingReservation = optionalReservation.orElseThrow();
 
-        if (!existingReservation.getReservationTime().isEqual(reservationDTO.getReservationTime())) {
-            if (!isTableFreeAtTime(reservationDTO.getTableId(), reservationDTO.getReservationTime())) {
-                throw new TableReservedException(String.format("Table <%s> is not free at <%s>", reservationDTO.getTableId(), reservationDTO.getReservationTime()));
-            }
+        LocalTime requestedReservationTime = reservationDTO.getReservationTime().toLocalTime();
+        LocalDate requestedReservationDate = reservationDTO.getReservationTime().toLocalDate();
+        int partySize = reservationDTO.getPartySize();
+
+        Set<LocalTime> allAvailableReservationTimes = findAllAvailableReservationsForDate(reservationDTO.getBusinessId(), requestedReservationDate, partySize);
+        if (!allAvailableReservationTimes.contains(requestedReservationTime)) {
+            throw new NoAvailableReservationsException(String.format("Requested reservation date time <{}> is not available.", reservationDTO.getReservationTime()));
         }
 
-        existingReservation.setTableId(reservationDTO.getTableId());
         existingReservation.setPartyName(reservationDTO.getPartyName());
+        existingReservation.setReservationTime(reservationDTO.getReservationTime());
         existingReservation.setPartySize(reservationDTO.getPartySize());
         existingReservation.setReservationTime(reservationDTO.getReservationTime());
         existingReservation.setNotes(reservationDTO.getNotes());
         existingReservation.setCompletedIndicator(reservationDTO.isCompletedIndicator());
 
         repo.save(existingReservation);
-    }
-
-
-    private boolean isTableFreeAtTime(long tableId, LocalDateTime reservationTime) {
-        Optional<Reservation> optionalReservation = repo.findByTableId(tableId);
-        if (optionalReservation.isEmpty()) {
-            return true;
-        }
-
-        Reservation reservation = optionalReservation.get();
-
-        //hard coded table reservation length of 2 hours
-        //If reservation is 2 hours or more from now, then table is free now
-        Duration timeBetweenExistingReservation = Duration.between(reservation.getReservationTime(), reservationTime).abs();
-        return timeBetweenExistingReservation.compareTo(Duration.ofHours(2)) >= 0;
-    }
-
-    private boolean isReservationConflicting(Reservation reservation, LocalDateTime reservationTime) {
-        Duration timeBetweenExistingReservation = Duration.between(reservation.getReservationTime(), reservationTime).abs();
-        return timeBetweenExistingReservation.compareTo(Duration.ofHours(2)) < 0;
     }
 }
