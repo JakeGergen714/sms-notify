@@ -35,7 +35,7 @@ const ManageService = () => {
 
    const loadFloorPlans = () => {
       axios
-         .get(process.env.REACT_APP_API_URL + "/floorMap")
+         .get(process.env.REACT_APP_API_URL + "/floorMaps")
          .then((res) => {
             setFloorPlans(res.data); // Set state here after fetching
             if (floorPlan != null) {
