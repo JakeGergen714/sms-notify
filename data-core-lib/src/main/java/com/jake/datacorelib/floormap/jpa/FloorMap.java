@@ -14,6 +14,7 @@ import java.util.Set;
 public class FloorMap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long floorMapId;
     @Column
     private Long businessId;
