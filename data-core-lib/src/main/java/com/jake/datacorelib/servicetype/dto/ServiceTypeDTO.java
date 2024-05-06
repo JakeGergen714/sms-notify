@@ -1,6 +1,7 @@
 package com.jake.datacorelib.servicetype.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jake.datacorelib.floormap.jpa.FloorMap;
 import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.serviceschedule.dto.ServiceScheduleDTO;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class ServiceTypeDTO {
     private Long restaurantId;
     private String name;
     private Set<ServiceScheduleDTO> serviceSchedules;
+    private FloorMap floorMap;
 }

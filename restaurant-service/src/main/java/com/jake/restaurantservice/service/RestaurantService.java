@@ -4,6 +4,8 @@ import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
 import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.restaurant.jpa.RestaurantRepository;
 import com.jake.datacorelib.serviceschedule.jpa.ServiceScheduleRepository;
+import com.jake.datacorelib.servicetype.dto.ServiceTypeDTO;
+import com.jake.datacorelib.servicetype.jpa.ServiceType;
 import com.jake.datacorelib.servicetype.jpa.ServiceTypeRepository;
 import com.jake.restaurantservice.utility.Mapper;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final ServiceTypeRepository serviceTypeRepository;
     private final ServiceScheduleRepository serviceScheduleRepository;
+    private final FloorMapService floorMapService;
     private final Mapper mapper;
 
     public RestaurantDTO addRestaurant(RestaurantDTO dto, long businessId) {
@@ -29,6 +32,18 @@ public class RestaurantService {
     public RestaurantDTO findRestaurantByBusinessId(long businessId) {
         Restaurant restaurant = restaurantRepository.findAllByBusinessId(businessId).stream().findAny().orElseThrow();
         return mapper.toDTO(restaurant);
+    }
+
+    public ServiceTypeDTO updateServiceType(ServiceTypeDTO serviceTypeDTO) {
+        ServiceType serviceType = serviceTypeRepository.findById(serviceTypeDTO.getServiceTypeId()).orElseThrow();
+
+        ServiceType dtoToEntity = mapper.toEntity(serviceTypeDTO);
+
+        serviceType.setServiceSchedules(dtoToEntity.getServiceSchedules());
+        serviceType.setName(serviceTypeDTO.getName());
+        serviceType.setFloorMap(serviceTypeDTO.getFloorMap());
+
+        return mapper.toDto(serviceTypeRepository.save(serviceType));
     }
 
    /* public Optional<RestaurantDTO> findRestaurantByBusinessId(long businessId) {

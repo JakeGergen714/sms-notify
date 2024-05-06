@@ -1,6 +1,7 @@
 package com.jake.restaurantservice.controller;
 
 import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
+import com.jake.datacorelib.servicetype.dto.ServiceTypeDTO;
 import com.jake.restaurantservice.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,6 +35,14 @@ public class Controller {
     public ResponseEntity<RestaurantDTO> addMyRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
         log.info("POST /restaurant <{}>", restaurantDTO);
         RestaurantDTO savedDTO = service.addRestaurant(restaurantDTO, 1l);
+        return ResponseEntity.ok(savedDTO);
+    }
+
+    @PutMapping(value = "/servicetype")
+    public ResponseEntity<ServiceTypeDTO> updateServiceType(@RequestBody ServiceTypeDTO serviceType) {
+        log.info("PUT /servicetype <{}>", serviceType);
+        ServiceTypeDTO savedDTO = service.updateServiceType(serviceType);
+        log.info("Updated DTO <{}>",savedDTO );
         return ResponseEntity.ok(savedDTO);
     }
 

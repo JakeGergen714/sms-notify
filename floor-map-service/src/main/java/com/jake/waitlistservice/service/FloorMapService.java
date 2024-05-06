@@ -49,6 +49,10 @@ public class FloorMapService {
         return entity;
     }
 
+    public Optional<FloorMap> findFloorMapById(long floorMapId) {
+        return floorMapRepository.findById(floorMapId);
+    }
+
     public List<FloorMapDTO> findAllForBusinessId(long businessId) {
         log.info("Searching for Floor Maps by businessId <{}>", businessId);
         List<FloorMap> floorMaps = floorMapRepository.findAllByBusinessId(businessId);
@@ -66,7 +70,6 @@ public class FloorMapService {
         }
 
         return floorMapDTOS;
-
     }
 
     public FloorMap save(FloorMapDTO floorMapDTO, long businessId) {

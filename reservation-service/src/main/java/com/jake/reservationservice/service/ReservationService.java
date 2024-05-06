@@ -2,12 +2,16 @@ package com.jake.reservationservice.service;
 
 import com.jake.datacorelib.reservation.jpa.Reservation;
 import com.jake.datacorelib.reservation.jpa.ReservationRepository;
+import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
+import com.jake.datacorelib.serviceschedule.dto.ServiceScheduleDTO;
+import com.jake.datacorelib.servicetype.dto.ServiceTypeDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -19,10 +23,28 @@ import java.util.Set;
 public class ReservationService {
     private final ReservationRepository repo;
     private final FloorMapService floorMapService;
+    private final RestaurantService restaurantService;
 
     public List<Reservation> findAllByBusinessId(long businessId) {
         return repo.findAllByBusinessId(businessId, Sort.by(Sort.Direction.ASC, "reservationTime"));
     }
+
+    public Set<LocalTime> findAllAvailableReservationsForDate(long businessId, LocalDate requestedReservationDate, int partySize) {
+        RestaurantDTO restaurantDTO = restaurantService.findRestaurantByBusinessId(businessId);
+        Set<ServiceScheduleDTO> serviceSchedulesOnRequestedDate = new HashSet<>();
+
+        for (ServiceTypeDTO serviceType : restaurantDTO.getServiceTypes()) {
+            for (ServiceScheduleDTO serviceSchedule : serviceType.getServiceSchedules()) {
+                if (serviceSchedule.getDayOfWeek().equals(requestedReservationDate.getDayOfWeek())) {
+                    serviceSchedulesOnRequestedDate.add(serviceSchedule);
+                }
+            }
+        }
+
+
+        return null;
+    }
+
 
     //methods
     // 1. isReservationAvailableForTime(businessId, LocalTime reservationTime, int partySize)
@@ -31,7 +53,7 @@ public class ReservationService {
     // todo Floor plans need to have also, days of the week they are active, MON-FRI, or only
     // SAT-SUN
     // ... etc...
-   /* public Set<LocalTime> findAllAvailableReservationsForDate(long businessId, LocalDate requestedReservationDate, int partySize) {
+/*    public Set<LocalTime> findAllAvailableReservationsForDate(long businessId, LocalDate requestedReservationDate, int partySize) {
 
         //1. Retrieve all of the services
         //2. Retrieve the floor plan for that service

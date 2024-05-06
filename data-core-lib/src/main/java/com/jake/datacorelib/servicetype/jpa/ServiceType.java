@@ -1,5 +1,6 @@
 package com.jake.datacorelib.servicetype.jpa;
 
+import com.jake.datacorelib.floormap.jpa.FloorMap;
 import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.serviceschedule.jpa.ServiceSchedule;
 import jakarta.persistence.*;
@@ -37,4 +38,8 @@ public class ServiceType {
 
     @OneToMany(mappedBy="serviceType", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ServiceSchedule> serviceSchedules;
+
+    @ManyToOne
+    @JoinColumn(name = "floor_map_id")
+    private FloorMap floorMap;
 }
