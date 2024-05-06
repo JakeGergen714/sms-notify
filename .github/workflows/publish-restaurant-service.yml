@@ -35,6 +35,14 @@ jobs:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
            run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B package --file pom.xml
 
+         - name: Cache local Maven repository
+            uses: actions/cache@v3
+            with:
+               path: ~/.m2/repository
+               key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+               restore-keys: |
+                  ${{ runner.os }}-maven-
+
          - name: Publish restaurant Service
            env:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
