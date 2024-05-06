@@ -6,6 +6,7 @@ import com.jake.datacorelib.serviceschedule.jpa.ServiceSchedule;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Data
 @EqualsAndHashCode(exclude="restaurant")
+@ToString(exclude = "restaurant")
 public class ServiceType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

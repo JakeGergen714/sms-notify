@@ -4,6 +4,7 @@ import com.jake.datacorelib.servicetype.jpa.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,6 +15,7 @@ import java.time.LocalTime;
 @Entity
 @Data
 @EqualsAndHashCode(exclude="serviceType")
+@ToString(exclude = "serviceType")
 public class ServiceSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
