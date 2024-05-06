@@ -23,7 +23,7 @@ public class FloorMapService {
 
     private FloorMapItemDTO toDto (FloorMapItem entity) {
         FloorMapItemDTO dto = new FloorMapItemDTO();
-        dto.setId(entity.getId());
+        dto.setFloorMapItemId(entity.getFloorMapItemId());
         dto.setFloorMapId(entity.getFloorMapId());
         dto.setName(entity.getName());
         dto.setTableType(entity.getTableType());
@@ -37,7 +37,7 @@ public class FloorMapService {
 
     private FloorMapItem toEntity(FloorMapItemDTO dto) {
         FloorMapItem entity = new FloorMapItem();
-        entity.setId(dto.getId());
+        entity.setFloorMapItemId(dto.getFloorMapItemId());
         entity.setFloorMapId(dto.getFloorMapId());
         entity.setName(dto.getName());
         entity.setTableType(dto.getTableType());
@@ -126,10 +126,10 @@ public class FloorMapService {
     }
 
     public void update(FloorMapItemDTO floorMapItemDTO) {
-        Optional<FloorMapItem> existingItemOptional = repo.findById(floorMapItemDTO.getId());
+        Optional<FloorMapItem> existingItemOptional = repo.findById(floorMapItemDTO.getFloorMapItemId());
 
         if(existingItemOptional.isEmpty()) {
-            log.info("Update failed no existing Floor Map Item found with id <{}>", floorMapItemDTO.getId());
+            log.info("Update failed no existing Floor Map Item found with id <{}>", floorMapItemDTO.getFloorMapItemId());
             return;
         }
         FloorMapItem existingItem = existingItemOptional.get();
