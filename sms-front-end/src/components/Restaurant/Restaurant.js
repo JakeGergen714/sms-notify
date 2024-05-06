@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Dropdown } from "react-bootstrap"; // Make sure you have this import if using React-Bootstrap
 
@@ -14,6 +14,22 @@ const Restaurant = () => {
    });
 
    const [floorPlans, setFloorPlans] = useState([]); // This should hold all floor plans
+   const loadFloorPlans = () => {
+      axios
+         .get(process.env.REACT_APP_API_URL + "/floorMaps")
+         .then((res) => {
+            setFloorPlans(res.data); // Set state here after fetching
+            if (floorPlan != null) {
+               //If a floor plan is currently selected, reload it with the latest data
+               setFloorPlan(res.data.filter((updatedFloorPlan) => updatedFloorPlan.id == floorPlan.id)[0]);
+            }
+         })
+         .catch((err) => {
+            console.log("load floor plans failed");
+            console.error(err);
+            setFloorPlans([]); // Set to an empty array in case of error
+         });
+   };
 
    useEffect(() => {
       loadFloorPlans();
