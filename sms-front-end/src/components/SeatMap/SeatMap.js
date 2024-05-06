@@ -52,7 +52,7 @@ const SeatMap = () => {
             setFloorPlans(res.data); // Set state here after fetching
             if (floorPlan != null) {
                //If a floor plan is currently selected, reload it with the latest data
-               setFloorPlan(res.data.filter((updatedFloorPlan) => updatedFloorPlan.id == floorPlan.id)[0]);
+               setFloorPlan(res.data.filter((updatedFloorPlan) => updatedFloorPlan.floorMapId == floorPlan.floorMapId)[0]);
             }
          })
          .catch((err) => {
@@ -124,7 +124,7 @@ const SeatMap = () => {
       setFloorPlan((currentFloorPlan) => {
          // Create a deep copy of the floorMapItems to ensure immutability
          const updatedFloorMapItems = currentFloorPlan.floorMapItems.map((table) => {
-            if (table.id === id && table.tableType === "custom") {
+            if (table.floorMapItemId === id && table.tableType === "custom") {
                // Assuming the rectangle is 40x40 pixels
                var x = calculateClosestIntersection(getCenterOfRectangleX(event.target.x(), 40)) - 20; // Adjust back to top-left
                var y = calculateClosestIntersection(getCenterOfRectangleY(event.target.y(), 40)) - 20; // Adjust back to top-left
@@ -174,7 +174,7 @@ const SeatMap = () => {
       }
 
       // Construct the new table object
-      const newShape = { xPosition: x, yPosition: y, tableType: currentTableType, floorMapId: floorPlan.id };
+      const newShape = { xPosition: x, yPosition: y, tableType: currentTableType, floorMapId: floorPlan.floorMapId };
 
       console.log("adding new table", newShape);
       axios.post(process.env.REACT_APP_API_URL + "/floorMapItem", newShape).then(() => {
@@ -214,7 +214,7 @@ const SeatMap = () => {
 
    const generateDropdownItems = () => {
       return floorPlans.map((curFloorPlan) => (
-         <Dropdown.Item key={curFloorPlan.id} onClick={() => selectFloorPlan(curFloorPlan)}>
+         <Dropdown.Item key={curFloorPlan.floorMapId} onClick={() => selectFloorPlan(curFloorPlan)}>
             {curFloorPlan.name}
          </Dropdown.Item>
       ));
@@ -336,7 +336,7 @@ const SeatMap = () => {
 
       // Update the positions of the selected tables in the floorPlan object
       updatedFloorPlan.floorMapItems = updatedFloorPlan.floorMapItems.map((table) => {
-         if (selectedTables.some((selectedTable) => selectedTable.id === table.id)) {
+         if (selectedTables.some((selectedTable) => selectedTable.floorMapItemId === table.floorMapItemId)) {
             return {
                ...table,
                xPosition: table.xPosition + delta.x,
@@ -474,12 +474,12 @@ const SeatMap = () => {
                                     case "custom":
                                        return (
                                           <CustomShape
-                                             key={shape.id}
+                                             key={shape.floorMapItemId}
                                              xPos={shape.xPosition}
                                              yPos={shape.yPosition}
                                              width={50}
                                              height={50}
-                                             onDragEnd={(e) => handleDragEnd(shape.id, e)}
+                                             onDragEnd={(e) => handleDragEnd(shape.floorMapItemId, e)}
                                              onClick={(e) => handleTableClick(shape)}
                                           />
                                        );
