@@ -59,10 +59,10 @@ public class FloorMapService {
         log.info("Found floor maps <{}>", floorMaps);
         List<FloorMapDTO> floorMapDTOS = new ArrayList<>();
         for (FloorMap floorMap : floorMaps) {
-            List<FloorMapItem> floorMapItems = findAllForMapId(floorMap.getId());
-            log.info("Found Floor Map Items <{}> for Floor map Id <{}>", floorMapItems,  floorMap.getId());
+            List<FloorMapItem> floorMapItems = findAllForMapId(floorMap.getFloorMapId());
+            log.info("Found Floor Map Items <{}> for Floor map Id <{}>", floorMapItems,  floorMap.getFloorMapId());
             FloorMapDTO floorMapDTO = new FloorMapDTO();
-            floorMapDTO.setId(floorMap.getId());
+            floorMapDTO.setId(floorMap.getFloorMapId());
             floorMapDTO.setBusinessId(businessId);
             floorMapDTO.setName(floorMap.getName());
             floorMapDTO.setFloorMapItems(floorMapItems.stream().map(this::toDto).toList());
@@ -83,8 +83,7 @@ public class FloorMapService {
             floorMap = new FloorMap();
             floorMap.setName(floorMapDTO.getName());
             floorMap.setBusinessId(businessId);
-            floorMap.setServiceTimeStart(floorMapDTO.getServiceTimeStart());
-            floorMap.setServiceTimeEnd(floorMapDTO.getServiceTimeEnd());
+
 
             log.info("Saved Floor Plan <{}>.", floorMap);
             FloorMap saved =  floorMapRepository.save(floorMap);
@@ -92,8 +91,7 @@ public class FloorMapService {
             FloorMap existing = floorMapOptional.get();
             log.info("Found existing Floor Plan <{}>.", existing);
             existing.setName(floorMapDTO.getName());
-            existing.setServiceTimeStart(floorMapDTO.getServiceTimeStart());
-            existing.setServiceTimeEnd(floorMapDTO.getServiceTimeEnd());
+
             log.info("Edited existing Floor Plan <{}>.", existing);
             floorMap = floorMapRepository.save(existing);
             log.info("Saved Floor Plan <{}>.", existing);

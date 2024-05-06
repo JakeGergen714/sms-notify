@@ -14,7 +14,7 @@ import java.util.Set;
 public class FloorMap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long floor_map_id;
+    private Long floorMapId;
     @Column
     private Long businessId;
     @Column
