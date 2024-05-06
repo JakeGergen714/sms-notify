@@ -15,6 +15,10 @@ const Restaurant = () => {
 
    const [floorPlans, setFloorPlans] = useState([]); // This should hold all floor plans
 
+   useEffect(() => {
+      loadFloorPlans();
+   }, []); // Empty dependency array means this effect runs once after initial render
+
    const handleInputChange = (e) => {
       const { name, value } = e.target;
       setRestaurant((prev) => ({ ...prev, [name]: value }));
