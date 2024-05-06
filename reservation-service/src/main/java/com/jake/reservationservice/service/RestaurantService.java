@@ -18,6 +18,6 @@ public class RestaurantService {
     private String url;
 
     public RestaurantDTO findRestaurantByBusinessId(Long businessId) {
-        return restTemplate.getForObject(url, RestaurantDTO.class, Map.of("businessId", 1l));
+        return restTemplate.getForObject(url + "/restaurant", RestaurantDTO.class, Map.of("businessId", 1l));
     }
 }
