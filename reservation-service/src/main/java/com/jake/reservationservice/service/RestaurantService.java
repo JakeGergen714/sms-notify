@@ -14,7 +14,7 @@ import java.util.Map;
 public class RestaurantService {
     private final RestTemplate restTemplate;
 
-    @Value("${restaurant-service-url}")
+    @Value("${services.restaurant.url}")
     private String url;
 
     public RestaurantDTO findRestaurantByBusinessId(Long businessId) {
