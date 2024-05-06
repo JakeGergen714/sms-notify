@@ -24,6 +24,7 @@ public class RestaurantService {
 
     public RestaurantDTO addRestaurant(RestaurantDTO dto, long businessId) {
         Restaurant restaurantEntity = mapper.toEntity(dto);
+        log.debug("Mapped to Entity <{}>", restaurantEntity);
         restaurantEntity.setBusinessId(businessId);
         Restaurant restaurant =  restaurantRepository.save(restaurantEntity);
         return mapper.toDTO(restaurant);
