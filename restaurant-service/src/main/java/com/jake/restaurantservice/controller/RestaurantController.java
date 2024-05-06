@@ -6,6 +6,8 @@ import com.jake.restaurantservice.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,21 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class RestaurantController {
     private final RestaurantService service;
 
-/*    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
+   @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     @GetMapping(value = "/restaurant")
-    public ResponseEntity<Restaurant> getMyRestaurant(Authentication authenticationToken) {
-       Optional<Restaurant> optionalRestaurant = service.findRestaurantByBusinessId(getBusinessId(authenticationToken));
-       if(optionalRestaurant.isEmpty()) {
-           return ResponseEntity.notFound().build();
-       }
-
-       return ResponseEntity.ok(optionalRestaurant.get());
-    }*/
-
-    @GetMapping(value = "/restaurant")
-    public ResponseEntity<RestaurantDTO> addMyRestaurant(@RequestParam Long businessId) {
-        log.info("GET /restaurant <{}>", businessId);
-        return ResponseEntity.ok(service.findRestaurantByBusinessId(businessId));
+    public ResponseEntity<RestaurantDTO> getMyRestaurant(Authentication authenticationToken) {
+       log.info("GET /restaurant");
+       RestaurantDTO restaurant = service.findRestaurantByBusinessId(getBusinessId(authenticationToken));
+       log.info("GET /restaurant <{}>", restaurant);
+       return ResponseEntity.ok(restaurant);
     }
 
     @PostMapping(value = "/restaurant")
@@ -48,7 +42,7 @@ public class RestaurantController {
 
 
 
-/*    private long getBusinessId(Authentication authentication) {
+    private long getBusinessId(Authentication authentication) {
         return Long.valueOf(((Jwt) authentication.getPrincipal()).getClaimAsString("businessId"));
-    }*/
+    }
 }
