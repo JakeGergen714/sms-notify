@@ -23,7 +23,7 @@ public class Controller {
 
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     // Replace with your allowed origin
-    @GetMapping(value = "/floorMap")
+    @GetMapping(value = "/floorMaps")
     public ResponseEntity<List<FloorMapDTO>> getAllFloorMaps(Authentication authenticationToken) {
         log.info("GET /floorMap");
 

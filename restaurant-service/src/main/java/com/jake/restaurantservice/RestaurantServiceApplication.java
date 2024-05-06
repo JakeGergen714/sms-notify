@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories({"com.jake.datacorelib.restaurant", "com.jake.datacorelib.servicetype", "com.jake.datacorelib.serviceschedule"})
-@EntityScan({"com.jake.datacorelib.restaurant", "com.jake.datacorelib.servicetype", "com.jake.datacorelib.serviceschedule"})
+@EntityScan({"com.jake.datacorelib.restaurant", "com.jake.datacorelib.servicetype", "com.jake.datacorelib.serviceschedule", "com.jake.datacorelib.floormap"})
 public class RestaurantServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RestaurantServiceApplication.class, args);
