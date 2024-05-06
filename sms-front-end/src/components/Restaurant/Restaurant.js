@@ -7,146 +7,99 @@ const Restaurant = () => {
    const baseUrl = "http://192.168.1.241:8090";
 
    const [restaurant, setRestaurant] = useState({
-      businessId: "",
+      restaurantId: null,
       name: "",
       address: "",
       serviceTypes: [],
    });
 
-   const [serviceType, setServiceType] = useState({
-      serviceTypeId: "",
-      restaurantId: "",
-      name: "",
-      serviceSchedules: [],
-   });
-
-   const [serviceSchedule, setServiceSchedule] = useState({
-      serviceScheduleId: "",
-      dayOfWeek: "",
-      startTime: "",
-      endTime: "",
-   });
-
-   const handleInputChange = (event, setter) => {
+   const handleInputChange = (event) => {
       const { name, value } = event.target;
-      setter((prev) => ({ ...prev, [name]: value }));
+      setRestaurant((prev) => ({ ...prev, [name]: value }));
    };
 
-   const logRestaurants = async () => {
-      try {
-         const response = await axios.get(`${baseUrl}/restaurant`, { params: { businessId: restaurant.businessId } });
-         console.log(response.data);
-      } catch (error) {
-         console.error("Failed to fetch restaurant", error);
-      }
+   const handleServiceTypeChange = (index, event) => {
+      const { name, value } = event.target;
+      const updatedServiceTypes = [...restaurant.serviceTypes];
+      updatedServiceTypes[index] = { ...updatedServiceTypes[index], [name]: value };
+      setRestaurant((prev) => ({ ...prev, serviceTypes: updatedServiceTypes }));
    };
 
-   const addRestaurant = async (event) => {
+   const handleServiceScheduleChange = (typeIndex, scheduleIndex, event) => {
+      const { name, value } = event.target;
+      const updatedServiceTypes = [...restaurant.serviceTypes];
+      const updatedSchedules = [...updatedServiceTypes[typeIndex].serviceSchedules];
+      updatedSchedules[scheduleIndex] = { ...updatedSchedules[scheduleIndex], [name]: value };
+      updatedServiceTypes[typeIndex].serviceSchedules = updatedSchedules;
+      setRestaurant((prev) => ({ ...prev, serviceTypes: updatedServiceTypes }));
+   };
+
+   const handleSubmit = async (event) => {
       event.preventDefault();
       try {
          const response = await axios.post(`${baseUrl}/restaurant`, restaurant);
-         console.log("Added restaurant:", response.data);
+         console.log("Restaurant and associated data added:", response.data);
       } catch (error) {
-         console.error("Failed to add restaurant", error);
+         console.error("Failed to add restaurant data", error);
       }
    };
 
-   const updateServiceType = async (event) => {
-      event.preventDefault();
-      try {
-         const response = await axios.put(`${baseUrl}/servicetype`, serviceType);
-         console.log("Updated service type:", response.data);
-      } catch (error) {
-         console.error("Failed to update service type", error);
-      }
-   };
-
-   const handleServiceScheduleSubmit = async (event) => {
-      event.preventDefault();
-      // Assuming the endpoint to handle service schedule is available
-      try {
-         const response = await axios.post(`${baseUrl}/serviceschedule`, serviceSchedule);
-         console.log("Service Schedule Updated:", response.data);
-      } catch (error) {
-         console.error("Failed to update service schedule", error);
-      }
+   const fetchMyRestaurnt = () => {
+      axios
+         .get(process.env.REACT_APP_API_URL + "/restaurant")
+         .then((res) => {
+            console.log(res);
+         })
+         .catch((err) => {
+            console.log("fetch my restaurant");
+            console.error(err);
+         });
    };
 
    return (
       <div>
+         <button onClick={() => fetchMyRestaurnt()}> test </button>
+
          <h1>Restaurant Component</h1>
-         <button onClick={logRestaurants}>Log Restaurants</button>
-         <form onSubmit={addRestaurant}>
-            <h2>Add Restaurant</h2>
-            <input
-               name='businessId'
-               value={restaurant.businessId}
-               onChange={(e) => handleInputChange(e, setRestaurant)}
-               placeholder='Business ID'
-            />
-            <input
-               name='name'
-               value={restaurant.name}
-               onChange={(e) => handleInputChange(e, setRestaurant)}
-               placeholder='Name'
-            />
-            <input
-               name='address'
-               value={restaurant.address}
-               onChange={(e) => handleInputChange(e, setRestaurant)}
-               placeholder='Address'
-            />
-            <button type='submit'>Add Restaurant</button>
-         </form>
-         <form onSubmit={updateServiceType}>
-            <h2>Update Service Type</h2>
-            <input
-               name='serviceTypeId'
-               value={serviceType.serviceTypeId}
-               onChange={(e) => handleInputChange(e, setServiceType)}
-               placeholder='Service Type ID'
-            />
-            <input
-               name='restaurantId'
-               value={serviceType.restaurantId}
-               onChange={(e) => handleInputChange(e, setServiceType)}
-               placeholder='Restaurant ID'
-            />
-            <input
-               name='name'
-               value={serviceType.name}
-               onChange={(e) => handleInputChange(e, setServiceType)}
-               placeholder='Service Type Name'
-            />
-            <button type='submit'>Update Service Type</button>
-         </form>
-         <form onSubmit={handleServiceScheduleSubmit}>
-            <h2>Service Schedule</h2>
-            <input
-               name='serviceScheduleId'
-               value={serviceSchedule.serviceScheduleId}
-               onChange={(e) => handleInputChange(e, setServiceSchedule)}
-               placeholder='Schedule ID'
-            />
-            <input
-               name='dayOfWeek'
-               value={serviceSchedule.dayOfWeek}
-               onChange={(e) => handleInputChange(e, setServiceSchedule)}
-               placeholder='Day of Week'
-            />
-            <input
-               name='startTime'
-               value={serviceSchedule.startTime}
-               onChange={(e) => handleInputChange(e, setServiceSchedule)}
-               placeholder='Start Time'
-            />
-            <input
-               name='endTime'
-               value={serviceSchedule.endTime}
-               onChange={(e) => handleInputChange(e, setServiceSchedule)}
-               placeholder='End Time'
-            />
-            <button type='submit'>Update Schedule</button>
+         <form onSubmit={handleSubmit}>
+            <h2>Restaurant Details</h2>
+            <input name='name' value={restaurant.name} onChange={handleInputChange} placeholder='Name' />
+            <input name='address' value={restaurant.address} onChange={handleInputChange} placeholder='Address' />
+            {/* Dynamically add service types and their schedules here */}
+            {restaurant.serviceTypes.map((serviceType, index) => (
+               <div key={index}>
+                  <h3>Service Type {index + 1}</h3>
+                  <input
+                     name='name'
+                     value={serviceType.name}
+                     onChange={(e) => handleServiceTypeChange(index, e)}
+                     placeholder='Service Type Name'
+                  />
+                  {serviceType.serviceSchedules.map((schedule, sIndex) => (
+                     <div key={sIndex}>
+                        <input
+                           name='dayOfWeek'
+                           value={schedule.dayOfWeek}
+                           onChange={(e) => handleServiceScheduleChange(index, sIndex, e)}
+                           placeholder='Day of Week'
+                        />
+                        <input
+                           name='startTime'
+                           value={schedule.startTime}
+                           onChange={(e) => handleServiceScheduleChange(index, sIndex, e)}
+                           placeholder='Start Time'
+                        />
+                        <input
+                           name='endTime'
+                           value={schedule.endTime}
+                           onChange={(e) => handleServiceScheduleChange(index, sIndex, e)}
+                           placeholder='End Time'
+                        />
+                     </div>
+                  ))}
+               </div>
+            ))}
+            <button type='submit'>Submit All Data</button>
          </form>
       </div>
    );
