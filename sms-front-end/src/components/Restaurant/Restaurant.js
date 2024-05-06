@@ -12,8 +12,8 @@ const Restaurant = () => {
       address: "",
       serviceTypes: [],
    });
-
-   const [floorPlans, setFloorPlans] = useState([]); // This should hold all floor plans
+   const [floorPlan, setFloorPlan] = useState(null);
+   const [floorPlans, setFloorPlans] = useState([]);
    const loadFloorPlans = () => {
       axios
          .get(process.env.REACT_APP_API_URL + "/floorMaps")
