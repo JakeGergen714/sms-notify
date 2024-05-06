@@ -27,7 +27,7 @@ services:
       - ISSUER_URI=http://192.168.1.241:9000
       - FRONTEND_URL=http://192.168.1.241:3000/
       - WAITLIST_SERVICE_URL=http://192.168.1.241:8080
-      - FLOOR_PLAN_SERVICE_URL=http://192.168.1.241:8085
+      - RESTAURANT_SERVICE_URL=http://192.168.1.241:8083
       - RESERVATION_SERVICE_URL=http://192.168.1.241:8081
       - LOG_LEVEL=DEBUG
     container_name: gateway
@@ -89,24 +89,6 @@ services:
       - PORT=8083
     ports:
       - "8083:8083"
-
-  floor-map-service:
-    image: 'ghcr.io/jakegergen714/floor-map-service:latest'
-    build:
-      context: .
-    container_name: floor-map-service
-    depends_on:
-      - db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
-      - SPRING_DATASOURCE_USERNAME=compose-postgres
-      - SPRING_DATASOURCE_PASSWORD=compose-postgres
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - ISSUER_URI=http://192.168.1.241:9000
-      - LOG_LEVEL=INFO
-      - PORT=8085
-    ports:
-      - "8085:8085"
 
   frontend-api:
     image: 'ghcr.io/jakegergen714/frontend-api:latest'

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Log4j2
 @RequiredArgsConstructor
-public class Controller {
+public class RestaurantController {
     private final RestaurantService service;
 
 /*    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
@@ -45,6 +45,8 @@ public class Controller {
         log.info("Updated DTO <{}>",savedDTO );
         return ResponseEntity.ok(savedDTO);
     }
+
+
 
 /*    private long getBusinessId(Authentication authentication) {
         return Long.valueOf(((Jwt) authentication.getPrincipal()).getClaimAsString("businessId"));

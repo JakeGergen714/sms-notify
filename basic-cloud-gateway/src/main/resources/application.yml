@@ -29,10 +29,10 @@ spring:
           filters:
             - TokenRelay=
 
-        - id: floor-plan-service
-          uri: ${FLOOR_PLAN_SERVICE_URL}
+        - id: restaurant-service
+          uri: ${RESTAURANT_SERVICE_URL}
           predicates:
-            - Path=/floorMap, /floorMapItem
+            - Path=/floorMap, /floorMapItem, /restaurant, /servicetype
           filters:
             - TokenRelay=
 
