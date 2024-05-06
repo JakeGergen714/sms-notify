@@ -7,10 +7,8 @@ import java.util.List;
 
 @Data
 public class FloorMapDTO {
-    private Long id;
+    private Long floorMapId;
     private Long businessId;
     private String name;
-    private LocalTime serviceTimeStart;
-    private LocalTime serviceTimeEnd;
     private List<FloorMapItemDTO> floorMapItems;
 }

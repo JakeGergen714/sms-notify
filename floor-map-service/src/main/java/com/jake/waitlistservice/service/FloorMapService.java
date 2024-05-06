@@ -62,7 +62,7 @@ public class FloorMapService {
             List<FloorMapItem> floorMapItems = findAllForMapId(floorMap.getFloorMapId());
             log.info("Found Floor Map Items <{}> for Floor map Id <{}>", floorMapItems,  floorMap.getFloorMapId());
             FloorMapDTO floorMapDTO = new FloorMapDTO();
-            floorMapDTO.setId(floorMap.getFloorMapId());
+            floorMapDTO.setFloorMapId(floorMap.getFloorMapId());
             floorMapDTO.setBusinessId(businessId);
             floorMapDTO.setName(floorMap.getName());
             floorMapDTO.setFloorMapItems(floorMapItems.stream().map(this::toDto).toList());
@@ -74,8 +74,8 @@ public class FloorMapService {
 
     public FloorMap save(FloorMapDTO floorMapDTO, long businessId) {
         Optional<FloorMap> floorMapOptional = Optional.empty();
-        if(floorMapDTO.getId() != null) {
-            floorMapOptional = floorMapRepository.findById(floorMapDTO.getId());
+        if(floorMapDTO.getFloorMapId() != null) {
+            floorMapOptional = floorMapRepository.findById(floorMapDTO.getFloorMapId());
         }
         FloorMap floorMap;
         if(floorMapOptional.isEmpty()) {
@@ -83,7 +83,6 @@ public class FloorMapService {
             floorMap = new FloorMap();
             floorMap.setName(floorMapDTO.getName());
             floorMap.setBusinessId(businessId);
-
 
             log.info("Saved Floor Plan <{}>.", floorMap);
             FloorMap saved =  floorMapRepository.save(floorMap);
