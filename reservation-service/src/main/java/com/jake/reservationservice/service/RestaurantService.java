@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
-
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +16,7 @@ public class RestaurantService {
     private String baseUrl;
 
     public RestaurantDTO findRestaurantByBusinessId(Long businessId) {
-        return restTemplate.getForObject(baseUrl + "/restaurant", RestaurantDTO.class, Map.of("businessId", 1l));
+        String url = baseUrl + "/restaurant?businessId={businessId}";
+        return restTemplate.getForEntity(url, RestaurantDTO.class, 1l).getBody();
     }
 }
