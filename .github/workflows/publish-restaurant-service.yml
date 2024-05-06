@@ -29,12 +29,6 @@ jobs:
               server-id: github
               settings-path: ${{ github.workspace }}
 
-         - name: Build with restaurant Service
-           working-directory: ./restaurant-service/
-           env:
-              GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
-           run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B package --file pom.xml
-
          - name: Cache local Maven repository
            uses: actions/cache@v3
            with:
@@ -42,6 +36,12 @@ jobs:
               key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
               restore-keys: |
                  ${{ runner.os }}-maven-
+
+         - name: Build with restaurant Service
+           working-directory: ./restaurant-service/
+           env:
+              GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
+           run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B package --file pom.xml
 
          - name: Publish restaurant Service
            env:

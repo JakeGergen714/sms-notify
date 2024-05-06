@@ -39,7 +39,7 @@ public class RestaurantController {
         log.info("Updated DTO <{}>",savedDTO );
         return ResponseEntity.ok(savedDTO);
     }
-    
+
     private long getBusinessId(Authentication authentication) {
         return Long.valueOf(((Jwt) authentication.getPrincipal()).getClaimAsString("businessId"));
     }

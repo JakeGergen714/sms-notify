@@ -59,10 +59,7 @@ public class FloorMapController {
 
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
-        log.info(jwt.getClaims());
-        log.info(jwt.getSubject());
-        log.info(jwt.getHeaders());
-        log.info(jwt.getAudience());
+
         long businessId = Long.valueOf(jwt.getClaimAsString("businessId"));
 
         return ResponseEntity.ok(service.save(floorMapDTO, businessId));
