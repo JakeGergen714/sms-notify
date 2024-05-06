@@ -15,9 +15,9 @@ public class RestaurantService {
     private final RestTemplate restTemplate;
 
     @Value("${services.restaurant.url}")
-    private String url;
+    private String baseUrl;
 
     public RestaurantDTO findRestaurantByBusinessId(Long businessId) {
-        return restTemplate.getForObject(url + "/restaurant", RestaurantDTO.class, Map.of("businessId", 1l));
+        return restTemplate.getForObject(baseUrl + "/restaurant", RestaurantDTO.class, Map.of("businessId", 1l));
     }
 }
