@@ -41,8 +41,8 @@ public class RestaurantService {
         ServiceType dtoToEntity = mapper.toEntity(serviceTypeDTO);
 
         serviceType.setServiceSchedules(dtoToEntity.getServiceSchedules());
-        serviceType.setName(serviceTypeDTO.getName());
-        serviceType.setFloorMap(serviceTypeDTO.getFloorMap());
+        serviceType.setName(dtoToEntity.getName());
+        serviceType.setFloorMap(dtoToEntity.getFloorMap());
 
         return mapper.toDto(serviceTypeRepository.save(serviceType));
     }
