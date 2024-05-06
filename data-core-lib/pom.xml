@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.jake</groupId>
 	<artifactId>data-core-lib</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>data-core-lib</name>
 	<description>Library with all data related domain objects, DTO's and DAO's</description>
 	<properties>
@@ -27,11 +27,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>3.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
