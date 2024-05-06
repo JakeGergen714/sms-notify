@@ -1,14 +1,11 @@
 package com.jake.restaurantservice.controller;
 
 import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
-import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.restaurantservice.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Log4j2
@@ -27,11 +24,17 @@ public class Controller {
        return ResponseEntity.ok(optionalRestaurant.get());
     }*/
 
-    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
+    @GetMapping(value = "/restaurant")
+    public ResponseEntity<RestaurantDTO> addMyRestaurant(@RequestParam Long businessId) {
+        log.info("GET /restaurant <{}>", businessId);
+        return ResponseEntity.ok(service.findRestaurantByBusinessId(businessId));
+    }
+
     @PostMapping(value = "/restaurant")
-    public ResponseEntity<Restaurant> addMyRestaurant(RestaurantDTO restaurantDTO) {
-        Restaurant restaurant = service.addRestaurant(restaurantDTO, 1l);
-        return ResponseEntity.ok(restaurant);
+    public ResponseEntity<RestaurantDTO> addMyRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
+        log.info("POST /restaurant <{}>", restaurantDTO);
+        RestaurantDTO savedDTO = service.addRestaurant(restaurantDTO, 1l);
+        return ResponseEntity.ok(savedDTO);
     }
 
 /*    private long getBusinessId(Authentication authentication) {

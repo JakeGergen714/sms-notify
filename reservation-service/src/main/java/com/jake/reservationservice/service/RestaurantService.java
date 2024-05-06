@@ -1,0 +1,23 @@
+package com.jake.reservationservice.service;
+
+import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
+
+
+@Service
+@RequiredArgsConstructor
+public class RestaurantService {
+    private final RestTemplate restTemplate;
+
+    @Value("${restaurant-service-url}")
+    private String url;
+
+    public RestaurantDTO findRestaurantByBusinessId(Long businessId) {
+        return restTemplate.getForObject(url, RestaurantDTO.class, Map.of("businessId", 1l));
+    }
+}

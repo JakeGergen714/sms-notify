@@ -11,8 +11,7 @@ import java.time.LocalTime;
 
 @Data
 public class ServiceScheduleDTO {
-    private Long id;
-    private Long serviceId;
+    private Long serviceScheduleId;
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;

@@ -4,6 +4,7 @@ import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.serviceschedule.jpa.ServiceSchedule;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,14 +13,12 @@ import java.util.List;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude="restaurant")
 public class ServiceType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private Long id;
-
-    @Column(nullable = false)
-    private Long restaurantId;
+    private Long serviceTypeId;
 
     @Column(nullable = false)
     private String name;
@@ -33,9 +32,9 @@ public class ServiceType {
     private Instant lastUpdateDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy="serviceType")
+    @OneToMany(mappedBy="serviceType", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ServiceSchedule> serviceSchedules;
 }

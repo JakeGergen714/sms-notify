@@ -15,7 +15,7 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private Long id;
+    private Long restaurantId;
 
     @Column
     private Long businessId;
@@ -34,7 +34,7 @@ public class Restaurant {
     @UpdateTimestamp
     private Instant lastUpdateDateTime;
 
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<ServiceType> serviceTypes;
 
 }

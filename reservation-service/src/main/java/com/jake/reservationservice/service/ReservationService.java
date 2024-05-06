@@ -1,20 +1,17 @@
 package com.jake.reservationservice.service;
 
-import com.jake.datacorelib.floormap.jpa.FloorMap;
-import com.jake.datacorelib.floormap.jpa.FloorMapItem;
-import com.jake.datacorelib.reservation.dto.ReservationDTO;
 import com.jake.datacorelib.reservation.jpa.Reservation;
 import com.jake.datacorelib.reservation.jpa.ReservationRepository;
-import com.jake.reservationservice.exception.NoAvailableReservationsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Component
@@ -34,7 +31,7 @@ public class ReservationService {
     // todo Floor plans need to have also, days of the week they are active, MON-FRI, or only
     // SAT-SUN
     // ... etc...
-    public Set<LocalTime> findAllAvailableReservationsForDate(long businessId, LocalDate requestedReservationDate, int partySize) {
+   /* public Set<LocalTime> findAllAvailableReservationsForDate(long businessId, LocalDate requestedReservationDate, int partySize) {
 
         //1. Retrieve all of the services
         //2. Retrieve the floor plan for that service
@@ -87,7 +84,7 @@ public class ReservationService {
             }
         }
         return availableTimeSlots;
-    }
+    }*/
 
     private boolean isTimeSlotAvailableGivenAllExistingReservationTimes(LocalTime timeSlot, List<LocalTime> existingReservationTimes, Duration reservationDuration) {
         for (LocalTime existingReservationTime : existingReservationTimes) {
@@ -117,7 +114,7 @@ public class ReservationService {
         return timeSlots;
     }
 
-    public void add(ReservationDTO reservationDTO) {
+    /*public void add(ReservationDTO reservationDTO) {
         LocalTime requestedReservationTime = reservationDTO.getReservationTime().toLocalTime();
         LocalDate requestedReservationDate = reservationDTO.getReservationTime().toLocalDate();
 
@@ -135,9 +132,9 @@ public class ReservationService {
         reservation.setNotes(reservationDTO.getNotes());
         reservation.setCompletedIndicator(false);
         repo.save(reservation);
-    }
+    }*/
 
-    public void edit(ReservationDTO reservationDTO) {
+    /*public void edit(ReservationDTO reservationDTO) {
         Optional<Reservation> optionalReservation = repo.findById(reservationDTO.getId());
         Reservation existingReservation = optionalReservation.orElseThrow();
 
@@ -158,5 +155,5 @@ public class ReservationService {
         existingReservation.setCompletedIndicator(reservationDTO.isCompletedIndicator());
 
         repo.save(existingReservation);
-    }
+    }*/
 }

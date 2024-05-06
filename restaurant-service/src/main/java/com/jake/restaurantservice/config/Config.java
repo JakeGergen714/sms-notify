@@ -1,15 +1,16 @@
 package com.jake.restaurantservice.config;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import com.jake.datacorelib.servicetype.dto.ServiceTypeDTO;
+import com.jake.datacorelib.servicetype.jpa.ServiceType;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class Config implements WebMvcConfigurer {
-    @Bean
+    /*@Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
@@ -23,5 +24,19 @@ public class Config implements WebMvcConfigurer {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
+    }*/
+
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        modelMapper.createTypeMap(ServiceType.class, ServiceTypeDTO.class)
+                   .addMapping(src -> src.getRestaurant().getRestaurantId(), ServiceTypeDTO::setRestaurantId);
+
+
+        return modelMapper;
     }
+
+
 }

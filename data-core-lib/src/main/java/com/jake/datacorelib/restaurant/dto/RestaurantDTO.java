@@ -14,7 +14,8 @@ import java.util.Set;
 @Data
 public class RestaurantDTO {
 
-    private Long id;
+    private Long restaurantId;
+    private Long businessId;
     private String name;
     private String address;
 

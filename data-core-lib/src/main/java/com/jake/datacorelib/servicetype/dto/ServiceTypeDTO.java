@@ -1,5 +1,7 @@
 package com.jake.datacorelib.servicetype.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.serviceschedule.dto.ServiceScheduleDTO;
 import lombok.Data;
 
@@ -9,9 +11,8 @@ import java.util.Set;
 
 @Data
 public class ServiceTypeDTO {
-    private Long id;
+    private Long serviceTypeId;
     private Long restaurantId;
     private String name;
-
     private Set<ServiceScheduleDTO> serviceSchedules;
 }

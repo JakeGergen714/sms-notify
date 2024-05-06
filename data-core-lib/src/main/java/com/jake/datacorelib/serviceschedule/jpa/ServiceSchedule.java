@@ -3,6 +3,7 @@ package com.jake.datacorelib.serviceschedule.jpa;
 import com.jake.datacorelib.servicetype.jpa.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,14 +13,12 @@ import java.time.LocalTime;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude="serviceType")
 public class ServiceSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private Long id;
-
-    @Column(nullable = false)
-    private Long serviceId;
+    private Long serviceScheduleId;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -40,7 +39,7 @@ public class ServiceSchedule {
     private Instant lastUpdateDateTime;
 
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="service_type_id")
     private ServiceType serviceType;
 
 }
