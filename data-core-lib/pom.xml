@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.jake</groupId>
 	<artifactId>data-core-lib</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<name>data-core-lib</name>
 	<description>Library with all data related domain objects, DTO's and DAO's</description>
 	<properties>

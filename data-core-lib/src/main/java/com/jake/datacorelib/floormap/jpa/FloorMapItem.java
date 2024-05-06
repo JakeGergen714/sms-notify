@@ -11,7 +11,7 @@ public class FloorMapItem {
     @Column(nullable = false)
     private long floorMapItemId;
 
-    @Column
+    @Column(nullable = false)
     private long floorMapId;
 
     @Column
