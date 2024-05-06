@@ -64,7 +64,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - ISSUER_URI=http://192.168.1.241:9000
       - RESTAURANT_SERVICE_URL=http://192.168.1.241:8083
       - LOG_LEVEL=DEBUG
@@ -83,7 +83,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - ISSUER_URI=http://192.168.1.241:9000
       - LOG_LEVEL=DEBUG
       - PORT=8083

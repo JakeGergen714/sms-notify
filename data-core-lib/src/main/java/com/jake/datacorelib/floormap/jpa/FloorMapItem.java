@@ -8,7 +8,7 @@ import lombok.Data;
 public class FloorMapItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long floodMapItemId;
 
     @Column
     private long floorMapId;
