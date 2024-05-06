@@ -53,7 +53,7 @@ const RestaurantComponent = () => {
    const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-         const response = await axios.post("http://your-api-url/restaurant", restaurant);
+         const response = await axios.post("http://192.168.1.241:8090/restaurant", restaurant);
          console.log("Restaurant and all associated data added:", response.data);
       } catch (error) {
          console.error("Failed to submit restaurant data", error);
