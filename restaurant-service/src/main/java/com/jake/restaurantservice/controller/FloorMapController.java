@@ -25,7 +25,7 @@ public class FloorMapController {
     // Replace with your allowed origin
     @GetMapping(value = "/floorMaps")
     public ResponseEntity<List<FloorMapDTO>> getAllFloorMaps(Authentication authenticationToken) {
-        log.info("GET /floorMap");
+        log.info("GET /floorMaps");
 
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         String username = jwt.getSubject();
