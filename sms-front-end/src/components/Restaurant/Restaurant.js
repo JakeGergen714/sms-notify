@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import { Dropdown } from "react-bootstrap"; // Make sure you have this import if using React-Bootstrap
 
-const RestaurantComponent = () => {
+const Restaurant = () => {
    const [restaurant, setRestaurant] = useState({
       restaurantId: null,
       businessId: null,
@@ -11,6 +12,8 @@ const RestaurantComponent = () => {
       address: "",
       serviceTypes: [],
    });
+
+   const [floorPlans, setFloorPlans] = useState([]); // This should hold all floor plans
 
    const handleInputChange = (e) => {
       const { name, value } = e.target;
@@ -39,6 +42,7 @@ const RestaurantComponent = () => {
          restaurantId: restaurant.restaurantId,
          name: "",
          serviceSchedules: [],
+         floorPlan: null, // Initialize without a specific floor plan
       };
       setRestaurant((prev) => ({ ...prev, serviceTypes: [...prev.serviceTypes, newServiceType] }));
    };
@@ -47,6 +51,12 @@ const RestaurantComponent = () => {
       const newSchedule = { serviceScheduleId: null, dayOfWeek: "", startTime: "", endTime: "" };
       const updatedServiceTypes = [...restaurant.serviceTypes];
       updatedServiceTypes[typeIndex].serviceSchedules.push(newSchedule);
+      setRestaurant((prev) => ({ ...prev, serviceTypes: updatedServiceTypes }));
+   };
+
+   const selectFloorPlan = (typeIndex, floorPlan) => {
+      const updatedServiceTypes = [...restaurant.serviceTypes];
+      updatedServiceTypes[typeIndex].floorPlan = floorPlan;
       setRestaurant((prev) => ({ ...prev, serviceTypes: updatedServiceTypes }));
    };
 
@@ -97,6 +107,18 @@ const RestaurantComponent = () => {
                      onChange={(e) => handleServiceTypeChange(tIndex, e)}
                      placeholder='Service Type Name'
                   />
+                  <Dropdown>
+                     <Dropdown.Toggle variant='secondary' id='dropdown-basic'>
+                        {type.floorPlan ? type.floorPlan.name : "Select a Floor Plan"}
+                     </Dropdown.Toggle>
+                     <Dropdown.Menu>
+                        {floorPlans.map((fp) => (
+                           <Dropdown.Item key={fp.id} onClick={() => selectFloorPlan(tIndex, fp)}>
+                              {fp.name}
+                           </Dropdown.Item>
+                        ))}
+                     </Dropdown.Menu>
+                  </Dropdown>
                   <button type='button' onClick={() => addServiceSchedule(tIndex)}>
                      Add Service Schedule
                   </button>
@@ -133,4 +155,4 @@ const RestaurantComponent = () => {
    );
 };
 
-export default RestaurantComponent;
+export default Restaurant;
