@@ -13,6 +13,7 @@ import "./Home.css";
 import SideBarItem from "../SideBar/SiderBarItem";
 import SeatMap from "../SeatMap/SeatMap";
 import ManageService from "../ManageService/ManageService";
+import Restaurant from "../Restaurant/Restaurant";
 
 const Home = (content) => {
    const [activePage, setActivePage] = useState(0);
@@ -47,12 +48,22 @@ const Home = (content) => {
                icon={PiMapTrifold}
                activeIcon={PiMapTrifoldBold}
             />
+            <SideBarItem
+               onClick={() => {
+                  setActivePage(3);
+               }}
+               isActive={activePage == 3}
+               text='Manage Restaurant'
+               icon={PiMapTrifold}
+               activeIcon={PiMapTrifoldBold}
+            />
          </div>
          <div className='main-content'>
             <Header></Header>
             {activePage === 0 && <ManageService></ManageService>}
             {activePage === 1 && <Reservations />}
             {activePage === 2 && <SeatMap />}
+            {activePage === 3 && <Restaurant />}
          </div>
       </div>
    );
