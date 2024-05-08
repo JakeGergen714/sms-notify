@@ -1,7 +1,8 @@
 package com.jake.restaurantservice.config;
 
-import com.jake.datacorelib.servicetype.dto.ServiceTypeDTO;
-import com.jake.datacorelib.servicetype.jpa.ServiceType;
+
+import com.jake.datacorelib.restaurant.servicetype.dto.ServiceTypeDTO;
+import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.web.client.RestTemplateBuilder;

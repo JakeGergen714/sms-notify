@@ -1,7 +1,7 @@
 package com.jake.restaurantservice.controller;
 
 import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
-import com.jake.datacorelib.servicetype.dto.ServiceTypeDTO;
+import com.jake.datacorelib.restaurant.servicetype.dto.ServiceTypeDTO;
 import com.jake.restaurantservice.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

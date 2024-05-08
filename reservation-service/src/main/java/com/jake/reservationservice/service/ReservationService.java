@@ -104,6 +104,7 @@ public class ReservationService {
                 .filter(reservation -> reservation.getReservationDate().equals(localDate))
                 .collect(Collectors.toSet());
 
+        log.info("Found Reservations <{}>", reservationsOnCurrentDate);
         Set<ServiceType> activeServiceTypesOnCurrentDate = servicesTypes
                 .stream()
                 .filter(serviceType -> {
@@ -111,6 +112,8 @@ public class ReservationService {
                     return schedules.stream().filter(schedule -> schedule.getDayOfWeek().equals(localDate.getDayOfWeek())).findAny().isPresent();
                 })
                 .collect(Collectors.toSet());
+
+        log.info("Found Service types <{}>", activeServiceTypesOnCurrentDate);
 
         for (ServiceType serviceType : activeServiceTypesOnCurrentDate) {
             Set<LocalTime> availableTimeSlotsForService = getAvailableTimeSlotsForServiceOnDay(localDate, partySize, serviceType, existingReservations, reservationLength);
@@ -125,34 +128,42 @@ public class ReservationService {
                 .stream()
                 .filter(reservation -> reservation.getReservationDate().equals(localDate))
                 .collect(Collectors.toSet());
-
+        log.info("Found reservations on current date <{}>", reservationsOnCurrentDate);
         Optional<ServiceSchedule> optionalServiceSchedule = serviceType.getServiceSchedules()
                                                                        .stream()
                                                                        .filter(schedule -> schedule.getDayOfWeek().equals(localDate.getDayOfWeek())).findFirst();
 
         if (!optionalServiceSchedule.isPresent()) {
+            log.info("No service Schedule Found from service type <{}>", serviceType);
             return Set.of();
         }
 
         ServiceSchedule serviceSchedule = optionalServiceSchedule.get();
+        log.info("Found service schedule <{}>", serviceSchedule);
 
         Set<Reservation> reservationsForService = reservationsOnCurrentDate.stream().filter(reservation -> {
             return reservation.getReservationTime().isAfter(serviceSchedule.getStartTime())
                     && reservation.getReservationTime().isBefore(serviceSchedule.getEndTime());
         }).collect(Collectors.toSet());
+        log.info("Found existing reservations for service <{}>", reservationsForService);
 
         FloorMap floorMapForService = serviceType.getFloorMap();
+        log.info("Found floor map <{}>", floorMapForService);
 
         Map<FloorMapItem, Set<Reservation>> floorMapItemReservations = assignReservationToSmallestPossibleTable(floorMapForService, reservationsForService, reservationLength);
+        log.info("Mapped reservations <{}>", floorMapItemReservations);
 
         Map<FloorMapItem, Set<LocalTime>> availableTimeSlotsForFloorMapItem = new HashMap<>();
         Set<FloorMapItem> availableTablesForPartySize = floorMapForService.getFloorMapItems().stream().filter(table -> {
             return table.getMinTableSize() >= partySize && table.getMaxTableSize() <= partySize;
         }).collect(Collectors.toSet());
 
+        log.info("Available Tables for party size <{}>", availableTablesForPartySize);
+
         for (FloorMapItem floorMapItem : availableTablesForPartySize) {
             if (!floorMapItemReservations.containsKey(floorMapItem)) {
                 availableTimeSlotsForFloorMapItem.put(floorMapItem, createReservationTimeSlots(serviceSchedule.getStartTime(), serviceSchedule.getEndTime(), Duration.ofMinutes(30)));
+                log.info("All timeslots available for table <{}>", floorMapItem);
             } else {
                 availableTimeSlotsForFloorMapItem.put(floorMapItem, createReservationTimeSlots(serviceSchedule.getStartTime(), serviceSchedule.getEndTime(), Duration.ofMinutes(30))).stream()
                                                  .filter(timeSlot ->
@@ -162,8 +173,10 @@ public class ReservationService {
                                                                                        .collect(Collectors.toSet()),
                                                                  reservationLength))
                                                  .collect(Collectors.toSet());
+                log.info("added filtered time slots <{}>", floorMapItem);
             }
         }
+        log.info("Avaialbe time slots <{} >", availableTimeSlotsForFloorMapItem);
 
         return availableTimeSlotsForFloorMapItem.values().stream()
                                                 .flatMap(Set::stream) // Convert each Set<LocalTime> into a stream of LocalTime

@@ -3,10 +3,10 @@ package com.jake.restaurantservice.service;
 import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
 import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.restaurant.jpa.RestaurantRepository;
-import com.jake.datacorelib.serviceschedule.jpa.ServiceScheduleRepository;
-import com.jake.datacorelib.servicetype.dto.ServiceTypeDTO;
-import com.jake.datacorelib.servicetype.jpa.ServiceType;
-import com.jake.datacorelib.servicetype.jpa.ServiceTypeRepository;
+import com.jake.datacorelib.restaurant.servicetype.dto.ServiceTypeDTO;
+import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
+import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceTypeRepository;
+import com.jake.datacorelib.restaurant.servicetype.serviceschedule.jpa.ServiceScheduleRepository;
 import com.jake.restaurantservice.utility.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +24,7 @@ public class RestaurantService {
 
     public RestaurantDTO addRestaurant(RestaurantDTO dto, long businessId) {
         Restaurant restaurantEntity = mapper.toEntity(dto);
-        log.debug("Mapped to Entity <{}>", restaurantEntity);
+        log.info("Mapped to Entity <{}>", restaurantEntity);
         restaurantEntity.setBusinessId(businessId);
         Restaurant restaurant =  restaurantRepository.save(restaurantEntity);
         return mapper.toDTO(restaurant);

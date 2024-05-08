@@ -1,11 +1,11 @@
 package com.jake.restaurantservice.service;
 
-import com.jake.datacorelib.floormap.dto.FloorMapDTO;
-import com.jake.datacorelib.floormap.dto.FloorMapItemDTO;
-import com.jake.datacorelib.floormap.jpa.FloorMap;
-import com.jake.datacorelib.floormap.jpa.FloorMapItem;
-import com.jake.datacorelib.floormap.jpa.FloorMapItemRepository;
-import com.jake.datacorelib.floormap.jpa.FloorMapRepository;
+import com.jake.datacorelib.restaurant.floormap.dto.FloorMapDTO;
+import com.jake.datacorelib.restaurant.floormap.dto.FloorMapItemDTO;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMap;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapItem;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapItemRepository;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,6 @@ public class FloorMapService {
     private FloorMapItemDTO toDto (FloorMapItem entity) {
         FloorMapItemDTO dto = new FloorMapItemDTO();
         dto.setFloorMapItemId(entity.getFloorMapItemId());
-        dto.setFloorMapId(entity.getFloorMapId());
         dto.setName(entity.getName());
         dto.setTableType(entity.getTableType());
         dto.setXPosition(entity.getXPosition());
@@ -38,7 +37,6 @@ public class FloorMapService {
     private FloorMapItem toEntity(FloorMapItemDTO dto) {
         FloorMapItem entity = new FloorMapItem();
         entity.setFloorMapItemId(dto.getFloorMapItemId());
-        entity.setFloorMapId(dto.getFloorMapId());
         entity.setName(dto.getName());
         entity.setTableType(dto.getTableType());
         entity.setXPosition(dto.getXPosition());

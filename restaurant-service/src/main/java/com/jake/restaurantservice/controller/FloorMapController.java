@@ -1,9 +1,10 @@
 package com.jake.restaurantservice.controller;
 
-import com.jake.datacorelib.floormap.dto.FloorMapDTO;
-import com.jake.datacorelib.floormap.dto.FloorMapItemDTO;
-import com.jake.datacorelib.floormap.jpa.FloorMap;
-import com.jake.datacorelib.floormap.jpa.FloorMapItem;
+
+import com.jake.datacorelib.restaurant.floormap.dto.FloorMapDTO;
+import com.jake.datacorelib.restaurant.floormap.dto.FloorMapItemDTO;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMap;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapItem;
 import com.jake.restaurantservice.service.FloorMapService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
