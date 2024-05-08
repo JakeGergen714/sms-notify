@@ -23,7 +23,7 @@ public class ServiceSchedule {
     @Column(nullable = false)
     private Long serviceScheduleId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="day_of_week")
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
 
