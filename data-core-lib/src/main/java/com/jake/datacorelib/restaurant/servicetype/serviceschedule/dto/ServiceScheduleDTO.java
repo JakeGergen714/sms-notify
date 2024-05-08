@@ -1,4 +1,4 @@
-package com.jake.datacorelib.serviceschedule.dto;
+package com.jake.datacorelib.restaurant.servicetype.serviceschedule.dto;
 
 import jakarta.persistence.*;
 import lombok.Data;

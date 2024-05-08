@@ -1,8 +1,7 @@
-package com.jake.datacorelib.floormap.dto;
+package com.jake.datacorelib.restaurant.floormap.dto;
 
 import lombok.Data;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @Data

@@ -1,4 +1,4 @@
-package com.jake.datacorelib.floormap.dto;
+package com.jake.datacorelib.restaurant.floormap.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

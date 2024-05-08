@@ -1,6 +1,6 @@
 package com.jake.datacorelib.restaurant.jpa;
 
-import com.jake.datacorelib.servicetype.jpa.ServiceType;
+import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;

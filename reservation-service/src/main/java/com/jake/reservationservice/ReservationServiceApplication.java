@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * from the `datacorelib` package to support reservation and floor map management functionalities.
  */
 @SpringBootApplication
-@EnableJpaRepositories({"com.jake.datacorelib.reservation", "com.jake.datacorelib.floormap"})
-@EntityScan({"com.jake.datacorelib.reservation", "com.jake.datacorelib.floormap"})
+@EnableJpaRepositories({"com.jake.datacorelib.reservation", "com.jake.datacorelib.restaurant"})
+@EntityScan({"com.jake.datacorelib.reservation", "com.jake.datacorelib.restaurant"})
 public class ReservationServiceApplication {
     /**
      * Starts the Spring Boot application.

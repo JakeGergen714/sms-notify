@@ -1,8 +1,8 @@
-package com.jake.datacorelib.servicetype.jpa;
+package com.jake.datacorelib.restaurant.servicetype.jpa;
 
-import com.jake.datacorelib.floormap.jpa.FloorMap;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMap;
 import com.jake.datacorelib.restaurant.jpa.Restaurant;
-import com.jake.datacorelib.serviceschedule.jpa.ServiceSchedule;
+import com.jake.datacorelib.restaurant.servicetype.serviceschedule.jpa.ServiceSchedule;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +11,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Set;
 
 @Entity

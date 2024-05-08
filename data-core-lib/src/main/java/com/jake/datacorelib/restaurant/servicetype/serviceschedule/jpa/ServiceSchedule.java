@@ -1,6 +1,6 @@
-package com.jake.datacorelib.serviceschedule.jpa;
+package com.jake.datacorelib.restaurant.servicetype.serviceschedule.jpa;
 
-import com.jake.datacorelib.servicetype.jpa.ServiceType;
+import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

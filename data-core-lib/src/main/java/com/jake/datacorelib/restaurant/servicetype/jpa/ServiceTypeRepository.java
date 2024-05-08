@@ -1,9 +1,6 @@
-package com.jake.datacorelib.servicetype.jpa;
+package com.jake.datacorelib.restaurant.servicetype.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.security.Provider;
-import java.util.List;
 
 public interface ServiceTypeRepository extends JpaRepository<ServiceType, Long> {
 

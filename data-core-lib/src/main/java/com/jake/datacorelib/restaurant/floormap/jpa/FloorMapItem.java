@@ -1,6 +1,5 @@
-package com.jake.datacorelib.floormap.jpa;
+package com.jake.datacorelib.restaurant.floormap.jpa;
 
-import com.jake.datacorelib.servicetype.jpa.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
 

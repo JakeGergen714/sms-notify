@@ -1,12 +1,9 @@
-package com.jake.datacorelib.floormap.jpa;
+package com.jake.datacorelib.restaurant.floormap.jpa;
 
-import com.jake.datacorelib.serviceschedule.jpa.ServiceSchedule;
-import com.jake.datacorelib.servicetype.jpa.ServiceType;
+import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalTime;
-import java.util.List;
 import java.util.Set;
 
 @Data
