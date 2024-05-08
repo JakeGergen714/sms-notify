@@ -12,9 +12,6 @@ public class FloorMapItem {
     @Column(nullable = false)
     private long floorMapItemId;
 
-    @Column(nullable = false)
-    private long floorMapId;
-
     @Column
     private String name;
 
