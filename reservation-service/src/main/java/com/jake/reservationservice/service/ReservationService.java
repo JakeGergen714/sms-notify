@@ -1,13 +1,14 @@
 package com.jake.reservationservice.service;
 
-import com.jake.datacorelib.floormap.jpa.FloorMap;
-import com.jake.datacorelib.floormap.jpa.FloorMapItem;
+
 import com.jake.datacorelib.reservation.dto.ReservationDTO;
 import com.jake.datacorelib.reservation.jpa.Reservation;
 import com.jake.datacorelib.reservation.jpa.ReservationRepository;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMap;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapItem;
 import com.jake.datacorelib.restaurant.jpa.Restaurant;
-import com.jake.datacorelib.serviceschedule.jpa.ServiceSchedule;
-import com.jake.datacorelib.servicetype.jpa.ServiceType;
+import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
+import com.jake.datacorelib.restaurant.servicetype.serviceschedule.jpa.ServiceSchedule;
 import com.jake.reservationservice.exception.ReservationNotAvailableException;
 import com.jake.reservationservice.exception.TableReservedException;
 import lombok.RequiredArgsConstructor;
