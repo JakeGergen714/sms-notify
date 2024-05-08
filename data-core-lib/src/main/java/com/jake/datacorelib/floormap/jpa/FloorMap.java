@@ -23,4 +23,7 @@ public class FloorMap {
 
     @OneToMany(mappedBy="floorMap", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<ServiceType> serviceTypes;
+
+    @OneToMany(mappedBy="floorMap", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<FloorMapItem> floorMapItems;
 }

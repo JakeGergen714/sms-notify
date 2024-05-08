@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -12,26 +14,32 @@ import java.util.List;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long reservationId;
 
     @Column
-    private long businessId;
+    private Long restaurantId;
 
     @Column
-    private long guestId;
+    private Long guestId;
 
     @Column
     private String partyName;
 
     @Column
-    private int partySize;
+    private Integer partySize;
 
     @Column
     private List<String> notes;
 
+    @Column
+    private LocalDate reservationDate;
+
+    @Column
+    private LocalTime reservationTime;
+
     @CreationTimestamp
     @Column
-    private LocalDateTime reservationTime;
+    private LocalDateTime createdDateTime;
 
     @Column
     private boolean completedIndicator;

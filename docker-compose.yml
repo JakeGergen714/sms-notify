@@ -14,7 +14,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - REDIRECT_URI=http://192.168.1.241:8090/login/oauth2/code/gateway
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=INFO
     ports:
       - "9000:9000"
 
@@ -29,7 +29,7 @@ services:
       - WAITLIST_SERVICE_URL=http://192.168.1.241:8080
       - RESTAURANT_SERVICE_URL=http://192.168.1.241:8083
       - RESERVATION_SERVICE_URL=http://192.168.1.241:8081
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=INFO
     container_name: gateway
     depends_on:
       - "auth"
@@ -49,7 +49,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - ISSUER_URI=http://192.168.1.241:9000
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=INFO
     ports:
       - "8080:8080"
 
@@ -67,7 +67,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - ISSUER_URI=http://192.168.1.241:9000
       - RESTAURANT_SERVICE_URL=http://192.168.1.241:8083
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=INFO
       - PORT=8081
     ports:
       - "8081:8081"
@@ -85,7 +85,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - ISSUER_URI=http://192.168.1.241:9000
-      - LOG_LEVEL=DEBUG
+      - LOG_LEVEL=INFO
       - PORT=8083
     ports:
       - "8083:8083"

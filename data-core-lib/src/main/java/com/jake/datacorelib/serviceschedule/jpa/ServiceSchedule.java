@@ -16,6 +16,7 @@ import java.time.LocalTime;
 @Data
 @EqualsAndHashCode(exclude="serviceType")
 @ToString(exclude = "serviceType")
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "service_type_id", "day_of_week" }) })
 public class ServiceSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

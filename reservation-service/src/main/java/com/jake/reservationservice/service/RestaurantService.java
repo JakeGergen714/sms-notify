@@ -1,6 +1,8 @@
 package com.jake.reservationservice.service;
 
 import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
+import com.jake.datacorelib.restaurant.jpa.Restaurant;
+import com.jake.datacorelib.restaurant.jpa.RestaurantRepository;
 import com.jake.reservationservice.exception.RestaurantNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class RestaurantService {
     private final RestTemplate restTemplate;
+    private final RestaurantRepository restaurantRepository;
 
     @Value("${services.restaurant.url}")
     private String baseUrl;
@@ -40,5 +43,9 @@ public class RestaurantService {
         } catch (RestClientException ex) {
             throw new RestaurantNotFoundException(String.format("Failed to reach restaurant service <%s>", url));
         }
+    }
+
+    public Restaurant findRestaurantByRestaurantId(Long restaurantId) {
+        return restaurantRepository.findById(restaurantId).orElseThrow();
     }
 }

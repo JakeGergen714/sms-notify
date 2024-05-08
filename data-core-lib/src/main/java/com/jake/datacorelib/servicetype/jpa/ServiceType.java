@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -39,7 +40,7 @@ public class ServiceType {
     private Restaurant restaurant;
 
     @OneToMany(mappedBy="serviceType", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<ServiceSchedule> serviceSchedules;
+    private Set<ServiceSchedule> serviceSchedules;
 
     @ManyToOne
     @JoinColumn(name = "floor_map_id")

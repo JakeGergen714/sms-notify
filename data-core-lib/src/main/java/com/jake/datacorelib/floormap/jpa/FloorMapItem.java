@@ -1,5 +1,6 @@
 package com.jake.datacorelib.floormap.jpa;
 
+import com.jake.datacorelib.servicetype.jpa.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -34,4 +35,8 @@ public class FloorMapItem {
 
     @Column
     private boolean isReservable;
+
+    @ManyToOne
+    @JoinColumn(name="floor_map_id")
+    private FloorMap floorMap;
 }
