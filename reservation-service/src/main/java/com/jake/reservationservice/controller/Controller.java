@@ -1,6 +1,6 @@
 package com.jake.reservationservice.controller;
 
-import com.jake.datacorelib.reservation.dto.ReservationDTO;
+import com.jake.datacorelib.reservation.jpa.Reservation;
 import com.jake.reservationservice.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public class Controller {
 
     @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     @GetMapping(value = "/reservations")
-    public ResponseEntity<Set<ReservationDTO>> getReservationsOnDate(Authentication authenticationToken, @RequestParam Long restaurantId, @RequestParam LocalDate date) {
+    public ResponseEntity<List<Reservation>> getReservationsOnDate(Authentication authenticationToken, @RequestParam Long restaurantId, @RequestParam LocalDate date) {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         log.info(jwt.getClaims());
 
