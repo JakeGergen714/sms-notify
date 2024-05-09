@@ -29,13 +29,13 @@ jobs:
               server-id: github
               settings-path: ${{ github.workspace }}
 
-         - name: Build with user Service
+         - name: Build with User Service
            working-directory: ./user-service/
            env:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
            run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B package --file pom.xml
 
-         - name: Publish user Service
+         - name: Publish User Service
            env:
               GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
            working-directory: ./user-service/
@@ -48,7 +48,7 @@ jobs:
               username: ${{ github.actor }}
               password: ${{ secrets.ACCESS_TOKEN }}
 
-         - name: Build and push user Docker image
+         - name: Build and push User Service Docker image
            run: |
               docker build -t ghcr.io/jakegergen714/user-service:latest ./user-service
               docker push ghcr.io/jakegergen714/user-service:latest
