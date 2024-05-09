@@ -53,6 +53,24 @@ services:
     ports:
       - "8080:8080"
 
+  user-service:
+    image: 'ghcr.io/jakegergen714/user-service:latest'
+    build:
+      context: .
+    container_name: user-service
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - ISSUER_URI=http://192.168.1.241:9000
+      - LOG_LEVEL=INFO
+      - PORT=8084
+    ports:
+      - "8084:8084"
+
   reservation:
     image: 'ghcr.io/jakegergen714/reservation:latest'
     build:
