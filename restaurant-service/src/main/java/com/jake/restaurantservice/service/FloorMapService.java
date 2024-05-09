@@ -6,145 +6,68 @@ import com.jake.datacorelib.restaurant.floormap.jpa.FloorMap;
 import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapItem;
 import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapItemRepository;
 import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapRepository;
+import com.jake.datacorelib.restaurant.jpa.Restaurant;
+import com.jake.datacorelib.restaurant.jpa.RestaurantRepository;
+import com.jake.restaurantservice.exception.FloorMapNotFoundException;
+import com.jake.restaurantservice.exception.RestaurantNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
 @Log4j2
 public class FloorMapService {
-    private final FloorMapItemRepository repo;
     private final FloorMapRepository floorMapRepository;
-
-    private FloorMapItemDTO toDto (FloorMapItem entity) {
-        FloorMapItemDTO dto = new FloorMapItemDTO();
-        dto.setFloorMapItemId(entity.getFloorMapItemId());
-        dto.setName(entity.getName());
-        dto.setTableType(entity.getTableType());
-        dto.setXPosition(entity.getXPosition());
-        dto.setYPosition(entity.getYPosition());
-        dto.setMaxPartySize(entity.getMaxTableSize());
-        dto.setMinPartySize(entity.getMinTableSize());
-        dto.setReservable(entity.isReservable());
-        return dto;
-    }
-
-    private FloorMapItem toEntity(FloorMapItemDTO dto) {
-        FloorMapItem entity = new FloorMapItem();
-        entity.setFloorMapItemId(dto.getFloorMapItemId());
-        entity.setName(dto.getName());
-        entity.setTableType(dto.getTableType());
-        entity.setXPosition(dto.getXPosition());
-        entity.setYPosition(dto.getYPosition());
-        entity.setMinTableSize(dto.getMinPartySize());
-        entity.setMaxTableSize(dto.getMaxPartySize());
-        entity.setReservable(dto.isReservable());
-        return entity;
-    }
+    private final FloorMapItemRepository floorMapItemRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final ModelMapper modelMapper;
 
     public Optional<FloorMap> findFloorMapById(long floorMapId) {
         return floorMapRepository.findById(floorMapId);
     }
 
-    public List<FloorMapDTO> findAllForBusinessId(long businessId) {
-        log.info("Searching for Floor Maps by businessId <{}>", businessId);
-        List<FloorMap> floorMaps = floorMapRepository.findAllByBusinessId(businessId);
-        log.info("Found floor maps <{}>", floorMaps);
-        List<FloorMapDTO> floorMapDTOS = new ArrayList<>();
-        for (FloorMap floorMap : floorMaps) {
-            List<FloorMapItem> floorMapItems = findAllForMapId(floorMap.getFloorMapId());
-            log.info("Found Floor Map Items <{}> for Floor map Id <{}>", floorMapItems,  floorMap.getFloorMapId());
-            FloorMapDTO floorMapDTO = new FloorMapDTO();
-            floorMapDTO.setFloorMapId(floorMap.getFloorMapId());
-            floorMapDTO.setBusinessId(businessId);
-            floorMapDTO.setName(floorMap.getName());
-            floorMapDTO.setFloorMapItems(floorMapItems.stream().map(this::toDto).toList());
-            floorMapDTOS.add(floorMapDTO);
+    @Transactional
+    public FloorMapDTO addNewFloorMap(FloorMapDTO floorMapDTO) {
+        FloorMap floorMap = modelMapper.map(floorMapDTO, FloorMap.class);
+
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(floorMapDTO.getRestaurantId());
+        if(optionalRestaurant.isEmpty()) {
+            log.error("Restaurant with ID <{}> could not be found.", floorMapDTO.getRestaurantId());
+            throw new RestaurantNotFoundException(floorMapDTO.getRestaurantId());
         }
 
-        return floorMapDTOS;
+        // Set the restaurant to the floorMap
+        floorMap.setRestaurant(optionalRestaurant.get());
+
+        log.info("Saving Floor Map <{}>", floorMap);
+        FloorMap savedFloorMap = floorMapRepository.save(floorMap);
+        log.info("Saved Floor Map <{}>", floorMap);
+        return modelMapper.map(savedFloorMap, FloorMapDTO.class);
     }
 
-    public FloorMap save(FloorMapDTO floorMapDTO, long businessId) {
-        Optional<FloorMap> floorMapOptional = Optional.empty();
-        if(floorMapDTO.getFloorMapId() != null) {
-            floorMapOptional = floorMapRepository.findById(floorMapDTO.getFloorMapId());
-        }
+    @Transactional
+    public FloorMapItemDTO addTableToFloorMap(FloorMapItemDTO floorMapItemDTO) {
+        FloorMapItem floorMapItem = modelMapper.map(floorMapItemDTO, FloorMapItem.class);
+        floorMapItem.setFloorMapItemId(null);
+
         FloorMap floorMap;
-        if(floorMapOptional.isEmpty()) {
-            log.info("No existing floor plan found");
-            floorMap = new FloorMap();
-            floorMap.setName(floorMapDTO.getName());
-            floorMap.setBusinessId(businessId);
-            log.info("Saving Floor Plan <{}>.", floorMap);
-            FloorMap saved =  floorMapRepository.save(floorMap);
-            log.info("Saved Floor Plan <{}>.", saved);
-        } else {
-            FloorMap existing = floorMapOptional.get();
-            log.info("Found existing Floor Plan <{}>.", existing);
-            existing.setName(floorMapDTO.getName());
-
-            log.info("Edited existing Floor Plan <{}>.", existing);
-            floorMap = floorMapRepository.save(existing);
-            log.info("Saved Floor Plan <{}>.", existing);
-            repo.saveAll(floorMapDTO.getFloorMapItems().stream().map(this::toEntity).toList());
+        Optional<FloorMap> optionalFloorMap = floorMapRepository.findById(floorMapItemDTO.getFloorMapId());
+        if(optionalFloorMap.isEmpty()) {
+            log.error("Restaurant with ID <{}> could not be found.", floorMapItemDTO.getFloorMapId());
+            throw new FloorMapNotFoundException(floorMapItemDTO.getFloorMapId());
         }
 
-        return floorMap;
-    }
+        // Set the restaurant to the floorMap
+        floorMapItem.setFloorMap(optionalFloorMap.get());
 
-
-    public List<FloorMapItem> findAllForMapId(long floorMapId) {
-        return repo.findAllByFloorMapId(floorMapId);
-    }
-
-    public FloorMapItem save(FloorMapItemDTO floorMapItemDTO) {
-        FloorMapItem floorMapItem = new FloorMapItem();
-
-        floorMapItem.setFloorMapId(floorMapItemDTO.getFloorMapId());
-        String name = floorMapItemDTO.getName();
-        if(name == null) {
-            name = generateFloorMapItemName(floorMapItemDTO);
-            log.info("Generated name <{}>", name);
-        }
-        floorMapItem.setName(name);
-        floorMapItem.setTableType(floorMapItemDTO.getTableType());
-        floorMapItem.setMinTableSize(floorMapItemDTO.getMinPartySize());
-        floorMapItem.setMinTableSize(floorMapItemDTO.getMaxPartySize());
-        floorMapItem.setReservable(floorMapItemDTO.isReservable());
-        floorMapItem.setXPosition(floorMapItemDTO.getXPosition());
-        floorMapItem.setYPosition(floorMapItemDTO.getYPosition());
-
-        return repo.save(floorMapItem);
-    }
-
-    public void update(FloorMapItemDTO floorMapItemDTO) {
-        Optional<FloorMapItem> existingItemOptional = repo.findById(floorMapItemDTO.getFloorMapItemId());
-
-        if(existingItemOptional.isEmpty()) {
-            log.info("Update failed no existing Floor Map Item found with id <{}>", floorMapItemDTO.getFloorMapItemId());
-            return;
-        }
-        FloorMapItem existingItem = existingItemOptional.get();
-        log.info("Found <{}>", existingItem);
-        existingItem.setXPosition(floorMapItemDTO.getXPosition());
-        existingItem.setYPosition(floorMapItemDTO.getYPosition());
-        existingItem.setName(floorMapItemDTO.getName());
-        existingItem.setReservable(floorMapItemDTO.isReservable());
-        existingItem.setMinTableSize(floorMapItemDTO.getMinPartySize());
-        existingItem.setMaxTableSize(floorMapItemDTO.getMaxPartySize());
-        existingItem.setTableType(floorMapItemDTO.getTableType());
-
-        log.info("Added <{}>", repo.save(existingItem));
-    }
-
-    private String generateFloorMapItemName(FloorMapItemDTO floorMapItemDTO) {
-        int count = repo.findAllByFloorMapId(floorMapItemDTO.getFloorMapId()).size();
-        return String.valueOf(count + 1);
+        log.info("Saving Floor Map Item <{}>", floorMapItem);
+        FloorMapItem savedFloorItemMap = floorMapItemRepository.save(floorMapItem);
+        log.info("Saved Floor Map Item <{}>", floorMapItem);
+        return modelMapper.map(savedFloorItemMap, FloorMapItemDTO.class);
     }
 }

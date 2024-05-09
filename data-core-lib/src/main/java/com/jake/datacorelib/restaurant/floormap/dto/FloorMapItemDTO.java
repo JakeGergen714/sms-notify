@@ -5,9 +5,8 @@ import lombok.Data;
 
 @Data
 public class FloorMapItemDTO {
-    private long floorMapItemId;
-
-    private long floorMapId;
+    private Long floorMapItemId;
+    private Long floorMapId;
 
     private String name;
     private String tableType;

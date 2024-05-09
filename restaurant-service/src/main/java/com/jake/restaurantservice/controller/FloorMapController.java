@@ -1,3 +1,4 @@
+/*
 package com.jake.restaurantservice.controller;
 
 
@@ -105,3 +106,4 @@ public class FloorMapController {
         return ResponseEntity.ok().build();
     }
 }
+*/

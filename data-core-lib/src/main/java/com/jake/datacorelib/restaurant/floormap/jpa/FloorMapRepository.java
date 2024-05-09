@@ -6,7 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FloorMapRepository extends JpaRepository<FloorMap, Long> {
-    List<FloorMap> findAllByBusinessId(long businessId, Sort sortedBy);
 
-    List<FloorMap> findAllByBusinessId(long businessId);
 }

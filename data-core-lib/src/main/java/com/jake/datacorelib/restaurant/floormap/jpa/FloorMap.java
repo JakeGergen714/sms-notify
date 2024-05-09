@@ -1,5 +1,6 @@
 package com.jake.datacorelib.restaurant.floormap.jpa;
 
+import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -13,13 +14,13 @@ public class FloorMap {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long floorMapId;
-    @Column
-    private Long businessId;
+
     @Column
     private String name;
 
-    @OneToMany(mappedBy="floorMap", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<ServiceType> serviceTypes;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
     @OneToMany(mappedBy="floorMap", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<FloorMapItem> floorMapItems;

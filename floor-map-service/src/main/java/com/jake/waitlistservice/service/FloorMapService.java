@@ -1,11 +1,12 @@
 package com.jake.waitlistservice.service;
 
-import com.jake.datacorelib.floormap.dto.FloorMapDTO;
-import com.jake.datacorelib.floormap.dto.FloorMapItemDTO;
-import com.jake.datacorelib.floormap.jpa.FloorMap;
-import com.jake.datacorelib.floormap.jpa.FloorMapItem;
-import com.jake.datacorelib.floormap.jpa.FloorMapItemRepository;
-import com.jake.datacorelib.floormap.jpa.FloorMapRepository;
+
+import com.jake.datacorelib.restaurant.floormap.dto.FloorMapDTO;
+import com.jake.datacorelib.restaurant.floormap.dto.FloorMapItemDTO;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMap;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapItem;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapItemRepository;
+import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -20,34 +21,6 @@ import java.util.Optional;
 public class FloorMapService {
     private final FloorMapItemRepository repo;
     private final FloorMapRepository floorMapRepository;
-
-    private FloorMapItemDTO toDto (FloorMapItem entity) {
-        FloorMapItemDTO dto = new FloorMapItemDTO();
-        dto.setId(entity.getId());
-        dto.setFloorMapId(entity.getFloorMapId());
-        dto.setName(entity.getName());
-        dto.setTableType(entity.getTableType());
-        dto.setXPosition(entity.getXPosition());
-        dto.setYPosition(entity.getYPosition());
-        dto.setMaxPartySize(entity.getMaxTableSize());
-        dto.setMinPartySize(entity.getMinTableSize());
-        dto.setReservable(entity.isReservable());
-        return dto;
-    }
-
-    private FloorMapItem toEntity(FloorMapItemDTO dto) {
-        FloorMapItem entity = new FloorMapItem();
-        entity.setId(dto.getId());
-        entity.setFloorMapId(dto.getFloorMapId());
-        entity.setName(dto.getName());
-        entity.setTableType(dto.getTableType());
-        entity.setXPosition(dto.getXPosition());
-        entity.setYPosition(dto.getYPosition());
-        entity.setMinTableSize(dto.getMinPartySize());
-        entity.setMaxTableSize(dto.getMaxPartySize());
-        entity.setReservable(dto.isReservable());
-        return entity;
-    }
 
     public Optional<FloorMap> findFloorMapById(long floorMapId) {
         return floorMapRepository.findById(floorMapId);

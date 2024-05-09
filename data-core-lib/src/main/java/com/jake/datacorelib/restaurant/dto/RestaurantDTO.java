@@ -1,5 +1,6 @@
 package com.jake.datacorelib.restaurant.dto;
 
+import com.jake.datacorelib.restaurant.floormap.dto.FloorMapDTO;
 import com.jake.datacorelib.restaurant.servicetype.dto.ServiceTypeDTO;
 import lombok.Data;
 
@@ -14,4 +15,5 @@ public class RestaurantDTO {
     private String address;
 
     private Set<ServiceTypeDTO> serviceTypes;
+    private Set<FloorMapDTO> floorMaps;
 }

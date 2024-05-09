@@ -1,0 +1,54 @@
+# @format
+
+name: Maven Package and Docker Build user
+
+on:
+   push:
+      paths:
+         - "user-service/**"
+         - ".github/workflows/publish-user-service.yml"
+   pull_request:
+      paths:
+         - "user-service/**"
+
+jobs:
+   build-and-deploy:
+      runs-on: ubuntu-latest
+      permissions:
+         contents: read
+         packages: write
+
+      steps:
+         - uses: actions/checkout@v4
+
+         - name: Set up JDK 17
+           uses: actions/setup-java@v4
+           with:
+              java-version: "17"
+              distribution: "temurin"
+              server-id: github
+              settings-path: ${{ github.workspace }}
+
+         - name: Build with user Service
+           working-directory: ./user-service/
+           env:
+              GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
+           run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B package --file pom.xml
+
+         - name: Publish user Service
+           env:
+              GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # Assuming you're using the GitHub provided token
+           working-directory: ./user-service/
+           run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+
+         - name: Log in to GitHub Container Registry
+           uses: docker/login-action@v1
+           with:
+              registry: ghcr.io
+              username: ${{ github.actor }}
+              password: ${{ secrets.ACCESS_TOKEN }}
+
+         - name: Build and push user Docker image
+           run: |
+              docker build -t ghcr.io/jakegergen714/user-service:latest ./user-service
+              docker push ghcr.io/jakegergen714/user-service:latest
