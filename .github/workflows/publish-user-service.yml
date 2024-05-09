@@ -1,6 +1,6 @@
 # @format
 
-name: Maven Package and Docker Build user
+name: Maven Package and Docker Build User Service
 
 on:
    push:

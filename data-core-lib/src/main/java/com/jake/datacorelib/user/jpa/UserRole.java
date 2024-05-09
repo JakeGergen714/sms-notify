@@ -11,6 +11,7 @@ public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long userRoleId;
 
     @Enumerated

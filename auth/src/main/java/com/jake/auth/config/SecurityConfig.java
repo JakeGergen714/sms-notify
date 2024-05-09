@@ -136,11 +136,12 @@ public class SecurityConfig {
    @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtTokenCustomizer() {
         return (context) -> {
-            log.info("Here");
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 UserDetailsImpl userDetails = (UserDetailsImpl) context.getPrincipal().getPrincipal();
                 context.getClaims().claims((claims) -> {
-                    claims.put("businessId", userDetails.getUser().getBusinessId());
+                    if(userDetails.getUser().getBusiness() != null) {
+                        claims.put("businessId", userDetails.getUser().getBusiness().getBusinessId());
+                    }
                 });
                 log.info(context.getClaims());
             }

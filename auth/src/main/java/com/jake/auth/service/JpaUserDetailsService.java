@@ -1,10 +1,9 @@
 package com.jake.auth.service;
 
-import com.jake.auth.jpa.domain.User;
-import com.jake.auth.jpa.domain.UserRole;
-import com.jake.auth.jpa.repo.UserRepository;
-import com.jake.auth.jpa.repo.UserRoleRepository;
 import com.jake.auth.userdetails.UserDetailsImpl;
+import com.jake.datacorelib.user.jpa.User;
+import com.jake.datacorelib.user.jpa.UserRepository;
+import com.jake.datacorelib.user.jpa.UserRoleRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ public class JpaUserDetailsService implements UserDetailsService {
             User user = new User();
             user.setUsername("test");
             user.setPassword(encoder.encode("test"));
-            user.setId(5L);
+            user.setUserId(5l);
             userRepo.save(user);
         }
 
@@ -39,14 +36,9 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Looking user up by username <{}>", username);
-        User user = userRepo.findByUsername(username);
-        user.setBusinessId(1L); //todo
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
+        User user = userRepo.findByUsername(username).orElseThrow(()->new UsernameNotFoundException(username));
 
-        List<UserRole> roles = roleRepo.findAllByUserId(user.getId());
 
-        return new UserDetailsImpl(user, roles);
+        return new UserDetailsImpl(user, user.getRoles());
     }
 }

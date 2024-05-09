@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-@Entity
+@Entity(name="users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
     private Long userId;
 
     @Column(nullable = false, unique = true)

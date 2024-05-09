@@ -1,24 +1,24 @@
 package com.jake.auth.userdetails;
 
-import com.jake.auth.jpa.domain.User;
-import com.jake.auth.jpa.domain.UserRole;
+import com.jake.datacorelib.user.jpa.User;
+import com.jake.datacorelib.user.jpa.UserRole;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class UserDetailsImpl implements UserDetails {
     private final User user;
 
-    private final List<UserRole> roles;
+    private final Set<UserRole> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).toList();
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRoleType().name())).toList();
     }
 
     @Override
