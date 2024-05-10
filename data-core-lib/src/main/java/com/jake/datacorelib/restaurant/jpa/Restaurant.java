@@ -2,6 +2,7 @@ package com.jake.datacorelib.restaurant.jpa;
 
 import com.jake.datacorelib.restaurant.floormap.jpa.FloorMap;
 import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
+import com.jake.datacorelib.subscription.jpa.Subscription;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,5 +41,8 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<FloorMap> floorMaps;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Subscription subscription;
 
 }

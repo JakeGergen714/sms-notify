@@ -1,6 +1,7 @@
 package com.jake.datacorelib.subscription.jpa;
 
 import com.jake.datacorelib.business.jpa.Business;
+import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.subscription.SubscriptionType;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -20,8 +21,8 @@ public class Subscription {
     private Long subscriptionId;
 
     @OneToOne
-    @JoinColumn(name="business_id", nullable = false)
-    private Business business;
+    @JoinColumn(name="restaurant_id", nullable = false)
+    private Restaurant restaurant;
 
     @Enumerated
     private SubscriptionType subscriptionType;

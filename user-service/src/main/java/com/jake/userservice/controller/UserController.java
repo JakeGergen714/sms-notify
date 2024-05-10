@@ -25,6 +25,7 @@ public class UserController {
    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     @GetMapping(value = "/user")
     public ResponseEntity<UserDTO> getMyUser(Authentication authentication) {
+       log.info("TEST <{}>", ((Jwt) authentication.getPrincipal()).getClaimAsString("Roles"));
        String username = getUsername(authentication);
        log.info("GET /user <{}>",username);
         return ResponseEntity.ok(modelMapper.map(userService.getUserByUsername(username), UserDTO.class));

@@ -3,8 +3,6 @@ package com.jake.userservice.service;
 import com.jake.datacorelib.business.dto.BusinessDTO;
 import com.jake.datacorelib.business.jpa.Business;
 import com.jake.datacorelib.business.jpa.BusinessRepository;
-import com.jake.datacorelib.subscription.SubscriptionType;
-import com.jake.datacorelib.subscription.jpa.Subscription;
 import com.jake.datacorelib.subscription.jpa.SubscriptionRepository;
 import com.jake.datacorelib.user.jpa.RoleType;
 import com.jake.datacorelib.user.jpa.User;
@@ -44,10 +42,6 @@ public class BusinessService {
 
 
         Business newBusiness = modelMapper.map(businessDTO, Business.class);
-        Subscription subscription = new Subscription();
-        subscription.setSubscriptionType(SubscriptionType.FREE);
-        subscription.setBusiness(newBusiness);
-        newBusiness.setSubscription(subscription);
         newBusiness.setUsers(Set.of(businessOwner));
 
         return businessRepository.save(newBusiness);
