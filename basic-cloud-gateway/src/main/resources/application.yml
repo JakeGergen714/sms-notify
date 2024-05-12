@@ -36,6 +36,14 @@ spring:
           filters:
             - TokenRelay=
 
+        - id: user-service
+          uri: http://192.168.1.241:8084
+          predicates:
+            - Path=/user
+          filters:
+            - TokenRelay=
+
+
   security:
     oauth2:
       client:

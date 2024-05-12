@@ -5,6 +5,8 @@ import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.subscription.SubscriptionType;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -14,6 +16,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@ToString(exclude = "restaurant")
+@EqualsAndHashCode(exclude = "restaurant")
 public class Subscription {
 
     @Id

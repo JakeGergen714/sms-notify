@@ -4,10 +4,8 @@ import com.jake.datacorelib.business.dto.BusinessDTO;
 import com.jake.datacorelib.business.jpa.Business;
 import com.jake.datacorelib.business.jpa.BusinessRepository;
 import com.jake.datacorelib.subscription.jpa.SubscriptionRepository;
-import com.jake.datacorelib.user.jpa.RoleType;
 import com.jake.datacorelib.user.jpa.User;
 import com.jake.datacorelib.user.jpa.UserRepository;
-import com.jake.datacorelib.user.jpa.UserRole;
 import com.jake.userservice.exception.UserAlreadyOwnsABusiness;
 import com.jake.userservice.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,22 +26,22 @@ public class BusinessService {
     private final ModelMapper modelMapper;
 
     public Business addNewBusiness(BusinessDTO businessDTO, String ownerUsername) {
+        log.info("searchnig for user");
         Optional<User> optionalUser = userRepository.findByUsername(ownerUsername);
 
         User businessOwner = optionalUser.orElseThrow(()->new UserNotFoundException(ownerUsername));
 
+        log.info("found user");
         if(businessOwner.getBusiness() != null) {
             throw new UserAlreadyOwnsABusiness(ownerUsername, businessOwner.getBusiness().getBusinessId());
         }
-        UserRole userRole = new UserRole();
-        userRole.setRoleType(RoleType.OWNER);
-        userRole.setUser(businessOwner);
-        businessOwner.setRoles(Set.of(userRole));
-
 
         Business newBusiness = modelMapper.map(businessDTO, Business.class);
+        businessOwner.setBusiness(newBusiness);
+
         newBusiness.setUsers(Set.of(businessOwner));
 
+        log.info("adding business", newBusiness);
         return businessRepository.save(newBusiness);
     }
 }

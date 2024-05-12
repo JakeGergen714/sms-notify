@@ -9,10 +9,16 @@ import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceTypeRepository;
 import com.jake.datacorelib.restaurant.servicetype.serviceschedule.jpa.ServiceScheduleRepository;
 import com.jake.datacorelib.subscription.SubscriptionType;
 import com.jake.datacorelib.subscription.jpa.Subscription;
+import com.jake.datacorelib.user.jpa.RoleType;
+import com.jake.datacorelib.user.jpa.User;
+import com.jake.datacorelib.user.jpa.UserRepository;
+import com.jake.datacorelib.user.jpa.UserRole;
 import com.jake.restaurantservice.utility.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Component
@@ -21,19 +27,34 @@ public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final ServiceTypeRepository serviceTypeRepository;
     private final ServiceScheduleRepository serviceScheduleRepository;
+    private final UserRepository userRepository;
     private final FloorMapService floorMapService;
     private final Mapper mapper;
 
-    public RestaurantDTO addRestaurant(RestaurantDTO dto, long businessId) {
+    public RestaurantDTO addRestaurant(RestaurantDTO dto, String username) {
+        User restaurantOwner = userRepository.findByUsername(username).orElseThrow();
+
         Restaurant restaurantEntity = mapper.toEntity(dto);
         log.info("Mapped to Entity <{}>", restaurantEntity);
-        restaurantEntity.setBusinessId(businessId);
-        Restaurant restaurant =  restaurantRepository.save(restaurantEntity);
+        restaurantEntity.setBusinessId(restaurantOwner.getBusiness().getBusinessId());
         Subscription subscription = new Subscription();
         subscription.setSubscriptionType(SubscriptionType.FREE);
-        subscription.setRestaurant(restaurant);
-        restaurant.setSubscription(subscription);
-        return mapper.toDTO(restaurant);
+        subscription.setRestaurant(restaurantEntity);
+        restaurantEntity.setSubscription(subscription);
+
+        Restaurant savedRestaurant =  restaurantRepository.save(restaurantEntity);
+        UserRole restaurantOwnerRole = new UserRole();
+        restaurantOwnerRole.setUser(restaurantOwner);
+        restaurantOwnerRole.setRoleType(RoleType.OWNER);
+        restaurantOwnerRole.setRestaurant(savedRestaurant);
+        if(restaurantOwner.getRoles() == null) {
+            restaurantOwner.setRoles(Set.of(restaurantOwnerRole));
+        }
+         else {
+            restaurantOwner.getRoles().add(restaurantOwnerRole);
+        }
+         userRepository.save(restaurantOwner);
+        return mapper.toDTO(savedRestaurant);
     }
 
     public RestaurantDTO findRestaurantByBusinessId(long businessId) {

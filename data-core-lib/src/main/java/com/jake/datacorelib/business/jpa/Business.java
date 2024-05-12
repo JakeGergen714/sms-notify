@@ -5,11 +5,15 @@ import com.jake.datacorelib.subscription.jpa.Subscription;
 import com.jake.datacorelib.user.jpa.User;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Set;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude="users")
+@ToString(exclude = "users")
 public class Business {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

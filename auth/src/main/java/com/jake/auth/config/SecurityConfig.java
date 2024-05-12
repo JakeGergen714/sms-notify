@@ -45,6 +45,7 @@ public class SecurityConfig {
     @Value("${redirectUri}")
     private String REDIRECT_URL;
 
+
     private static KeyPair generateRsaKey() {
         KeyPair keyPair;
         try {
@@ -68,6 +69,7 @@ public class SecurityConfig {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults()); // Enable OpenID Connect 1.0
+
         return http.formLogin(Customizer.withDefaults()).cors().disable().build();
     }
 
@@ -77,6 +79,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest()
                         .authenticated())
                 .formLogin(Customizer.withDefaults()).cors().disable();
+
         return http.build();
     }
 
@@ -95,8 +98,8 @@ public class SecurityConfig {
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .tokenSettings(TokenSettings
                         .builder()
-                        .reuseRefreshTokens(false)
-                        .accessTokenTimeToLive(Duration.ofSeconds(500))
+                        .reuseRefreshTokens(true)
+                        .accessTokenTimeToLive(Duration.ofSeconds(20))
                         .refreshTokenTimeToLive(Duration.ofSeconds(500))
                         .build())
                 .build();
