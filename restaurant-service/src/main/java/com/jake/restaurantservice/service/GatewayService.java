@@ -3,6 +3,7 @@ package com.jake.restaurantservice.service;
 import com.jake.restaurantservice.exception.RefreshTokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,15 +19,19 @@ import org.springframework.web.client.RestTemplate;
 public class GatewayService {
     private final RestTemplate restTemplate;
 
+    @Value("${services.gateway.uri}")
+    private String gatewayUrl;
+
     public void userRolesUpdated(Authentication authenticationToken) {
         // Set up headers for RestTemplate call
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", ((Jwt) authenticationToken.getCredentials()).getTokenValue());
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
+        String sessionRefreshTokenEndpoint = gatewayUrl + "/session/refresh-token";
         // Call the refresh token endpoint
         ResponseEntity<Void> responseEntity = restTemplate.exchange(
-                "http://localhost:8090/session/refresh-token",
+                sessionRefreshTokenEndpoint,
                 HttpMethod.GET,
                 entity,
                 Void.class

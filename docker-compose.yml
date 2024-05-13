@@ -29,6 +29,7 @@ services:
       - WAITLIST_SERVICE_URL=http://192.168.1.241:8080
       - RESTAURANT_SERVICE_URL=http://192.168.1.241:8083
       - RESERVATION_SERVICE_URL=http://192.168.1.241:8081
+      - USER_SERVICE_URL=http://192.168.1.241:8085
       - LOG_LEVEL=INFO
     container_name: gateway
     depends_on:
@@ -103,6 +104,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - ISSUER_URI=http://192.168.1.241:9000
+      - GATEWAY_SERVICE_URI=http://192.168.1.241:8090
       - LOG_LEVEL=DEBUG
       - PORT=8083
     ports:
