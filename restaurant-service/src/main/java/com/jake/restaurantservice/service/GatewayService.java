@@ -32,7 +32,7 @@ public class GatewayService {
         // Call the refresh token endpoint
         ResponseEntity<Void> responseEntity = restTemplate.exchange(
                 sessionRefreshTokenEndpoint,
-                HttpMethod.GET,
+                HttpMethod.POST,
                 entity,
                 Void.class
         );
