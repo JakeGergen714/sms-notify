@@ -14,6 +14,7 @@ import com.jake.datacorelib.user.jpa.User;
 import com.jake.datacorelib.user.jpa.UserRepository;
 import com.jake.datacorelib.user.jpa.UserRole;
 import com.jake.restaurantservice.utility.Mapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -28,9 +29,11 @@ public class RestaurantService {
     private final ServiceTypeRepository serviceTypeRepository;
     private final ServiceScheduleRepository serviceScheduleRepository;
     private final UserRepository userRepository;
-    private final FloorMapService floorMapService;
     private final Mapper mapper;
+    private final GatewayService gatewayService;
 
+
+    @Transactional
     public RestaurantDTO addRestaurant(RestaurantDTO dto, String username) {
         User restaurantOwner = userRepository.findByUsername(username).orElseThrow();
 

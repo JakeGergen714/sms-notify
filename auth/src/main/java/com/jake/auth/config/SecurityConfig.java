@@ -98,8 +98,8 @@ public class SecurityConfig {
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .tokenSettings(TokenSettings
                         .builder()
-                        .reuseRefreshTokens(true)
-                        .accessTokenTimeToLive(Duration.ofSeconds(20))
+                        .reuseRefreshTokens(false)
+                        .accessTokenTimeToLive(Duration.ofSeconds(500))
                         .refreshTokenTimeToLive(Duration.ofSeconds(500))
                         .build())
                 .build();

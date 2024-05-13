@@ -5,17 +5,14 @@ import com.jake.datacorelib.restaurant.floormap.dto.FloorMapDTO;
 import com.jake.datacorelib.restaurant.floormap.dto.FloorMapItemDTO;
 import com.jake.datacorelib.restaurant.servicetype.dto.ServiceTypeDTO;
 import com.jake.restaurantservice.service.FloorMapService;
+import com.jake.restaurantservice.service.GatewayService;
 import com.jake.restaurantservice.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @Log4j2
@@ -23,8 +20,7 @@ import org.springframework.web.client.RestTemplate;
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final FloorMapService floorMapService;
-    private final RestTemplate restTemplate;
-
+    private final GatewayService gatewayService;
    @CrossOrigin(origins = "http://192.168.1.241:8090", allowCredentials = "true")
     @GetMapping(value = "/restaurant")
     public ResponseEntity<RestaurantDTO> getMyRestaurant(Authentication authenticationToken) {
@@ -38,21 +34,7 @@ public class RestaurantController {
     public ResponseEntity<RestaurantDTO> addMyRestaurant(Authentication authenticationToken, @RequestBody RestaurantDTO restaurantDTO) {
         log.info("POST /restaurant <{}>", restaurantDTO);
         RestaurantDTO savedDTO = restaurantService.addRestaurant(restaurantDTO, getUsername(authenticationToken));
-
-        // Set up headers for RestTemplate call
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", ((Jwt) authenticationToken.getCredentials()).getTokenValue());
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        // Call the refresh token endpoint
-        ResponseEntity<String> newToken = restTemplate.exchange(
-                "http://localhost:8090/test", // Adjust with your actual refresh token endpoint
-                HttpMethod.GET,
-                entity,
-                String.class // Adjust based on the response type of the refresh token endpoint
-        );
-        log.info(newToken.getBody());
-
+        gatewayService.userRolesUpdated(authenticationToken);
         return ResponseEntity.ok(savedDTO);
     }
 
