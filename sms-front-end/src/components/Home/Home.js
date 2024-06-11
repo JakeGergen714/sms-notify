@@ -1,69 +1,75 @@
 /** @format */
 
 import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Route, Routes, Link, useLocation } from "react-router-dom";
 import WaitList from "../WaitList/WaitList";
 import Reservations from "../Reservations/Reservations";
 import Header from "../Header/Header";
 import { PiUserListFill, PiUserList } from "react-icons/pi";
 import { BsClockFill, BsClock } from "react-icons/bs";
 import { PiMapTrifold, PiMapTrifoldBold } from "react-icons/pi";
-
+import { IoSettingsOutline, IoSettingsSharp } from "react-icons/io5";
+import { BsCalendar2, BsCalendar2Fill } from "react-icons/bs";
 import "./Home.css";
 import SideBarItem from "../SideBar/SiderBarItem";
 import SeatMap from "../SeatMap/SeatMap";
 import ManageService from "../ManageService/ManageService";
-import Restaurant from "../Restaurant/Restaurant";
+import ManageRestaurant from "../Restaurant/ManageRestaurant";
 
-const Home = (content) => {
-   const [activePage, setActivePage] = useState(0);
+const Home = () => {
+   const [activeItem, setActiveItem] = useState(0);
 
    return (
       <div className='home'>
          <div className='sidebar'>
-            <SideBarItem
-               onClick={() => {
-                  setActivePage(0);
-               }}
-               isActive={activePage == 0}
-               text='Wait List'
-               icon={PiUserList}
-               activeIcon={PiUserListFill}
-            />
-            <SideBarItem
-               onClick={() => {
-                  setActivePage(1);
-               }}
-               isActive={activePage == 1}
-               text='Reservations'
-               icon={BsClock}
-               activeIcon={BsClockFill}
-            />
-            <SideBarItem
-               onClick={() => {
-                  setActivePage(2);
-               }}
-               isActive={activePage == 2}
-               text='Reservations'
-               icon={PiMapTrifold}
-               activeIcon={PiMapTrifoldBold}
-            />
-            <SideBarItem
-               onClick={() => {
-                  setActivePage(3);
-               }}
-               isActive={activePage == 3}
-               text='Manage Restaurant'
-               icon={PiMapTrifold}
-               activeIcon={PiMapTrifoldBold}
-            />
+            <Link to='/home/manage-service'>
+               <SideBarItem
+                  onClick={() => {
+                     setActiveItem(0);
+                  }}
+                  isActive={activeItem === 0}
+                  icon={PiUserList}
+                  activeIcon={PiUserListFill}
+               />
+            </Link>
+            <Link to='/home/reservations'>
+               <SideBarItem
+                  onClick={() => {
+                     setActiveItem(1);
+                  }}
+                  isActive={activeItem === 1}
+                  icon={BsClock}
+                  activeIcon={BsClockFill}
+               />
+            </Link>
+            <Link to='/home/restaurant/schedule'>
+               <SideBarItem
+                  onClick={() => {
+                     setActiveItem(3);
+                  }}
+                  isActive={activeItem === 3}
+                  icon={BsCalendar2}
+                  activeIcon={BsCalendar2Fill}
+               />
+            </Link>
+            <Link to='/home/settings'>
+               <SideBarItem
+                  onClick={() => {
+                     setActiveItem(4);
+                  }}
+                  isActive={activeItem === 4}
+                  icon={IoSettingsOutline}
+                  activeIcon={IoSettingsSharp}
+               />
+            </Link>
          </div>
          <div className='main-content'>
-            <Header></Header>
-            {activePage === 0 && <ManageService></ManageService>}
-            {activePage === 1 && <Reservations />}
-            {activePage === 2 && <SeatMap />}
-            {activePage === 3 && <Restaurant />}
+            <Routes>
+               <Route path='manage-service' element={<ManageService />} />
+               <Route path='reservations' element={<Reservations />} />
+               <Route path='restaurant/*' element={<ManageRestaurant />} />
+               <Route path='/' element={<ManageService />} /> {/* Default route */}
+            </Routes>
          </div>
       </div>
    );

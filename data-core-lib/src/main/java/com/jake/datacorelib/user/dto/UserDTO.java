@@ -11,5 +11,5 @@ public class UserDTO {
     private Long businessId;
     private String username;
     private String password;
-    private Set<UserRole> userRoles;
+    private Set<UserRoleDTO> userRoles;
 }

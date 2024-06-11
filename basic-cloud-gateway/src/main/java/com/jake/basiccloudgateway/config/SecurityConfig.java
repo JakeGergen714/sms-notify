@@ -55,7 +55,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
         http
-                .authorizeExchange(exchange -> exchange.pathMatchers(HttpMethod.POST, "/refresh-token").permitAll().anyExchange().authenticated())
+                .authorizeExchange(exchange -> exchange.anyExchange().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .oauth2Login(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())

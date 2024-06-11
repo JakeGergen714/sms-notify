@@ -15,5 +15,4 @@ public class RestaurantDTO {
     private String address;
 
     private Set<ServiceTypeDTO> serviceTypes;
-    private Set<FloorMapDTO> floorMaps;
 }

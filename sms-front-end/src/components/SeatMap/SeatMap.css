@@ -1,28 +1,67 @@
 /** @format */
 
-* {
-   box-sizing: border-box;
+.seat-map-content {
+   background-color: rgb(14, 14, 14);
+   height: 100vh;
+   width: 100vw;
 }
 
-.seat-map-content {
-   background-color: var(--dark-bg);
-   display: grid;
-   grid-template-rows: auto;
+.seat-map-header-2 {
+   height: 60px;
+   padding-top: 10px;
+   padding-right: 5%;
+}
+
+.seat-map-header-controls {
+   margin-right: 4%;
+}
+
+.add-floor-map-button {
+   height: 40px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.add-floor-map-icon {
+   margin-bottom: 2px;
+   font-size: 25px;
+}
+
+.floor-plan-select-dropdown button {
+   background-color: rgba(15, 15, 15);
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.floor-plan-select-dropdown .btn:hover {
+   background-color: rgba(15, 15, 15);
+}
+
+.floor-plan-select-dropdown .dropdown-toggle {
+   font-size: 20px; /* Adjust the font size as needed */
+}
+
+.btn-check:checked + .btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check) + .btn:active .floor-plan-select-dropdown:hover {
+   background-color: rgba(15, 15, 15) !important;
+}
+
+#seat-map-content-panel {
+   display: flex;
+   position: relative;
 }
 
 .seat-map-editor-container {
-   background-color: rgb(255, 255, 255, 0.05);
+   background-color: rgba(15, 15, 15);
    display: grid;
    grid-template-rows: auto;
-   margin: 10px;
-   margin-top: 80px;
 }
 
 .edit-name {
    color: var(--accent);
-   font-size: 25px;
-   margin-bottom: 10px;
-   padding-left: 10px;
+   font-size: 18px;
+   padding-bottom: 5px;
 }
 
 .seat-map-header {
@@ -31,30 +70,17 @@
 }
 
 .seat-map-editor {
-   background-color: rgb(255, 255, 255, 0.02);
+   background-color: rgb(20, 20, 20);
    color: var(--light-text);
    display: grid;
-   grid-template-columns: auto 2fr 1fr; /* Adjusted for equal width side columns */
-   gap: 40px; /* Use gap for spacing between grid items */
+   grid-template-columns: 1fr 1fr; /* Adjusted for equal width side columns */
    align-items: start;
-   padding: 20px; /* Consistent padding around the grid */
+   max-height: 100vh;
+   max-width: 100vw;
 }
 
-.table-type-selector {
-   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-   border-radius: 6px;
-}
-
-.table-type-selector,
-.table-properties-container {
-   background-color: rgba(255, 255, 255, 0.03);
-
-   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-   border-radius: 6px;
-}
-
-#table-editor-panel {
-   background-color: rgba(255, 255, 255, 0.03);
+.property-panels-container {
+   grid-template-rows: auto;
 }
 
 .table-properties-header {
@@ -64,6 +90,44 @@
    width: 100%;
    color: var(--light-text);
    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-header-container {
+   background-color: rgba(15, 15, 15);
+   padding: 10px;
+   margin: 10px;
+   border: 1px solid rgb(139, 139, 139);
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+   position: relative;
+   width: 70%;
+}
+
+.people-count {
+   position: absolute;
+   top: 1%;
+   right: 2%;
+   font-size: 20px;
+   color: white;
+   display: flex;
+   align-items: center;
+}
+
+.people-count svg {
+   margin-right: 5px;
+}
+
+.table-count {
+   position: absolute;
+   top: 40%;
+   right: 4%;
+   font-size: 20px;
+   color: white;
+   display: flex;
+   align-items: center;
+}
+
+.table-count svg {
+   margin-right: 5px;
 }
 
 #table-properties-input-group {
@@ -79,18 +143,30 @@
    width: 100%;
 }
 
-.seat-map-container {
+.table-properties-container {
+   background-color: rgba(15, 15, 15);
    padding: 10px;
+   margin: 10px;
+   width: 70.1%;
+   border: 1px solid rgb(139, 139, 139);
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+   position: relative;
+}
+
+.table-properties-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.seat-map-container {
    border-radius: 6px;
-   overflow: hidden;
-   height: 75%;
 }
 
 .seat-map-grid {
-   border: 2px solid rgba(255, 255, 255, 0.1);
-   background-color: white 40%;
    overflow: hidden;
-   height: 99%;
+   height: 80vh;
+   width: 70vw;
 }
 
 .seat-map {
@@ -124,4 +200,44 @@
 
 .table-type-selector button:hover {
    background-color: #bbb;
+}
+
+.table-type-selector {
+   position: relative;
+}
+
+.draggable-container {
+   display: flex;
+   flex-direction: column; /* or row, depending on your layout */
+   position: relative;
+}
+
+.draggable-overlay {
+   width: 100%;
+   height: 100%;
+   background: transparent;
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: 1;
+   cursor: -webkit-grab; /* Chrome 1-21, Safari 4+ */
+}
+
+.draggable-overlay.dragging {
+   cursor: -webkit-grab; /* Chrome 1-21, Safari 4+ */
+}
+
+.draggable {
+   cursor: grab;
+}
+.draggable:active {
+   cursor: grabbing;
+}
+
+.custom-drag-cursor {
+   cursor: grab; /* Or any other desired cursor */
+}
+
+body.dragging {
+   cursor: grab; /* Or any other desired cursor */
 }

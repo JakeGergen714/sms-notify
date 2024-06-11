@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FloorMapRepository extends JpaRepository<FloorMap, Long> {
 
+    List<FloorMap> findByRestaurantRestaurantId(Long restaurantId);
 }

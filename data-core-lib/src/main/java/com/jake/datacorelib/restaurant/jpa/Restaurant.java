@@ -39,9 +39,6 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<ServiceType> serviceTypes;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<FloorMap> floorMaps;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Subscription subscription;
 

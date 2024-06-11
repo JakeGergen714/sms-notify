@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -56,12 +57,11 @@ public class GatewayController {
      * accessing services through this gateway so that their user roles are always up-to-date.
      *
      * @param authentication The current authentication object containing the principal's details.
-     * @param exchange       The current server web exchange, providing details about the request and response.
      * @return A {@link Mono<ResponseEntity>} that completes when the token refresh process is finished. If the process
      * fails, the error is logged and the Mono completes with an error.
      */
-    @PostMapping("/session/refresh-token")
-    public Mono<? extends ResponseEntity<?>> manualTokenRefresh(Authentication authentication, ServerWebExchange exchange) {
+    @GetMapping("/session/refresh-token")
+    public Mono<? extends ResponseEntity<?>> manualTokenRefresh(Authentication authentication) {
         Logger log = LoggerFactory.getLogger(this.getClass());
 
         String registrationId = clientId;

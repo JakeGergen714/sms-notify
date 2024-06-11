@@ -11,16 +11,17 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
 @EqualsAndHashCode(exclude="restaurant")
-@ToString(exclude = "restaurant")
+@ToString(exclude = {"restaurant"})
 public class ServiceType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "service_type_id", nullable = false)
     private Long serviceTypeId;
 
     @Column(nullable = false)
@@ -34,14 +35,18 @@ public class ServiceType {
     @UpdateTimestamp
     private Instant lastUpdateDateTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
     @OneToMany(mappedBy="serviceType", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<ServiceSchedule> serviceSchedules;
 
-    @ManyToOne
-    @JoinColumn(name = "floor_map_id")
-    private FloorMap floorMap;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "service_type_floor_map",
+            joinColumns = @JoinColumn(name = "serviceTypeId"),
+            inverseJoinColumns = @JoinColumn(name = "floor_map_id")
+    )
+    private List<FloorMap> floorMaps;;
 }

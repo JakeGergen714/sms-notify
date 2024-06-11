@@ -2,6 +2,7 @@
    "name": "sms-front-end",
    "version": "0.1.0",
    "private": true,
+   "homepage": "/ui",
    "dependencies": {
       "@emotion/react": "^11.11.3",
       "@emotion/styled": "^11.11.0",
@@ -12,6 +13,7 @@
       "axios": "^1.5.1",
       "bcryptjs": "^2.4.3",
       "bootstrap": "^5.3.3",
+      "chroma-js": "^2.4.2",
       "express": "^4.18.2",
       "js-cookie": "^3.0.5",
       "konva": "^9.3.3",
@@ -21,6 +23,7 @@
       "react-dom": "^18.2.0",
       "react-icons": "^4.11.0",
       "react-konva": "^18.2.10",
+      "react-konva-utils": "^1.0.6",
       "react-modal": "^3.16.1",
       "react-native": "^0.72.6",
       "react-native-securerandom": "^1.0.1",

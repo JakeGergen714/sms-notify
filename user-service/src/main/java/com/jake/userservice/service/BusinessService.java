@@ -26,7 +26,7 @@ public class BusinessService {
     private final ModelMapper modelMapper;
 
     public Business addNewBusiness(BusinessDTO businessDTO, String ownerUsername) {
-        log.info("searchnig for user");
+        log.info("searchnig for user <{}>",ownerUsername );
         Optional<User> optionalUser = userRepository.findByUsername(ownerUsername);
 
         User businessOwner = optionalUser.orElseThrow(()->new UserNotFoundException(ownerUsername));

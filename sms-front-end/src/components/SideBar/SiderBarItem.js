@@ -8,11 +8,18 @@ import { AuthContext } from "../../AuthContext"; // Update the path as necessary
 
 import { BsClockFill, BsClock } from "react-icons/bs";
 
-import "./SideBar.css";
+import "./SideBarItem.css";
+
 const SideBarItem = ({ isActive, text, icon: Icon, activeIcon: ActiveIcon, onClick }) => {
+   const [isHovered, setIsHovered] = useState(false);
+
    return (
-      <div className={"sidebar-item " + (isActive ? "active" : "not-active")} onClick={onClick}>
-         {isActive ? <ActiveIcon /> : <Icon />}
+      <div
+         className={`sidebar-item ${isActive ? "active" : "not-active"}`}
+         onClick={onClick}
+         onMouseEnter={() => setIsHovered(true)}
+         onMouseLeave={() => setIsHovered(false)}>
+         {isActive || isHovered ? <ActiveIcon /> : <Icon />}
          <span className='icon-label'>{text}</span>
       </div>
    );

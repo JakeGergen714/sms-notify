@@ -10,7 +10,8 @@ import java.util.Set;
 public class ServiceTypeDTO {
     private Long serviceTypeId;
     private Long restaurantId;
+    private Set<Long> floorMapIds;
     private String name;
     private Set<ServiceScheduleDTO> serviceSchedules;
-    private FloorMapDTO floorMap;
+    private Set<FloorMapDTO> floorMaps;
 }

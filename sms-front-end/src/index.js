@@ -3,37 +3,38 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import SignIn from "./components/SignIn/SignIn";
 import reportWebVitals from "./reportWebVitals";
-import Home from "./components/Home/Home";
-import Reservations from "./components/Reservations/Reservations";
-import WaitList from "./components/WaitList/WaitList";
-import Settings from "./components/Settings/Settings";
-import SeatMap from "./components/SeatMap/SeatMap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import RequireAuth from "./components/RequireAuth/RequireAuth";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
+import { UserProvider } from "./context/UserContext";
+import RestaurantSelection from "./components/RestaurantSelection/RestaurantSelection";
+import Home from "./components/Home/Home";
+import ProtectedRoute from "./components/ProtectedRoute";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
    return (
-      <BrowserRouter>
-         <Routes>
-            <Route path='/login' element={<SignIn />}></Route>
-            <Route path='/home' element={<Home />} />
-            <Route path='/reservationss' element={<Reservations />}></Route>
-            <Route path='/waitlist' element={<WaitList />}></Route>
-            <Route path='/settings' element={<Settings />}></Route>
-            <Route path='/seatmap' element={<SeatMap />}></Route>
-         </Routes>
-      </BrowserRouter>
+      <UserProvider>
+         <BrowserRouter basename='/ui'>
+            <Routes>
+               <Route path='/*' element={<Navigate to='/restaurant-selection' />} />{" "}
+               {/* Redirect root to restaurant-selection */}
+               <Route path='/restaurant-selection' element={<RestaurantSelection />} />
+               <Route
+                  path='/home/*'
+                  element={
+                     <ProtectedRoute>
+                        <Home />
+                     </ProtectedRoute>
+                  }
+               />
+            </Routes>
+         </BrowserRouter>
+      </UserProvider>
    );
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

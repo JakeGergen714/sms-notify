@@ -17,12 +17,6 @@ public class Mapper {
 
     public Restaurant toEntity(RestaurantDTO dto) {
         Restaurant restaurant = modelMapper.map(dto, Restaurant.class);
-        restaurant.getServiceTypes().forEach(serviceType -> {
-            serviceType.setRestaurant(restaurant);
-            serviceType.getServiceSchedules().forEach(serviceSchedule -> {
-                serviceSchedule.setServiceType(serviceType);
-            });
-        });
 
         return restaurant;
     }

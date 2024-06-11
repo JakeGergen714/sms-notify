@@ -100,7 +100,7 @@ public class SecurityConfig {
                         .builder()
                         .reuseRefreshTokens(false)
                         .accessTokenTimeToLive(Duration.ofSeconds(500))
-                        .refreshTokenTimeToLive(Duration.ofSeconds(500))
+                        .refreshTokenTimeToLive(Duration.ofSeconds(5000))
                         .build())
                 .build();
 

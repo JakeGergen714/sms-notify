@@ -1,180 +1,96 @@
 /** @format */
 
-* {
-   box-sizing: border-box;
-}
-
-.seat-map-content {
-   background-color: var(--dark-bg);
+.manage-service-header {
+   background-color: rgb(15, 15, 15);
    display: grid;
-   grid-template-rows: auto;
+   grid-template-rows: auto auto; /* Two rows */
+   grid-template-columns: 0.5fr 3fr 0.5fr; /* Three columns */
+   align-items: center;
+   text-align: center;
+   box-shadow: 0px 0px 5.1px hsl(0deg 0% 0% / 0.42);
 }
 
-.seat-map-editor-container {
-   background-color: rgb(255, 255, 255, 0.05);
+.manage-service-service-info-header {
+   grid-row: 1 / 2; /* Top row */
+   grid-column: 2 / 3; /* Center column */
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   text-align: center;
+}
+
+.manage-service-seat-map-selector-container {
+   grid-row: 2 / 3; /* Second row */
+   grid-column: 2 / 3; /* Center column */
+   display: flex;
+   justify-content: flex-start;
+}
+
+.manage-service-seat-map-selector Button {
+   border-radius: 500px;
+}
+
+.manage-service-header h2 {
+   margin-right: 10px;
+}
+
+.manage-service-container {
    display: grid;
-   grid-template-rows: auto;
-   margin: 10px;
-   margin-top: 80px;
+   grid-template-columns: 1fr 3fr 1fr; /* Set the middle column to be the largest */
+   gap: 10px; /* Add some space between the columns */
+   padding: 5px;
+   height: 100vh;
 }
-
-.edit-name {
-   color: var(--accent);
-   font-size: 25px;
-   margin-bottom: 10px;
-   padding-left: 10px;
-}
-
-.seat-map-header {
-   grid-row: 1; /* Place item in the second row */
-   color: var(--light-text);
-}
-
-.seat-map-editor {
-   background-color: rgb(255, 255, 255, 0.02);
-   color: var(--light-text);
-   display: grid;
-   grid-template-columns: 1fr 3fr 1fr; /* Adjusted for equal width side columns */
-   gap: 40px; /* Use gap for spacing between grid items */
-   align-items: start;
-}
-
-.table-type-selector {
-   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-   border-radius: 6px;
-}
-
-.table-type-selector,
-.table-properties-container {
-   background-color: rgba(255, 255, 255, 0.03);
-
-   box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-   border-radius: 6px;
-}
-
-#table-editor-panel {
-   background-color: rgba(255, 255, 255, 0.03);
-}
-
-.table-properties-header {
-   font-size: 30px;
-   letter-spacing: -2px;
-   text-align: left;
-   width: 100%;
-   color: var(--light-text);
-   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-#table-properties-input-group {
-   display: grid;
-   grid-template-columns: auto auto;
-   grid-template-rows: auto auto;
-   column-gap: 10px;
-   row-gap: 10px;
+.waitlist-container,
+.reservation-container {
+   background-color: rgb(15, 15, 15);
    padding: 20px;
+   border-radius: 8px;
+   box-shadow: 0px 0px 5.1px hsl(0deg 0% 0% / 0.42);
 }
 
-#table-input {
-   width: 100%;
+.manage-service-floor-map-container {
+   border-radius: 8px;
+   height: 83vh;
 }
 
-.seat-map-container {
-   padding: 10px;
-   border-radius: 6px;
-   overflow: hidden;
-   height: 75%;
+.manage-service-floor-map {
+   background-color: rgb(15, 15, 15);
+   box-shadow: 0px 0px 5.1px hsl(0deg 0% 0% / 0.42);
+   height: 92vh;
+   width: 60vw; /* Adjusted to fit within the container */
+   position: relative;
+   border-radius: 8px;
 }
 
-.waitlist-card {
-   border: 2px solid rgba(255, 255, 255, 0.1);
-   background-color: rgba(255, 255, 255, 0.1);
-   border-radius: 6px;
-}
-
-.waitlist-card-header-row {
-   display: flex; /* Enables flexbox */
-   justify-content: left; /* Centers horizontally */
-   font-size: x-large;
-   font-weight: 400;
-   width: 100%; /* Ensures the div takes full available width */
-   padding-bottom: 5%;
-}
-
-.waitlist-card-info-row {
-   display: grid;
-   grid-template-columns: 2fr 3fr 6fr; /* Adjusted for equal width side columns */
-   align-items: center;
-   margin-bottom: 10px; /* Space between the header and the button row */
-}
-
-.waitlist-card-notify-guest {
-   align-items: center;
-   width: 90%; /* Stretch the button to fill its container */
-}
-
+.waitlist-card,
 .reservation-card {
-   border: 2px solid rgba(255, 255, 255, 0.1);
-   background-color: rgba(255, 255, 255, 0.1);
-   border-radius: 6px;
+   background-color: rgb(35, 35, 35);
+   padding: 15px;
+   border-radius: 8px;
+   margin-bottom: 15px;
+   box-shadow: 0px 0px 5.1px hsl(0deg 0% 0% / 0.42);
 }
 
+.waitlist-card-header-row,
 .reservation-card-header-row {
-   display: flex; /* Enables flexbox */
-   justify-content: left; /* Centers horizontally */
-   font-size: x-large;
-   font-weight: 400;
-   width: 100%; /* Ensures the div takes full available width */
-   padding-bottom: 5%;
-}
-
-.reservation-card-info-row {
-   display: grid;
-   grid-template-columns: 2fr 3fr 6fr; /* Adjusted for equal width side columns */
+   display: flex;
+   justify-content: space-between;
    align-items: center;
-   margin-bottom: 10px; /* Space between the header and the button row */
-}
-
-.reservation-card-notify-guest {
-   align-items: center;
-   width: 90%; /* Stretch the button to fill its container */
-}
-
-.seat-map-grid {
-   border: 2px solid rgba(255, 255, 255, 0.1);
-   background-color: white 40%;
-   overflow: hidden;
-   height: 99%;
-}
-
-.seat-map {
-   background: white;
-}
-
-.circle {
-   position: absolute;
-   width: 50px;
-   height: 50px;
-   background: blue;
-   border-radius: 50%;
-}
-
-.rectangle {
-   position: absolute;
-   width: 75px;
-   height: 50px;
-   background: blue;
-}
-
-.table-type-selector button {
-   display: block;
    margin-bottom: 10px;
-   padding: 10px 20px;
-   border: none;
-   cursor: pointer;
-   background-color: #ddd;
-   transition: background-color 0.3s;
 }
 
-.table-type-selector button:hover {
-   background-color: #bbb;
+.waitlist-card-info-row,
+.reservation-card-info-row {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.waitlist-party-size,
+.reservation-party-size,
+.waitlist-card-wait-time,
+.reservation-card-wait-time {
+   display: flex;
+   align-items: center;
 }
