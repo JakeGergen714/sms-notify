@@ -25,6 +25,14 @@ const AddServicePanel = () => {
                   <Form.Check type='checkbox' label='Training-No Combos' />
                </div>
             </Form.Group>
+            <Form.Group controlId='servers'>
+               <Form.Label>Servers</Form.Label>
+               <div>
+                  <Form.Check type='checkbox' label='Jake' />
+                  <Form.Check type='checkbox' label='Pepper' />
+                  <Form.Check type='checkbox' label='Askin' />
+               </div>
+            </Form.Group>
             <Button variant='primary' type='submit'>
                Shift Settings
             </Button>

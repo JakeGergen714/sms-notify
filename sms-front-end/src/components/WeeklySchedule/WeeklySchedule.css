@@ -11,6 +11,7 @@
    overflow-y: auto;
    padding-left: 20px;
    padding-top: 20px;
+   padding-right: 5px;
    background-color: rgb(15, 15, 15);
    margin: 4px;
    border-radius: 8px;
@@ -97,6 +98,7 @@
       0 7px 20px rgba(0, 0, 0, 0.35); /* More pronounced shadow on hover */
    transform: translate(-50%, -2px);
    z-index: 10;
+   cursor: pointer;
 }
 
 .service-schedule .top-edge,

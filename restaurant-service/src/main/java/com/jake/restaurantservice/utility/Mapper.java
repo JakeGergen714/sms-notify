@@ -2,6 +2,8 @@ package com.jake.restaurantservice.utility;
 
 import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
 import com.jake.datacorelib.restaurant.jpa.Restaurant;
+import com.jake.datacorelib.restaurant.server.dto.ServerDTO;
+import com.jake.datacorelib.restaurant.server.jpa.Server;
 import com.jake.datacorelib.restaurant.servicetype.dto.ServiceTypeDTO;
 import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +33,13 @@ public class Mapper {
 
     public ServiceTypeDTO toDto(ServiceType serviceType) {
         return modelMapper.map(serviceType, ServiceTypeDTO.class);
+    }
+
+    public Server toEntity(ServerDTO serverDTO) {
+        return modelMapper.map(serverDTO, Server.class);
+    }
+
+    public ServerDTO toDto(Server server) {
+        return modelMapper.map(server, ServerDTO.class);
     }
 }

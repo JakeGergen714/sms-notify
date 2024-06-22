@@ -48,5 +48,5 @@ public class ServiceType {
             joinColumns = @JoinColumn(name = "serviceTypeId"),
             inverseJoinColumns = @JoinColumn(name = "floor_map_id")
     )
-    private List<FloorMap> floorMaps;;
+    private List<FloorMap> floorMaps;
 }

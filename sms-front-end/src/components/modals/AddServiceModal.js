@@ -5,6 +5,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 
 const AddServiceModal = ({ show, onHide, onSave, floorPlans }) => {
    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+   const servers = ["Jake", "Pepper", "Askim"];
 
    const [serviceName, setServiceName] = useState("");
    const [startTime, setStartTime] = useState("");
@@ -12,6 +13,7 @@ const AddServiceModal = ({ show, onHide, onSave, floorPlans }) => {
    const [day, setDay] = useState("Sunday");
    const [selectedFloorPlans, setSelectedFloorPlans] = useState([]);
    const [selectedDaysOfWeek, setSelectedDaysOfWeek] = useState([]);
+   const [selectedServers, setSelectedServers] = useState([]);
 
    const handleCheckboxChange = (event) => {
       const { value, checked } = event.target;
@@ -27,8 +29,20 @@ const AddServiceModal = ({ show, onHide, onSave, floorPlans }) => {
       );
    };
 
+   const handleServerCheckBoxChange = (event) => {
+      const { value, checked } = event.target;
+      setSelectedServers((prevSelected) => (checked ? [...prevSelected, value] : prevSelected.filter((id) => id !== value)));
+   };
+
    const handleSave = () => {
-      onSave({ serviceName, startTime, endTime, selectedDaysOfWeek, floorMapIds: selectedFloorPlans });
+      onSave({
+         serviceName,
+         startTime,
+         endTime,
+         selectedDaysOfWeek,
+         floorMapIds: selectedFloorPlans,
+         servers: selectedServers,
+      });
    };
 
    return (
@@ -71,6 +85,12 @@ const AddServiceModal = ({ show, onHide, onSave, floorPlans }) => {
                         key={floorPlan.floorMapId}
                         onChange={handleCheckboxChange}
                      />
+                  ))}
+               </Form.Group>
+               <Form.Group controlId='servers'>
+                  <Form.Label>Servers</Form.Label>
+                  {servers.map((day, index) => (
+                     <Form.Check type='checkbox' label={day} value={day} key={day} onChange={handleServerCheckBoxChange} />
                   ))}
                </Form.Group>
             </Form>

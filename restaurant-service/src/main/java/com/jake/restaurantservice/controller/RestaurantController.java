@@ -3,6 +3,7 @@ package com.jake.restaurantservice.controller;
 import com.jake.datacorelib.restaurant.dto.RestaurantDTO;
 import com.jake.datacorelib.restaurant.floormap.dto.FloorMapDTO;
 import com.jake.datacorelib.restaurant.floormap.dto.FloorMapItemDTO;
+import com.jake.datacorelib.restaurant.server.dto.ServerDTO;
 import com.jake.datacorelib.restaurant.servicetype.dto.ServiceTypeDTO;
 import com.jake.restaurantservice.service.FloorMapService;
 import com.jake.restaurantservice.service.RestaurantService;
@@ -68,6 +69,30 @@ public class RestaurantController {
         headers.setLocation(URI.create(gatewayUrl + "/session/refresh-token"));
         log.debug("User Roles have been updated. Redirecting to gateway to update access token user roles.");
         return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
+    }
+
+    @GetMapping(value = "/restaurant/servers")
+    public ResponseEntity<List<ServerDTO>> getServers(Authentication authenticationToken, @RequestParam Long restaurantId) {
+        log.info("Get /servers <{}>", restaurantId);
+        List<ServerDTO> foundServers = restaurantService.getServers(restaurantId, getRestaurantIds(authenticationToken));
+       log.info("Found servers <{}>", foundServers);
+        return ResponseEntity.ok(foundServers);
+    }
+
+    @PostMapping(value = "/restaurant/server")
+    public ResponseEntity<ServerDTO> addServer(Authentication authenticationToken, @RequestBody ServerDTO serverDTO) {
+        log.info("POST /server <{}>", serverDTO);
+        ServerDTO savedDTO = restaurantService.addServer(serverDTO, getRestaurantIds(authenticationToken));
+        log.info("Added Server DTO <{}>", savedDTO);
+        return ResponseEntity.ok(savedDTO);
+    }
+
+    @PutMapping(value = "/restaurant/server")
+    public ResponseEntity<ServerDTO> editServer(Authentication authenticationToken, @RequestBody ServerDTO serverDTO) {
+        log.info("PUT /server <{}>", serverDTO);
+        ServerDTO savedDTO = restaurantService.editServer(serverDTO, getRestaurantIds(authenticationToken));
+        log.info("Updated Server DTO <{}>", savedDTO);
+        return ResponseEntity.ok(savedDTO);
     }
 
     @PostMapping(value = "/restaurant/servicetype")

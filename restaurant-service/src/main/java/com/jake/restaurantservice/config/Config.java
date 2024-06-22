@@ -5,6 +5,8 @@ import com.jake.datacorelib.restaurant.floormap.dto.FloorMapDTO;
 import com.jake.datacorelib.restaurant.floormap.dto.FloorMapItemDTO;
 import com.jake.datacorelib.restaurant.floormap.jpa.FloorMap;
 import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapItem;
+import com.jake.datacorelib.restaurant.server.dto.ServerDTO;
+import com.jake.datacorelib.restaurant.server.jpa.Server;
 import com.jake.datacorelib.restaurant.servicetype.dto.ServiceTypeDTO;
 import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
 import org.modelmapper.ModelMapper;
@@ -48,6 +50,9 @@ public class Config implements WebMvcConfigurer {
 
         modelMapper.createTypeMap(FloorMapItem.class, FloorMapItemDTO.class)
                    .addMapping(src -> src.getFloorMap().getFloorMapId(), FloorMapItemDTO::setFloorMapId);
+
+        modelMapper.createTypeMap(Server.class, ServerDTO.class)
+                   .addMapping(src -> src.getRestaurant().getRestaurantId(), ServerDTO::setRestaurantId);
 
 
         return modelMapper;

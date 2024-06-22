@@ -21,6 +21,7 @@ const ManageService = () => {
    const [floorPlans, setFloorPlans] = useState([]);
    const [activeService, setActiveService] = useState(null);
    const [activeServiceSchedule, setActiveServiceSchedule] = useState(null);
+   const [servers, setServers] = useState(null);
 
    const layerRef = useRef(null);
    const stageRef = useRef(null);
@@ -36,8 +37,14 @@ const ManageService = () => {
       height: 0,
    });
 
-   const outerGridsX = 7;
-   const outerGridsY = 7;
+   useEffect(() => {
+      getActiveService();
+      loadServers();
+   }, [selectedRestaurant]); // Empty dependency array means this effect runs once after initial render
+
+   const selectFloorPlan = (floorPlan) => {
+      setFloorPlan(floorPlan);
+   };
 
    useEffect(() => {
       if (divRef.current?.offsetHeight && divRef.current?.offsetWidth) {
@@ -76,53 +83,26 @@ const ManageService = () => {
                   setActiveService(serviceType);
                   setActiveServiceSchedule(schedule);
                   setFloorPlan(serviceType.floorMaps[0]);
+                  setFloorPlans(serviceType.floorMaps);
                }
             }
          }
       }
    };
 
-   useEffect(() => {
-      getActiveService();
-   }, [selectedRestaurant]); // Empty dependency array means this effect runs once after initial render
-
-   const loadFloorPlans = () => {
+   const loadServers = () => {
       axios
-         .get(`${process.env.REACT_APP_API_URL}/restaurant/floormaps`, {
+         .get(`${process.env.REACT_APP_API_URL}/restaurant/servers`, {
             params: { restaurantId: selectedRestaurant.restaurantId },
          })
          .then((res) => {
-            setFloorPlans(res.data); // Set state here after fetching
-            if (floorPlan != null) {
-               setFloorPlan(res.data.find((updatedFloorPlan) => updatedFloorPlan.floorMapId === floorPlan.floorMapId));
-            }
+            setServers(res.data); // Set state here after fetching
             console.log(res.data);
          })
          .catch((err) => {
             console.log("load restaurants failed", err);
-            setFloorPlans([]); // Set to an empty array in case of error
+            setServers([]); // Set to an empty array in case of error
          });
-   };
-
-   useEffect(() => {
-      if (selectedRestaurant && selectedRestaurant.serviceTypes) {
-         loadFloorPlans();
-      }
-   }, []);
-
-   const selectFloorPlan = (selectedFloorPlan) => {
-      setFloorPlan(selectedFloorPlan);
-   };
-
-   const generateDropdownItems = () => {
-      return floorPlans.map((curFloorPlan) => (
-         <Dropdown.Item
-            className='floor-plan-select-dropdown'
-            key={curFloorPlan.floorMapId}
-            onClick={() => selectFloorPlan(curFloorPlan)}>
-            {curFloorPlan.name}
-         </Dropdown.Item>
-      ));
    };
 
    return (
@@ -135,47 +115,42 @@ const ManageService = () => {
                   {activeServiceSchedule != null ? activeServiceSchedule.endTime : ""}
                </div>
             </div>
-            <div className='manage-service-seat-map-selector-container'>
-               <div className='manage-service-seat-map-selector'></div>
-               {floorPlans &&
-                  floorPlans.map((floorPlan) => {
-                     return (
-                        <Button key={floorPlan.floorMapId} variant='secondary'>
-                           {floorPlan.name}
-                        </Button>
-                     );
-                  })}
-               {/* <Dropdown className='floor-plan-select-dropdown'>
-                  {console.log(floorPlan)}
-                  <Dropdown.Toggle variant='secondary' className='floor-plan-select-dropdown'>
-                     {floorPlan == null ? "Select Floor Plan" : floorPlan.name}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>{generateDropdownItems()}</Dropdown.Menu>
-               </Dropdown> */}
-            </div>
          </div>
 
          <div className='manage-service-container'>
-            <div className='waitlist-container'>
-               <h1>The Wait List</h1>
-               <div className='waitlist-card'>
-                  <div className='waitlist-card-header-row'>
-                     <div className='waitlist-card-party-name'>Pepper</div>
-                  </div>
+            <div className='list-container'>
+               <div className='waitlist-container'>
+                  <div className='container-title'>Waitlist</div>
+                  <div className='waitlist-card'>
+                     <div className='waitlist-card-header-row'>
+                        <div className='waitlist-card-party-name'>Pepper</div>
+                     </div>
 
-                  <div className='waitlist-card-info-row'>
-                     <div className='waitlist-party-size'>
-                        <GrGroup />2
+                     <div className='waitlist-card-info-row'>
+                        <div className='waitlist-party-size'>
+                           <GrGroup />2
+                        </div>
+                        <div className='waitlist-card-wait-time'>
+                           <IoMdStopwatch /> 15 min
+                        </div>
                      </div>
-                     <div className='waitlist-card-wait-time'>
-                        <IoMdStopwatch /> 15 min
+                  </div>
+               </div>
+               <div className='reservation-container'>
+                  <div className='container-title'>Reservations</div>
+
+                  <div className='reservation-card'>
+                     <div className='reservation-card-header-row'>
+                        <div className='reservation-card-party-name'>Pepper</div>
                      </div>
-                     <div className='waitlist-card-notification-row'>
-                        <button
-                           className='waitlist-card-notify-guest btn btn-primary'
-                           onClick={() => alert("Notify via text!")}>
-                           <AiFillNotification />
-                        </button>
+
+                     <div className='reservation-card-info-row'>
+                        <div className='reservation-party-size'>
+                           <GrGroup />2
+                        </div>
+                        <div className='reservation-card-wait-time'>
+                           <GoClockFill /> 5:00 pm
+                        </div>
                      </div>
                   </div>
                </div>
@@ -222,21 +197,32 @@ const ManageService = () => {
                   </Stage>
                </div>
             </div>
-            <div className='reservation-container'>
-               <h1>The Reservations</h1>
-               <div className='reservation-card'>
-                  <div className='reservation-card-header-row'>
-                     <div className='reservation-card-party-name'>Pepper</div>
-                  </div>
-
-                  <div className='reservation-card-info-row'>
-                     <div className='reservation-party-size'>
-                        <GrGroup />2
-                     </div>
-                     <div className='reservation-card-wait-time'>
-                        <GoClockFill /> 5:00 pm
-                     </div>
-                  </div>
+            <div className='floors-and-services-container'>
+               <div className='reservation-container'>
+                  <div className='container-title'>Floor Plans</div>
+                  {floorPlans.map((seatMap) => {
+                     return (
+                        <div
+                           className={`seat-map-card ${seatMap === floorPlan ? "selected" : ""}`}
+                           onClick={() => selectFloorPlan(seatMap)}>
+                           <div className='seat-map-name'>{seatMap.name}</div>
+                           <div className='table-count'>{seatMap.floorMapItems.length}</div>
+                        </div>
+                     );
+                  })}
+               </div>
+               <div className='reservation-container'>
+                  <div className='container-title'>Servers</div>
+                  {servers &&
+                     servers.map((server) => {
+                        return (
+                           <div className='server-panel'>
+                              <div className='reservation-card-header-row'>
+                                 <div className='reservation-card-party-name'>{server.name}</div>
+                              </div>
+                           </div>
+                        );
+                     })}
                </div>
             </div>
          </div>

@@ -5,6 +5,9 @@ import com.jake.datacorelib.restaurant.floormap.jpa.FloorMap;
 import com.jake.datacorelib.restaurant.floormap.jpa.FloorMapRepository;
 import com.jake.datacorelib.restaurant.jpa.Restaurant;
 import com.jake.datacorelib.restaurant.jpa.RestaurantRepository;
+import com.jake.datacorelib.restaurant.server.dto.ServerDTO;
+import com.jake.datacorelib.restaurant.server.jpa.Server;
+import com.jake.datacorelib.restaurant.server.jpa.ServerRepository;
 import com.jake.datacorelib.restaurant.servicetype.dto.ServiceTypeDTO;
 import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
 import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceTypeRepository;
@@ -16,6 +19,7 @@ import com.jake.datacorelib.user.jpa.User;
 import com.jake.datacorelib.user.jpa.UserRepository;
 import com.jake.datacorelib.user.jpa.UserRole;
 import com.jake.restaurantservice.exception.RestaurantNotFoundException;
+import com.jake.restaurantservice.exception.ServerNotFoundException;
 import com.jake.restaurantservice.utility.Mapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +38,7 @@ public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final ServiceTypeRepository serviceTypeRepository;
     private final ServiceScheduleRepository serviceScheduleRepository;
+    private final ServerRepository serverRepository;
     private final FloorMapRepository floorMapRepository;
     private final UserRepository userRepository;
     private final Mapper mapper;
@@ -52,18 +57,17 @@ public class RestaurantService {
         subscription.setRestaurant(restaurantEntity);
         restaurantEntity.setSubscription(subscription);
 
-        Restaurant savedRestaurant =  restaurantRepository.save(restaurantEntity);
+        Restaurant savedRestaurant = restaurantRepository.save(restaurantEntity);
         UserRole restaurantOwnerRole = new UserRole();
         restaurantOwnerRole.setUser(restaurantOwner);
         restaurantOwnerRole.setRoleType(RoleType.OWNER);
         restaurantOwnerRole.setRestaurant(savedRestaurant);
-        if(restaurantOwner.getRoles() == null) {
+        if (restaurantOwner.getRoles() == null) {
             restaurantOwner.setRoles(Set.of(restaurantOwnerRole));
-        }
-         else {
+        } else {
             restaurantOwner.getRoles().add(restaurantOwnerRole);
         }
-         userRepository.save(restaurantOwner);
+        userRepository.save(restaurantOwner);
         return mapper.toDTO(savedRestaurant);
     }
 
@@ -74,19 +78,66 @@ public class RestaurantService {
     }
 
     public RestaurantDTO findRestaurantById(Long restaurantId) {
-        Restaurant restaurant= restaurantRepository.findById(restaurantId).orElseThrow(()->new RestaurantNotFoundException(restaurantId));
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
         log.info("Found restaunt <{}>", restaurant);
         return mapper.toDTO(restaurant);
+    }
+
+    public List<ServerDTO> getServers(Long restaurantId, Set<Long> authorizedRestaurantId) {
+        Restaurant restaurant = restaurantRepository
+                .findById(restaurantId)
+                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+
+        if (!authorizedRestaurantId.contains(restaurant.getRestaurantId())) {
+            throw new RestaurantNotFoundException(restaurant.getRestaurantId());
+        }
+
+        return serverRepository.findByRestaurantRestaurantId(restaurantId).stream().map(mapper::toDto).toList();
+    }
+
+    public ServerDTO addServer(ServerDTO serverDTO, Set<Long> authorizedRestaurantId) {
+        Restaurant restaurant = restaurantRepository
+                .findById(serverDTO.getRestaurantId())
+                .orElseThrow(() -> new RestaurantNotFoundException(serverDTO.getRestaurantId()));
+
+        if (!authorizedRestaurantId.contains(restaurant.getRestaurantId())) {
+            throw new RestaurantNotFoundException(restaurant.getRestaurantId());
+        }
+
+        Server server = mapper.toEntity(serverDTO);
+        server.setRestaurant(restaurant);
+        log.info("Saving {}", server);
+        Server saved = serverRepository.save(server);
+        log.info("Saved server {}", saved);
+        return mapper.toDto(saved);
+    }
+
+    public ServerDTO editServer(ServerDTO serverDTO, Set<Long> authorizedRestaurantId) {
+        Restaurant restaurant = restaurantRepository
+                .findById(serverDTO.getRestaurantId())
+                .orElseThrow(() -> new RestaurantNotFoundException(serverDTO.getRestaurantId()));
+
+        if (!authorizedRestaurantId.contains(restaurant.getRestaurantId())) {
+            throw new RestaurantNotFoundException(restaurant.getRestaurantId());
+        }
+
+        Server server = serverRepository.findById(serverDTO.getServerId()).orElseThrow(()->new ServerNotFoundException(serverDTO.getServerId()));
+        server.setName(serverDTO.getName());
+
+        log.info("Saving {}", server);
+        Server saved = serverRepository.save(server);
+        log.info("Saved server {}", saved);
+        return mapper.toDto(saved);
     }
 
     public ServiceTypeDTO addServiceType(ServiceTypeDTO serviceTypeDTO, Set<Long> authorizedRestaurantId) {
         ServiceType serviceType = mapper.toEntity(serviceTypeDTO);
 
-        Restaurant restaurant= restaurantRepository
+        Restaurant restaurant = restaurantRepository
                 .findById(serviceTypeDTO.getRestaurantId())
-                .orElseThrow(()->new RestaurantNotFoundException(serviceTypeDTO.getRestaurantId()));
+                .orElseThrow(() -> new RestaurantNotFoundException(serviceTypeDTO.getRestaurantId()));
 
-        if(!authorizedRestaurantId.contains(restaurant.getRestaurantId())) {
+        if (!authorizedRestaurantId.contains(restaurant.getRestaurantId())) {
             throw new RestaurantNotFoundException(restaurant.getRestaurantId());
         }
 
@@ -103,9 +154,9 @@ public class RestaurantService {
         ServiceType saved = serviceTypeRepository.save(serviceType);
         log.info("Saved service type <{}>", serviceType);
 
-        floorMaps.forEach(floorMap->{
+        floorMaps.forEach(floorMap -> {
             List<ServiceType> serviceTypes = floorMap.getServiceTypes();
-            if(serviceTypes==null) {
+            if (serviceTypes == null) {
                 floorMap.setServiceTypes(List.of(saved));
             } else {
                 serviceTypes.add(saved);

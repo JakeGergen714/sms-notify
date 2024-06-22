@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 public class ServiceScheduleDTO {
@@ -15,4 +16,5 @@ public class ServiceScheduleDTO {
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;
+    private List<Long> serverIds;
 }

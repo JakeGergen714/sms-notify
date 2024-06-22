@@ -1,5 +1,6 @@
 package com.jake.datacorelib.restaurant.servicetype.serviceschedule.jpa;
 
+import com.jake.datacorelib.restaurant.server.jpa.Server;
 import com.jake.datacorelib.restaurant.servicetype.jpa.ServiceType;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,6 +12,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -45,4 +48,6 @@ public class ServiceSchedule {
     @JoinColumn(name="service_type_id")
     private ServiceType serviceType;
 
+    @ManyToMany(mappedBy="schedules", fetch = FetchType.EAGER)
+    private List<Server> servers;
 }
