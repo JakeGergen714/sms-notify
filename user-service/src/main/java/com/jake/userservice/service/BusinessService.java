@@ -8,6 +8,7 @@ import com.jake.datacorelib.user.jpa.User;
 import com.jake.datacorelib.user.jpa.UserRepository;
 import com.jake.userservice.exception.UserAlreadyOwnsABusiness;
 import com.jake.userservice.exception.UserNotFoundException;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -24,6 +25,13 @@ public class BusinessService {
     private final BusinessRepository businessRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final ModelMapper modelMapper;
+
+    @PostConstruct
+    public void t() {
+        BusinessDTO dto = new BusinessDTO();
+        dto.setName("Peppy's Dinner");
+        addNewBusiness(dto, "test");
+    }
 
     public Business addNewBusiness(BusinessDTO businessDTO, String ownerUsername) {
         log.info("searchnig for user <{}>",ownerUsername );

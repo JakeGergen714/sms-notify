@@ -6,6 +6,7 @@ import com.jake.datacorelib.user.dto.UserDTO;
 import com.jake.datacorelib.user.jpa.User;
 import com.jake.datacorelib.user.jpa.UserRepository;
 import com.jake.userservice.exception.UserAlreadyExistsException;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -20,6 +21,14 @@ public class UserService {
     private final BusinessRepository businessRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder encoder;
+
+    @PostConstruct
+    public void t() {
+        UserDTO dto = new UserDTO();
+        dto.setUsername("test");
+        dto.setPassword("test");
+        addNewUser(dto);
+    }
 
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow();
