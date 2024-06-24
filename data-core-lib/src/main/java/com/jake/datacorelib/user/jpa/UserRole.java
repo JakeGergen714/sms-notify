@@ -13,6 +13,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "restaurant_id"})})
 @ToString(exclude = "user")
+@EqualsAndHashCode(exclude = "user")
 public class UserRole {
 
     @Id
@@ -30,18 +31,4 @@ public class UserRole {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
-            return false;
-        UserRole userRole = (UserRole) o;
-        return userRoleId != null && Objects.equals(userRoleId, userRole.userRoleId);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }
