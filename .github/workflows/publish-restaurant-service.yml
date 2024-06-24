@@ -6,7 +6,7 @@ on:
    push:
       paths:
          - "restaurant-service/**"
-         - ".github/workflows/publish-restaurant-service.yml"
+         - ".github/**"
    pull_request:
       paths:
          - "restaurant-service/**"

@@ -6,7 +6,7 @@ on:
    push:
       paths:
          - "user-service/**"
-         - ".github/workflows/publish-user-service.yml"
+         - ".github/**"
    pull_request:
       paths:
          - "user-service/**"
