@@ -30,7 +30,12 @@ public class BusinessService {
     public void t() {
         BusinessDTO dto = new BusinessDTO();
         dto.setName("Peppy's Dinner");
-        addNewBusiness(dto, "test");
+        try {
+            log.info("added test business {}", addNewBusiness(dto, "test"));
+
+        }catch(Exception e) {
+           log.error("Failed to add business", e);
+        }
     }
 
     public Business addNewBusiness(BusinessDTO businessDTO, String ownerUsername) {
@@ -46,6 +51,8 @@ public class BusinessService {
 
         Business newBusiness = modelMapper.map(businessDTO, Business.class);
         businessOwner.setBusiness(newBusiness);
+        log.info("saving user as business owner");
+        userRepository.save(businessOwner);
 
         newBusiness.setUsers(Set.of(businessOwner));
 

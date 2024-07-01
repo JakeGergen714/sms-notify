@@ -11,18 +11,8 @@ public class Guest {
     private Long id;
 
     @Column(nullable = false)
-    private Long businessId;
-
-    @Column(nullable = true)
-    private Long tableId;
-
-    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
     private String phone;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private GuestStatus status;
 }

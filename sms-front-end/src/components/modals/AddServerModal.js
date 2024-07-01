@@ -52,7 +52,6 @@ const AddServerModal = ({ show, onHide, onSave, serverToEdit, onEdit }) => {
 
    return (
       <Modal show={show} onHide={onHide}>
-         {console.log(serverToEdit)}
          <Modal.Header closeButton>
             <Modal.Title>{serverToEdit ? "Edit Server" : "Add Server"}</Modal.Title>
          </Modal.Header>

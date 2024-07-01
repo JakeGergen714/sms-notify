@@ -15,19 +15,14 @@ import AddServerModal from "../modals/AddServerModal";
 
 const ServiceSchedule = () => {
    const { selectedRestaurant, setSelectedRestaurant } = useUser(); // Get the current restaurant from context
-   const [showModal, setShowModal] = useState(false);
+   const [showServiceModal, setShowServiceModal] = useState(false);
    const [showServerModal, setShowServerModal] = useState(false); // State to control server modal visibility
    const [floorPlans, setFloorPlans] = useState([]);
-
-   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
    const [servers, setServers] = useState([]);
-   const [serviceName, setServiceName] = useState("");
-   const [startTime, setStartTime] = useState("");
-   const [endTime, setEndTime] = useState("");
-   const [day, setDay] = useState("Sunday");
+   const [newServerName, setNewServerName] = useState(null);
    const [showAddServer, setShowAddServer] = useState(false);
-   const [newServerName, setNewServerName] = useState("");
    const [serverToEdit, setServerToEdit] = useState(null); // State to store server being edited
+   const [serviceToEdit, setServiceToEdit] = useState(null); // State to store server being edited
 
    const loadServers = () => {
       axios
@@ -104,7 +99,7 @@ const ServiceSchedule = () => {
             console.log(err);
          });
 
-      setShowModal(false);
+      setShowServiceModal(false);
    };
 
    useEffect(() => {
@@ -165,11 +160,16 @@ const ServiceSchedule = () => {
       setShowServerModal(true);
    };
 
+   const handleServiceClick = (serviceType) => {
+      setServiceToEdit(serviceType);
+      setShowServiceModal(true);
+   }
+
    return (
       <div className='service-schedule-container'>
          <div className='header'>
             <div className='add-service-button-container'>
-               <div className='add-service-button' onClick={() => setShowModal(true)}>
+               <div className='add-service-button' onClick={() => setShowServiceModal(true)}>
                   <div className='add-service-button-content'>
                      <div className='add-service-icon'>
                         <BsCalendar2Plus />
@@ -200,14 +200,34 @@ const ServiceSchedule = () => {
                         ))}
                   </div>
                </div>
+               <div className='servers-container'>
+                  <div className='servers-container-content'>
+                     <div>Services</div>
+                     <div className='server-panel add-server' onClick={() => setShowServiceModal(true)}>
+                        <div className='add-text'>
+                           <IoAdd />
+                        </div>
+                     </div>
+                     {selectedRestaurant.serviceTypes &&
+                        selectedRestaurant.serviceTypes.map((serviceType) => (
+                           <div className='server-panel' key={serviceType.serviceTypeId} onClick={() => handleServiceClick(serviceType)}>
+                              <div className='server-name'>{serviceType.name}</div>
+                           </div>
+                        ))}
+                  </div>
+               </div>
             </div>
          </div>
 
          <AddServiceModal
             floorPlans={floorPlans}
-            show={showModal}
-            onHide={() => setShowModal(false)}
+            show={showServiceModal}
+            onHide={() =>{ 
+               setShowServiceModal(false);
+               setServiceToEdit(null);
+            }}
             onSave={handleSaveService}
+            serviceToEdit={serviceToEdit}
          />
          <AddServerModal
             show={showServerModal}

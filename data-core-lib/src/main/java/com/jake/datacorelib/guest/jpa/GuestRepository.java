@@ -6,7 +6,4 @@ import java.util.List;
 
 public interface GuestRepository extends JpaRepository<Guest, Long> {
 
-    List<Guest> findAllByBusinessId(Long businessId);
-
-    List<Guest> findAllByBusinessIdAndStatus(Long businessId, GuestStatus guestStatus);
 }

@@ -38,9 +38,9 @@ public class RestaurantController {
         Jwt jwt = (Jwt) authenticationToken.getPrincipal();
         log.info(jwt.getClaims());
 
-        log.info("GET /restaurant {}", getBusinessId(authenticationToken));
+        log.info("GET /restaurants {}", getBusinessId(authenticationToken));
         Set<RestaurantDTO> restaurants = restaurantService.findRestaurantsByBusinessId(getBusinessId(authenticationToken));
-        log.info("GET /restaurant <{}>", restaurants);
+        log.info("GET /restaurants <{}>", restaurants);
         return ResponseEntity.ok(restaurants);
     }
 

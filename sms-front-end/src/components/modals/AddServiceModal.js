@@ -1,9 +1,9 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
-const AddServiceModal = ({ show, onHide, onSave, floorPlans }) => {
+const AddServiceModal = ({ show, onHide, onSave, floorPlans, onEdit, serviceToEdit }) => {
    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
    const servers = ["Jake", "Pepper", "Askim"];
 
@@ -14,6 +14,16 @@ const AddServiceModal = ({ show, onHide, onSave, floorPlans }) => {
    const [selectedFloorPlans, setSelectedFloorPlans] = useState([]);
    const [selectedDaysOfWeek, setSelectedDaysOfWeek] = useState([]);
    const [selectedServers, setSelectedServers] = useState([]);
+
+   useEffect(()=>{
+      if(serviceToEdit) {
+         setServiceName(serviceToEdit.name);
+         setStartTime(serviceToEdit.startTime);
+      } else {
+         setServiceName("");
+         setStartTime("");
+      }
+   },[serviceToEdit]);
 
    const handleCheckboxChange = (event) => {
       const { value, checked } = event.target;
@@ -47,8 +57,9 @@ const AddServiceModal = ({ show, onHide, onSave, floorPlans }) => {
 
    return (
       <Modal show={show} onHide={onHide}>
+         {console.log(serviceToEdit)}
          <Modal.Header closeButton>
-            <Modal.Title>Add Service Schedule</Modal.Title>
+            <Modal.Title>{serviceToEdit == null ? "Add Service Schedule" : "Edit Service Schedule"}</Modal.Title>
          </Modal.Header>
          <Modal.Body>
             <Form>

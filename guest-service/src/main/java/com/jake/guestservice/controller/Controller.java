@@ -31,21 +31,10 @@ public class Controller {
         return ResponseEntity.ok(guests);
     }
 
+    // The guest data base stores all future and past guest information. Name, telephone etc...
+    // A guest is unique by its telephone number.
+    //
+
     //seat guest
     //un-seat guest. (added to table by accident. return to waitlist / reservation list
-    //move guest other table
-    //guest table complete (done eating)
-
-    //add guest -- waitlist guest, or an upcoming reservation guest
-    //edit guest -- guest is seated / guest is unseated
-    //remove guest -- guest is finished
-
-    //a guest can be in 3 states
-    //unseated -- waiting to be seated, or waiting for reservation
-    //seated -- guest is seated
-    //completed -- guest is finished and has left
-
-    private long getBusinessId(Authentication authentication) {
-        return Long.valueOf(((Jwt) authentication.getPrincipal()).getClaimAsString("businessId"));
-    }
-}
+    //move guest other

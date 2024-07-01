@@ -1,5 +1,8 @@
 package com.jake.datacorelib.waitlist.jpa;
 
+import com.jake.datacorelib.guest.jpa.Guest;
+import com.jake.datacorelib.restaurant.jpa.Restaurant;
+import com.jake.datacorelib.seatingassignment.jpa.SeatingAssignment;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,11 +17,17 @@ public class WaitListItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
-    private String businessId;
+    @ManyToOne
+    @JoinColumn(name="restaurant_id")
+    private Restaurant restaurant;
 
+    @ManyToOne
+    @JoinColumn(name="guest_id")
     @Column
-    private String customerName;
+    private Guest guest;
+
+    @OneToOne(mappedBy = "guest")
+    private SeatingAssignment seatingAssignment;
 
     @Column
     private int partySize;
@@ -28,9 +37,6 @@ public class WaitListItem {
 
     @Column
     private Integer quotedTimeMinutes;
-
-    @Column
-    private Integer waitTimeMinutes;
 
     @CreationTimestamp
     @Column

@@ -27,7 +27,12 @@ public class UserService {
         UserDTO dto = new UserDTO();
         dto.setUsername("test");
         dto.setPassword("test");
-        addNewUser(dto);
+        try {
+            addNewUser(dto);
+
+        } catch(Exception e) {
+            //ignore
+        }
     }
 
     public User getUserByUsername(String username) {

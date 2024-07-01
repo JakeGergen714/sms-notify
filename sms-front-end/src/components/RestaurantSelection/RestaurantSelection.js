@@ -54,6 +54,24 @@ const RestaurantSelection = () => {
       navigate("/home");
    };
 
+   const handleSubmit = (e) => {
+      //Prevent the browser from reloading the page
+      e.preventDefault();
+
+      //read form data
+      const form = e.target;
+      const formData = new FormData(form);
+      axios
+         .post(process.env.REACT_APP_API_URL + "/restaurant", {name:formData.get("name"), address:formData.get("name")})
+         .then((res) => {
+           console.log("success");
+         })
+         .catch((err) => {
+            console.log("failed to add restaurant");
+            console.error(err);
+         });
+   }
+
    return (
       <div>
          <h1>Select a Restaurant</h1>
@@ -64,6 +82,13 @@ const RestaurantSelection = () => {
                </li>
             ))}
          </ul>
+
+         <form method="post" onSubmit ={handleSubmit}>
+            <label>
+               Name: <input name="name"></input>
+            </label>
+            <button type ="submit">Add restaurant</button>
+            </form>
       </div>
    );
 };

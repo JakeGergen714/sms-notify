@@ -18,6 +18,6 @@ public class GuestService {
     }
 
     public List<Guest> findGuestsByStatus(long businessId, GuestStatus guestStatus) {
-        return guestRepo.findAllByBusinessIdAndGuestStatus(businessId, guestStatus);
+        return guestRepo.findAllByBusinessIdAndStatus(businessId, guestStatus);
     }
 }
